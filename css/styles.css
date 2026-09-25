@@ -1,0 +1,360 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap');
+
+:root {
+    --verde: #0B7A3B;
+    --verde-claro: #15A34A;
+    --verde-escuro: #075C2D;
+    --branco: #FFFFFF;
+    --cinza: #F5F7F6;
+    --texto: #17201B;
+    --texto-secundario: #66716B;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+html {
+    scroll-behavior: smooth;
+}
+
+body {
+    font-family: 'Poppins', sans-serif;
+    color: var(--texto);
+    background: var(--branco);
+}
+
+a {
+    text-decoration: none;
+    color: inherit;
+}
+
+/* =========================
+   TOPO
+========================= */
+
+.topbar {
+    min-height: 78px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 7%;
+    background: white;
+    border-bottom: 1px solid #e8ece9;
+    position: sticky;
+    top: 0;
+    z-index: 100;
+}
+
+.logo-area {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    font-weight: 700;
+    color: var(--verde);
+}
+
+.logo {
+    width: 44px;
+    height: 44px;
+    object-fit: contain;
+}
+
+nav {
+    display: flex;
+    align-items: center;
+    gap: 28px;
+    font-size: 14px;
+    font-weight: 500;
+}
+
+nav a:hover {
+    color: var(--verde);
+}
+
+/* =========================
+   HERO
+========================= */
+
+.hero {
+    min-height: 680px;
+    display: flex;
+    align-items: center;
+    padding: 80px 8%;
+    background:
+        linear-gradient(
+            135deg,
+            var(--verde-escuro),
+            var(--verde)
+        );
+    color: white;
+}
+
+.hero-content {
+    max-width: 850px;
+}
+
+.hero-label {
+    display: inline-block;
+    margin-bottom: 18px;
+    font-size: 13px;
+    font-weight: 600;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    opacity: .8;
+}
+
+.hero h1 {
+    font-size: clamp(42px, 6vw, 76px);
+    line-height: 1.05;
+    font-weight: 500;
+    margin-bottom: 25px;
+}
+
+.hero h1 strong {
+    display: block;
+    font-weight: 800;
+}
+
+.hero-subtitle {
+    max-width: 700px;
+    font-size: 19px;
+    line-height: 1.7;
+    opacity: .9;
+}
+
+.event-info {
+    display: flex;
+    align-items: center;
+    gap: 18px;
+    margin: 40px 0;
+}
+
+.event-info div {
+    width: 76px;
+    height: 76px;
+    border: 1px solid rgba(255,255,255,.35);
+    border-radius: 12px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+.event-info div strong {
+    font-size: 27px;
+}
+
+.event-info div span {
+    font-size: 11px;
+    letter-spacing: 2px;
+}
+
+.event-info p {
+    margin-left: 10px;
+    font-size: 16px;
+}
+
+.hero-buttons {
+    display: flex;
+    gap: 15px;
+    flex-wrap: wrap;
+}
+
+/* =========================
+   BOTÕES
+========================= */
+
+.btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 50px;
+    padding: 0 28px;
+    border-radius: 8px;
+    font-weight: 700;
+    font-size: 13px;
+    letter-spacing: .5px;
+    transition: .2s;
+}
+
+.btn-primary {
+    background: white;
+    color: var(--verde);
+}
+
+.btn-primary:hover {
+    transform: translateY(-2px);
+}
+
+.btn-secondary {
+    border: 1px solid rgba(255,255,255,.5);
+    color: white;
+}
+
+.btn-secondary:hover {
+    background: rgba(255,255,255,.1);
+}
+
+.btn-white {
+    background: white;
+    color: var(--verde);
+}
+
+/* =========================
+   SEÇÕES
+========================= */
+
+.section {
+    padding: 100px 8%;
+    max-width: 1200px;
+    margin: auto;
+}
+
+.section-light {
+    max-width: none;
+    background: var(--cinza);
+}
+
+.section-label {
+    display: block;
+    margin-bottom: 10px;
+    color: var(--verde);
+    font-size: 12px;
+    font-weight: 700;
+    letter-spacing: 2px;
+}
+
+.section h2 {
+    font-size: 42px;
+    margin-bottom: 25px;
+}
+
+.section > p {
+    max-width: 800px;
+    color: var(--texto-secundario);
+    line-height: 1.8;
+}
+
+/* =========================
+   CARDS
+========================= */
+
+.cards {
+    max-width: 1200px;
+    margin: 50px auto 0;
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 25px;
+}
+
+.card {
+    background: white;
+    padding: 35px;
+    border-radius: 14px;
+    border: 1px solid #e6ebe8;
+}
+
+.card span {
+    color: var(--verde);
+    font-size: 12px;
+    font-weight: 700;
+    letter-spacing: 1px;
+}
+
+.card h3 {
+    margin: 15px 0;
+    font-size: 23px;
+}
+
+.card p {
+    color: var(--texto-secundario);
+    line-height: 1.7;
+    font-size: 14px;
+}
+
+/* =========================
+   CTA
+========================= */
+
+.cta {
+    padding: 100px 8%;
+    text-align: center;
+    background: var(--verde);
+    color: white;
+}
+
+.cta h2 {
+    font-size: 42px;
+    margin-bottom: 15px;
+}
+
+.cta p {
+    margin-bottom: 30px;
+    opacity: .9;
+}
+
+/* =========================
+   RODAPÉ
+========================= */
+
+footer {
+    background: #063D20;
+    color: white;
+    padding: 45px 8%;
+    display: flex;
+    justify-content: space-between;
+    gap: 40px;
+}
+
+footer p {
+    margin-top: 8px;
+    opacity: .7;
+    font-size: 13px;
+}
+
+/* =========================
+   CELULAR
+========================= */
+
+@media (max-width: 800px) {
+
+    .topbar {
+        padding: 18px 5%;
+        flex-direction: column;
+        gap: 15px;
+    }
+
+    nav {
+        gap: 12px;
+        flex-wrap: wrap;
+        justify-content: center;
+        font-size: 12px;
+    }
+
+    .hero {
+        padding: 70px 6%;
+    }
+
+    .hero h1 {
+        font-size: 43px;
+    }
+
+    .event-info {
+        flex-wrap: wrap;
+    }
+
+    .cards {
+        grid-template-columns: 1fr;
+    }
+
+    .section {
+        padding: 70px 6%;
+    }
+
+    footer {
+        flex-direction: column;
+    }
+}
