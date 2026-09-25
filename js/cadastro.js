@@ -184,3 +184,75 @@ formulario.addEventListener("submit", async (event) => {
     }
 
 });
+
+// =====================================================
+// MÁSCARA DE CPF
+// =====================================================
+
+const campoCpf = document.getElementById("cpf");
+
+campoCpf.addEventListener("input", function () {
+
+    let valor = this.value
+        .replace(/\D/g, "")
+        .slice(0, 11);
+
+    valor = valor.replace(
+        /(\d{3})(\d)/,
+        "$1.$2"
+    );
+
+    valor = valor.replace(
+        /(\d{3})(\d)/,
+        "$1.$2"
+    );
+
+    valor = valor.replace(
+        /(\d{3})(\d{1,2})$/,
+        "$1-$2"
+    );
+
+    this.value = valor;
+
+});
+
+
+// =====================================================
+// MÁSCARA DE TELEFONE
+// =====================================================
+
+const campoTelefone =
+    document.getElementById("telefone");
+
+campoTelefone.addEventListener("input", function () {
+
+    let valor = this.value
+        .replace(/\D/g, "")
+        .slice(0, 11);
+
+    if (valor.length <= 2) {
+
+        valor = valor.replace(
+            /(\d{0,2})/,
+            "($1"
+        );
+
+    } else if (valor.length <= 7) {
+
+        valor = valor.replace(
+            /(\d{2})(\d{0,5})/,
+            "($1) $2"
+        );
+
+    } else {
+
+        valor = valor.replace(
+            /(\d{2})(\d)(\d{0,4})(\d{0,4})/,
+            "($1) $2 $3-$4"
+        );
+
+    }
+
+    this.value = valor;
+
+});
