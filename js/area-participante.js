@@ -21,16 +21,24 @@ const btnSair =
     document.getElementById("btnSair");
 
 
+
 onAuthStateChanged(auth, async (usuario) => {
 
     if (!usuario) {
 
         window.location.href =
-            "login.html";
+            "/crfe-connect/login.html";
 
         return;
 
     }
+
+
+    // Mostra imediatamente que o usuário está autenticado
+
+    saudacao.textContent =
+        `Olá! Seja bem-vindo(a) ao CRFE 2027.`;
+
 
 
     try {
@@ -53,22 +61,27 @@ onAuthStateChanged(auth, async (usuario) => {
                 resultado.data();
 
 
-            saudacao.textContent =
-                `Olá, ${dados.nome}! Seja bem-vindo(a) ao CRFE 2027.`;
+            const nome =
+                dados.nome || "participante";
 
-        } else {
 
             saudacao.textContent =
-                `Olá! Seja bem-vindo(a) ao CRFE 2027.`;
+                `Olá, ${nome}! Seja bem-vindo(a) ao CRFE 2027.`;
 
         }
 
     } catch (erro) {
 
-        console.error(erro);
+        console.error(
+            "Erro ao carregar dados do participante:",
+            erro
+        );
+
+        // Mantém a área funcionando mesmo
+        // se houver problema momentâneo no Firestore.
 
         saudacao.textContent =
-            "Bem-vindo(a) ao CRFE 2027.";
+            `Olá! Seja bem-vindo(a) ao CRFE 2027.`;
 
     }
 
@@ -76,24 +89,30 @@ onAuthStateChanged(auth, async (usuario) => {
 
 
 
-btnSair.addEventListener("click", async (event) => {
+btnSair.addEventListener(
+    "click",
+    async (event) => {
 
-    event.preventDefault();
-
-
-    try {
-
-        await signOut(auth);
+        event.preventDefault();
 
 
-        window.location.href =
-            "login.html";
+        try {
+
+            await signOut(auth);
 
 
-    } catch (erro) {
+            window.location.href =
+                "/crfe-connect/login.html";
 
-        console.error(erro);
+
+        } catch (erro) {
+
+            console.error(
+                "Erro ao sair:",
+                erro
+            );
+
+        }
 
     }
-
-});
+);
