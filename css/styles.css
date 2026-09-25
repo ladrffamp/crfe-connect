@@ -358,3 +358,93 @@ footer p {
         flex-direction: column;
     }
 }
+
+/* ==========================================
+   FORMULÁRIO DE CADASTRO
+   ========================================== */
+
+#formCadastro {
+    max-width: 720px;
+    margin: 40px auto 0;
+    padding: 32px;
+    background: #ffffff;
+    border-radius: 18px;
+    box-shadow: 0 10px 35px rgba(0, 0, 0, 0.08);
+}
+
+#formCadastro > div {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+#formCadastro label {
+    font-size: 14px;
+    font-weight: 600;
+    color: #1f2937;
+}
+
+#formCadastro input,
+#formCadastro select {
+    width: 100%;
+    box-sizing: border-box;
+    padding: 14px 16px;
+    border: 1px solid #d1d5db;
+    border-radius: 10px;
+    background: #ffffff;
+    color: #111827;
+    font-family: inherit;
+    font-size: 15px;
+    outline: none;
+    transition: border-color 0.2s ease,
+                box-shadow 0.2s ease;
+}
+
+#formCadastro input::placeholder {
+    color: #9ca3af;
+}
+
+#formCadastro input:focus,
+#formCadastro select:focus {
+    border-color: #0B7A3B;
+    box-shadow: 0 0 0 3px rgba(11, 122, 59, 0.12);
+}
+
+#formCadastro select {
+    appearance: auto;
+    cursor: pointer;
+}
+
+#formCadastro .btn {
+    width: 100%;
+    margin-top: 8px;
+    border: none;
+    cursor: pointer;
+}
+
+#mensagem {
+    max-width: 720px;
+    margin: 20px auto 0;
+    text-align: center;
+    font-weight: 600;
+}
+
+
+/* ==========================================
+   RESPONSIVIDADE
+   ========================================== */
+
+@media (max-width: 600px) {
+
+    #formCadastro {
+        padding: 22px;
+        margin-top: 25px;
+        border-radius: 14px;
+    }
+
+    #formCadastro input,
+    #formCadastro select {
+        padding: 13px 14px;
+    }
+
+}
