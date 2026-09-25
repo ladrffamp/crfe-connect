@@ -448,3 +448,87 @@ footer p {
     }
 
 }
+
+/* ==========================================
+   GRID DO FORMULÁRIO DE CADASTRO
+   ========================================== */
+
+#formCadastro .form-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 22px 20px;
+    margin-bottom: 28px;
+}
+
+#formCadastro .form-group {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+#formCadastro .form-group.full {
+    grid-column: 1 / -1;
+}
+
+#formCadastro label {
+    font-size: 14px;
+    font-weight: 600;
+    color: #1f2937;
+}
+
+#formCadastro input,
+#formCadastro select {
+    width: 100%;
+    box-sizing: border-box;
+    min-height: 50px;
+    padding: 13px 15px;
+    border: 1px solid #d1d5db;
+    border-radius: 10px;
+    background: #ffffff;
+    color: #111827;
+    font-family: inherit;
+    font-size: 15px;
+    outline: none;
+    transition: 0.2s ease;
+}
+
+#formCadastro input::placeholder {
+    color: #9ca3af;
+}
+
+#formCadastro input:focus,
+#formCadastro select:focus {
+    border-color: #0B7A3B;
+    box-shadow: 0 0 0 3px rgba(11, 122, 59, 0.12);
+}
+
+#formCadastro select {
+    cursor: pointer;
+}
+
+#formCadastro .btn {
+    width: 100%;
+    min-height: 52px;
+    border: none;
+    cursor: pointer;
+    font-weight: 700;
+    letter-spacing: 0.3px;
+}
+
+
+/* ==========================================
+   MOBILE
+   ========================================== */
+
+@media (max-width: 700px) {
+
+    #formCadastro .form-grid {
+        grid-template-columns: 1fr;
+        gap: 18px;
+    }
+
+    #formCadastro .form-group.full {
+        grid-column: auto;
+    }
+
+}
