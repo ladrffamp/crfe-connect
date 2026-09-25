@@ -31,6 +31,7 @@ a {
     color: inherit;
 }
 
+
 /* =========================
    TOPO
 ========================= */
@@ -74,6 +75,7 @@ nav a:hover {
     color: var(--verde);
 }
 
+
 /* =========================
    HERO
 ========================= */
@@ -83,12 +85,14 @@ nav a:hover {
     display: flex;
     align-items: center;
     padding: 80px 8%;
+
     background:
         linear-gradient(
             135deg,
             var(--verde-escuro),
             var(--verde)
         );
+
     color: white;
 }
 
@@ -135,8 +139,10 @@ nav a:hover {
 .event-info div {
     width: 76px;
     height: 76px;
+
     border: 1px solid rgba(255,255,255,.35);
     border-radius: 12px;
+
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -163,6 +169,7 @@ nav a:hover {
     flex-wrap: wrap;
 }
 
+
 /* =========================
    BOTÕES
 ========================= */
@@ -171,12 +178,16 @@ nav a:hover {
     display: inline-flex;
     align-items: center;
     justify-content: center;
+
     min-height: 50px;
     padding: 0 28px;
+
     border-radius: 8px;
+
     font-weight: 700;
     font-size: 13px;
     letter-spacing: .5px;
+
     transition: .2s;
 }
 
@@ -203,6 +214,7 @@ nav a:hover {
     color: var(--verde);
 }
 
+
 /* =========================
    SEÇÕES
 ========================= */
@@ -221,7 +233,9 @@ nav a:hover {
 .section-label {
     display: block;
     margin-bottom: 10px;
+
     color: var(--verde);
+
     font-size: 12px;
     font-weight: 700;
     letter-spacing: 2px;
@@ -234,9 +248,12 @@ nav a:hover {
 
 .section > p {
     max-width: 800px;
+
     color: var(--texto-secundario);
+
     line-height: 1.8;
 }
+
 
 /* =========================
    CARDS
@@ -245,20 +262,25 @@ nav a:hover {
 .cards {
     max-width: 1200px;
     margin: 50px auto 0;
+
     display: grid;
     grid-template-columns: repeat(3, 1fr);
+
     gap: 25px;
 }
 
 .card {
     background: white;
+
     padding: 35px;
+
     border-radius: 14px;
     border: 1px solid #e6ebe8;
 }
 
 .card span {
     color: var(--verde);
+
     font-size: 12px;
     font-weight: 700;
     letter-spacing: 1px;
@@ -271,9 +293,11 @@ nav a:hover {
 
 .card p {
     color: var(--texto-secundario);
+
     line-height: 1.7;
     font-size: 14px;
 }
+
 
 /* =========================
    CTA
@@ -281,8 +305,11 @@ nav a:hover {
 
 .cta {
     padding: 100px 8%;
+
     text-align: center;
+
     background: var(--verde);
+
     color: white;
 }
 
@@ -296,6 +323,7 @@ nav a:hover {
     opacity: .9;
 }
 
+
 /* =========================
    RODAPÉ
 ========================= */
@@ -303,34 +331,247 @@ nav a:hover {
 footer {
     background: #063D20;
     color: white;
+
     padding: 45px 8%;
+
     display: flex;
     justify-content: space-between;
+
     gap: 40px;
 }
 
 footer p {
     margin-top: 8px;
+
     opacity: .7;
+
     font-size: 13px;
 }
 
+
+/* ==================================================
+   FORMULÁRIO DE CADASTRO
+================================================== */
+
+#formCadastro {
+    width: 100%;
+    max-width: 900px;
+
+    margin: 40px auto 0;
+
+    padding: 40px;
+
+    background: #ffffff;
+
+    border: 1px solid #e6ebe8;
+
+    border-radius: 18px;
+
+    box-shadow:
+        0 12px 35px rgba(0, 0, 0, 0.07);
+}
+
+
 /* =========================
-   CELULAR
+   GRID
 ========================= */
+
+#formCadastro .form-grid {
+    width: 100%;
+
+    display: grid;
+
+    grid-template-columns:
+        minmax(0, 1fr)
+        minmax(0, 1fr);
+
+    gap: 22px 24px;
+}
+
+
+/* =========================
+   CAMPOS
+========================= */
+
+#formCadastro .form-group {
+    width: 100%;
+
+    display: flex;
+    flex-direction: column;
+
+    gap: 8px;
+}
+
+#formCadastro .form-group.full {
+    grid-column: 1 / -1;
+}
+
+
+/* =========================
+   LABEL
+========================= */
+
+#formCadastro label {
+    display: block;
+
+    margin: 0;
+
+    color: var(--texto);
+
+    font-size: 14px;
+    font-weight: 600;
+}
+
+
+/* =========================
+   INPUTS
+========================= */
+
+#formCadastro input,
+#formCadastro select {
+    display: block;
+
+    width: 100%;
+    height: 52px;
+
+    padding: 0 15px;
+
+    box-sizing: border-box;
+
+    border: 1px solid #d7ddd9;
+
+    border-radius: 9px;
+
+    background: #ffffff;
+
+    color: var(--texto);
+
+    font-family: 'Poppins', sans-serif;
+
+    font-size: 14px;
+
+    outline: none;
+
+    transition:
+        border-color .2s ease,
+        box-shadow .2s ease;
+}
+
+
+/* =========================
+   PLACEHOLDER
+========================= */
+
+#formCadastro input::placeholder {
+    color: #9aa39e;
+}
+
+
+/* =========================
+   FOCO
+========================= */
+
+#formCadastro input:focus,
+#formCadastro select:focus {
+
+    border-color: var(--verde);
+
+    box-shadow:
+        0 0 0 3px rgba(11, 122, 59, .10);
+}
+
+
+/* =========================
+   SELECT
+========================= */
+
+#formCadastro select {
+    cursor: pointer;
+}
+
+
+/* =========================
+   BOTÃO DO CADASTRO
+========================= */
+
+#formCadastro .btn {
+
+    display: flex;
+
+    width: 100%;
+    height: 52px;
+
+    margin-top: 28px;
+
+    align-items: center;
+    justify-content: center;
+
+    border: none;
+    border-radius: 9px;
+
+    background: var(--verde);
+
+    color: white;
+
+    cursor: pointer;
+
+    font-family: 'Poppins', sans-serif;
+
+    font-size: 14px;
+    font-weight: 700;
+
+    letter-spacing: .4px;
+
+    transition: .2s ease;
+}
+
+#formCadastro .btn:hover {
+
+    background: var(--verde-escuro);
+
+    transform: translateY(-1px);
+}
+
+
+/* =========================
+   MENSAGEM
+========================= */
+
+#mensagem {
+
+    width: 100%;
+    max-width: 900px;
+
+    margin: 20px auto 0;
+
+    text-align: center;
+
+    font-size: 14px;
+    font-weight: 600;
+}
+
+
+/* ==================================================
+   CELULAR
+================================================== */
 
 @media (max-width: 800px) {
 
     .topbar {
         padding: 18px 5%;
+
         flex-direction: column;
+
         gap: 15px;
     }
 
     nav {
         gap: 12px;
+
         flex-wrap: wrap;
+
         justify-content: center;
+
         font-size: 12px;
     }
 
@@ -357,178 +598,36 @@ footer p {
     footer {
         flex-direction: column;
     }
-}
-
-/* ==========================================
-   FORMULÁRIO DE CADASTRO
-   ========================================== */
-
-#formCadastro {
-    max-width: 720px;
-    margin: 40px auto 0;
-    padding: 32px;
-    background: #ffffff;
-    border-radius: 18px;
-    box-shadow: 0 10px 35px rgba(0, 0, 0, 0.08);
-}
-
-#formCadastro > div {
-    display: flex;
-    flex-direction: column;
-    gap: 8px;
-}
-
-#formCadastro label {
-    font-size: 14px;
-    font-weight: 600;
-    color: #1f2937;
-}
-
-#formCadastro input,
-#formCadastro select {
-    width: 100%;
-    box-sizing: border-box;
-    padding: 14px 16px;
-    border: 1px solid #d1d5db;
-    border-radius: 10px;
-    background: #ffffff;
-    color: #111827;
-    font-family: inherit;
-    font-size: 15px;
-    outline: none;
-    transition: border-color 0.2s ease,
-                box-shadow 0.2s ease;
-}
-
-#formCadastro input::placeholder {
-    color: #9ca3af;
-}
-
-#formCadastro input:focus,
-#formCadastro select:focus {
-    border-color: #0B7A3B;
-    box-shadow: 0 0 0 3px rgba(11, 122, 59, 0.12);
-}
-
-#formCadastro select {
-    appearance: auto;
-    cursor: pointer;
-}
-
-#formCadastro .btn {
-    width: 100%;
-    margin-top: 8px;
-    border: none;
-    cursor: pointer;
-}
-
-#mensagem {
-    max-width: 720px;
-    margin: 20px auto 0;
-    text-align: center;
-    font-weight: 600;
-}
 
 
-/* ==========================================
-   RESPONSIVIDADE
-   ========================================== */
-
-@media (max-width: 600px) {
+    /* FORMULÁRIO */
 
     #formCadastro {
-        padding: 22px;
+
+        width: 100%;
+
         margin-top: 25px;
+
+        padding: 25px 20px;
+
         border-radius: 14px;
     }
 
-    #formCadastro input,
-    #formCadastro select {
-        padding: 13px 14px;
-    }
-
-}
-
-/* ==========================================
-   GRID DO FORMULÁRIO DE CADASTRO
-   ========================================== */
-
-#formCadastro .form-grid {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 22px 20px;
-    margin-bottom: 28px;
-}
-
-#formCadastro .form-group {
-    display: flex;
-    flex-direction: column;
-    gap: 8px;
-}
-
-#formCadastro .form-group.full {
-    grid-column: 1 / -1;
-}
-
-#formCadastro label {
-    font-size: 14px;
-    font-weight: 600;
-    color: #1f2937;
-}
-
-#formCadastro input,
-#formCadastro select {
-    width: 100%;
-    box-sizing: border-box;
-    min-height: 50px;
-    padding: 13px 15px;
-    border: 1px solid #d1d5db;
-    border-radius: 10px;
-    background: #ffffff;
-    color: #111827;
-    font-family: inherit;
-    font-size: 15px;
-    outline: none;
-    transition: 0.2s ease;
-}
-
-#formCadastro input::placeholder {
-    color: #9ca3af;
-}
-
-#formCadastro input:focus,
-#formCadastro select:focus {
-    border-color: #0B7A3B;
-    box-shadow: 0 0 0 3px rgba(11, 122, 59, 0.12);
-}
-
-#formCadastro select {
-    cursor: pointer;
-}
-
-#formCadastro .btn {
-    width: 100%;
-    min-height: 52px;
-    border: none;
-    cursor: pointer;
-    font-weight: 700;
-    letter-spacing: 0.3px;
-}
-
-
-/* ==========================================
-   MOBILE
-   ========================================== */
-
-@media (max-width: 700px) {
-
     #formCadastro .form-grid {
+
         grid-template-columns: 1fr;
+
         gap: 18px;
     }
 
     #formCadastro .form-group.full {
+
         grid-column: auto;
     }
 
+    #formCadastro input,
+    #formCadastro select {
+
+        height: 50px;
+    }
 }
