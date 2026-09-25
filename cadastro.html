@@ -1,174 +1,156 @@
-<!DOCTYPE html>
-<html lang="pt-BR">
+<form id="formCadastro">
 
-<head>
-
-    <meta charset="UTF-8">
-
-    <meta
-        name="viewport"
-        content="width=device-width, initial-scale=1.0"
-    >
-
-    <title>
-        Cadastro | CRFE Connect
-    </title>
-
-    <link
-        rel="stylesheet"
-        href="css/styles.css"
-    >
-
-</head>
-
-<body>
-
-
-<header class="topbar">
-
-    <div class="logo-area">
-
-        <span>
-            CRFE 2027
-        </span>
-
+    <div>
+        <label for="nome">Nome completo</label>
+        <input type="text" id="nome" required>
     </div>
 
-    <nav>
+    <br>
 
-        <a href="index.html">
-            Início
-        </a>
+    <div>
+        <label for="cpf">CPF</label>
+        <input
+            type="text"
+            id="cpf"
+            placeholder="000.000.000-00"
+            maxlength="14"
+            required
+        >
+    </div>
 
-    </nav>
+    <br>
 
-</header>
+    <div>
+        <label for="nascimento">Data de nascimento</label>
+        <input
+            type="date"
+            id="nascimento"
+            required
+        >
+    </div>
 
+    <br>
 
+    <div>
+        <label for="telefone">Telefone / WhatsApp</label>
+        <input
+            type="tel"
+            id="telefone"
+            placeholder="(00) 00000-0000"
+            required
+        >
+    </div>
 
-<main>
+    <br>
 
-    <section class="section">
+    <div>
+        <label for="email">E-mail</label>
+        <input
+            type="email"
+            id="email"
+            required
+        >
+    </div>
 
-        <span class="section-label">
-            CRFE CONNECT
-        </span>
+    <br>
 
+    <div>
+        <label for="cidade">Cidade</label>
+        <input
+            type="text"
+            id="cidade"
+            required
+        >
+    </div>
 
-        <h1>
-            Criar minha conta
-        </h1>
+    <br>
 
+    <div>
+        <label for="estado">Estado</label>
+        <select id="estado" required>
+            <option value="">Selecione</option>
+            <option value="AC">Acre</option>
+            <option value="AL">Alagoas</option>
+            <option value="AP">Amapá</option>
+            <option value="AM">Amazonas</option>
+            <option value="BA">Bahia</option>
+            <option value="CE">Ceará</option>
+            <option value="DF">Distrito Federal</option>
+            <option value="ES">Espírito Santo</option>
+            <option value="GO">Goiás</option>
+            <option value="MA">Maranhão</option>
+            <option value="MT">Mato Grosso</option>
+            <option value="MS">Mato Grosso do Sul</option>
+            <option value="MG">Minas Gerais</option>
+            <option value="PA">Pará</option>
+            <option value="PB">Paraíba</option>
+            <option value="PR">Paraná</option>
+            <option value="PE">Pernambuco</option>
+            <option value="PI">Piauí</option>
+            <option value="RJ">Rio de Janeiro</option>
+            <option value="RN">Rio Grande do Norte</option>
+            <option value="RS">Rio Grande do Sul</option>
+            <option value="RO">Rondônia</option>
+            <option value="RR">Roraima</option>
+            <option value="SC">Santa Catarina</option>
+            <option value="SP">São Paulo</option>
+            <option value="SE">Sergipe</option>
+            <option value="TO">Tocantins</option>
+        </select>
+    </div>
 
-        <p>
-            Cadastre-se para participar do
-            Congresso Regional de Fisioterapia Esportiva.
-        </p>
+    <br>
 
+    <div>
+        <label for="instituicao">Instituição</label>
+        <input
+            type="text"
+            id="instituicao"
+            placeholder="Faculdade, universidade, clínica etc."
+            required
+        >
+    </div>
 
-        <form id="formCadastro">
+    <br>
 
+    <div>
+        <label for="cursoProfissao">Curso / Profissão</label>
+        <input
+            type="text"
+            id="cursoProfissao"
+            placeholder="Ex.: Fisioterapia"
+            required
+        >
+    </div>
 
-            <div>
+    <br>
 
-                <label for="nome">
-                    Nome completo
-                </label>
+    <div>
+        <label for="senha">Senha</label>
+        <input
+            type="password"
+            id="senha"
+            minlength="6"
+            required
+        >
+    </div>
 
-                <input
-                    type="text"
-                    id="nome"
-                    required
-                >
+    <br>
 
-            </div>
+    <div>
+        <label for="confirmarSenha">Confirmar senha</label>
+        <input
+            type="password"
+            id="confirmarSenha"
+            minlength="6"
+            required
+        >
+    </div>
 
+    <br>
 
-            <br>
+    <button type="submit" class="btn btn-primary">
+        CRIAR CONTA
+    </button>
 
-
-            <div>
-
-                <label for="email">
-                    E-mail
-                </label>
-
-                <input
-                    type="email"
-                    id="email"
-                    required
-                >
-
-            </div>
-
-
-            <br>
-
-
-            <div>
-
-                <label for="senha">
-                    Senha
-                </label>
-
-                <input
-                    type="password"
-                    id="senha"
-                    minlength="6"
-                    required
-                >
-
-            </div>
-
-
-            <br>
-
-
-            <div>
-
-                <label for="confirmarSenha">
-                    Confirmar senha
-                </label>
-
-                <input
-                    type="password"
-                    id="confirmarSenha"
-                    minlength="6"
-                    required
-                >
-
-            </div>
-
-
-            <br>
-
-
-            <button
-                type="submit"
-                class="btn btn-primary"
-            >
-                CRIAR CONTA
-            </button>
-
-
-        </form>
-
-
-        <p id="mensagem"></p>
-
-
-    </section>
-
-</main>
-
-
-
-<script
-    type="module"
-    src="js/cadastro.js"
-></script>
-
-
-</body>
-
-</html>
+</form>
