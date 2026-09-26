@@ -97,6 +97,71 @@ const btnContinuarInscricao =
 const mensagemInscricao =
     document.getElementById("mensagemInscricao");
 
+// =========================================
+// PAGAMENTO DA INSCRIÇÃO
+// =========================================
+
+const pagamentoInscricao =
+    document.getElementById("pagamentoInscricao");
+
+const valorPix =
+    document.getElementById("valorPix");
+
+const chavePix =
+    document.getElementById("chavePix");
+
+const btnCopiarPix =
+    document.getElementById("btnCopiarPix");
+
+const mensagemPix =
+    document.getElementById("mensagemPix");
+
+const btnPagamentoCartao =
+    document.getElementById("btnPagamentoCartao");
+
+const statusPagamento =
+    document.getElementById("statusPagamento");
+
+
+// =========================================
+// CHAVE PIX
+// =========================================
+
+const CHAVE_PIX =
+    "ladrf.fampfaculdade@gmail.com";
+
+
+// =========================================
+// COPIAR CHAVE PIX
+// =========================================
+
+if (btnCopiarPix) {
+
+    btnCopiarPix.addEventListener(
+        "click",
+        async () => {
+
+            try {
+
+                await navigator.clipboard.writeText(
+                    CHAVE_PIX
+                );
+
+                mensagemPix.textContent =
+                    "Chave Pix copiada com sucesso!";
+
+            } catch (erro) {
+
+                mensagemPix.textContent =
+                    "Não foi possível copiar automaticamente. Copie a chave manualmente.";
+
+            }
+
+        }
+    );
+
+}
+
 
 // =====================================================
 // DADOS DO PARTICIPANTE
