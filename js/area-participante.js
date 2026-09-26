@@ -913,112 +913,267 @@ if (formularioInscricao) {
 
             try {
 
-                btnContinuarInscricao.disabled =
-                    true;
+    btnContinuarInscricao.disabled =
+        true;
+
+    mensagemInscricao.textContent =
+        "Verificando disponibilidade do lote...";
+
+    const inscricaoId =
+        usuario.uid;
+
+    const referenciaLote =
+        doc(
+            db,
+            "lotes",
+            loteSelecionado
+        );
+
+    const referenciaInscricao =
+        doc(
+            db,
+            "inscricoes",
+            inscricaoId
+        );
 
 
-                mensagemInscricao.textContent =
-                    "Salvando sua inscrição...";
+    await runTransaction(
+        db,
+        async (transacao) => {
 
+            // =========================================
+            // LER LOTE
+            // =========================================
 
-                const inscricaoId =
-                    usuario.uid;
-
-
-                await setDoc(
-                    doc(
-                        db,
-                        "inscricoes",
-                        inscricaoId
-                    ),
-                    {
-
-                        uid:
-                            usuario.uid,
-
-                        nome:
-                            dadosParticipante?.nome ||
-                            "",
-
-                        email:
-                            dadosParticipante?.email ||
-                            usuario.email ||
-                            "",
-
-                        cpf:
-                            dadosParticipante?.cpf ||
-                            "",
-
-                        categoria:
-                            categoriaSelecionada,
-
-                        instituicao:
-                            dadosParticipante?.instituicao ||
-                            "",
-
-                        lote:
-                            Number(
-                                loteSelecionado
-                            ),
-
-                        loteNome:
-                            LOTES[
-                                loteSelecionado
-                            ].nome,
-
-                        valorOriginal:
-                            preco,
-
-                        desconto:
-                            desconto,
-
-                        valorFinal:
-                            total,
-
-                        cupom:
-                            cupomAplicado?.codigo ||
-                            null,
-
-                        minicursos:
-                            minicursos,
-
-                        status:
-                            "aguardando_pagamento",
-
-                        pagamento:
-                            "pendente",
-
-                        criadoEm:
-                            serverTimestamp()
-
-                    }
+            const loteSnapshot =
+                await transacao.get(
+                    referenciaLote
                 );
 
 
-                mensagemInscricao.textContent =
-                    "Inscrição registrada com sucesso!";
+            if (!loteSnapshot.exists()) {
+
+                throw new Error(
+                    "LOTE_NAO_ENCONTRADO"
+                );
+            }
 
 
-                console.log(
-                    "Inscrição criada:",
-                    inscricaoId
+            const dadosLoteFirestore =
+                loteSnapshot.data();
+
+
+            const limite =
+                Number(
+                    dadosLoteFirestore.limite || 0
                 );
 
 
-            } catch (erro) {
-
-                console.error(
-                    "Erro ao salvar inscrição:",
-                    erro
+            const inscritos =
+                Number(
+                    dadosLoteFirestore.inscritos || 0
                 );
 
 
-                mensagemInscricao.textContent =
-                    "Não foi possível registrar sua inscrição.";
+            const ativo =
+                dadosLoteFirestore.ativo !== false;
 
 
-                btnContinuarInscricao.disabled =
-                    false;
+            // =========================================
+            // VERIFICAR DISPONIBILIDADE
+            // =========================================
+
+            if (!ativo) {
+
+                throw new Error(
+                    "LOTE_INATIVO"
+                );
+            }
+
+
+            if (inscritos >= limite) {
+
+                throw new Error(
+                    "LOTE_ESGOTADO"
+                );
+            }
+
+
+            // =========================================
+            // VERIFICAR INSCRIÇÃO EXISTENTE
+            // =========================================
+
+            const inscricaoExistente =
+                await transacao.get(
+                    referenciaInscricao
+                );
+
+
+            if (inscricaoExistente.exists()) {
+
+                throw new Error(
+                    "INSCRICAO_EXISTENTE"
+                );
+            }
+
+
+            // =========================================
+            // CRIAR INSCRIÇÃO
+            // =========================================
+
+            transacao.set(
+                referenciaInscricao,
+                {
+
+                    uid:
+                        usuario.uid,
+
+                    nome:
+                        dadosParticipante?.nome ||
+                        "",
+
+                    email:
+                        dadosParticipante?.email ||
+                        usuario.email ||
+                        "",
+
+                    cpf:
+                        dadosParticipante?.cpf ||
+                        "",
+
+                    categoria:
+                        categoriaSelecionada,
+
+                    instituicao:
+                        dadosParticipante?.instituicao ||
+                        "",
+
+                    lote:
+                        Number(
+                            loteSelecionado
+                        ),
+
+                    loteNome:
+                        LOTES[
+                            loteSelecionado
+                        ].nome,
+
+                    valorOriginal:
+                        preco,
+
+                    desconto:
+                        desconto,
+
+                    valorFinal:
+                        total,
+
+                    cupom:
+                        cupomAplicado?.codigo ||
+                        null,
+
+                    minicursos:
+                        minicursos,
+
+                    status:
+                        "aguardando_pagamento",
+
+                    pagamento:
+                        "pendente",
+
+                    criadoEm:
+                        serverTimestamp()
+
+                }
+            );
+
+
+            // =========================================
+            // AUMENTAR INSCRITOS
+            // =========================================
+
+            transacao.update(
+                referenciaLote,
+                {
+                    inscritos:
+                        inscritos + 1
+                }
+            );
+
+        }
+    );
+
+
+    mensagemInscricao.textContent =
+        "Inscrição registrada com sucesso!";
+
+
+    console.log(
+        "Inscrição criada:",
+        inscricaoId
+    );
+
+
+} catch (erro) {
+
+    console.error(
+        "Erro ao salvar inscrição:",
+        erro
+    );
+
+
+    if (
+        erro.message ===
+        "LOTE_ESGOTADO"
+    ) {
+
+        mensagemInscricao.textContent =
+            "Este lote acabou de atingir o limite de vagas. Escolha outro lote.";
+
+        await atualizarLotes();
+
+
+    } else if (
+        erro.message ===
+        "LOTE_INATIVO"
+    ) {
+
+        mensagemInscricao.textContent =
+            "Este lote não está disponível.";
+
+        await atualizarLotes();
+
+
+    } else if (
+        erro.message ===
+        "LOTE_NAO_ENCONTRADO"
+    ) {
+
+        mensagemInscricao.textContent =
+            "Não foi possível localizar este lote.";
+
+        await atualizarLotes();
+
+
+    } else if (
+        erro.message ===
+        "INSCRICAO_EXISTENTE"
+    ) {
+
+        mensagemInscricao.textContent =
+            "Você já possui uma inscrição no CRFE 2027.";
+
+
+    } else {
+
+        mensagemInscricao.textContent =
+            "Não foi possível registrar sua inscrição.";
+
+    }
+
+
+    btnContinuarInscricao.disabled =
+        false;
+}
             }
 
         }
