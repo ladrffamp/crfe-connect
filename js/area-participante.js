@@ -108,11 +108,9 @@ let dadosParticipante = null;
 // =====================================================
 
 const LOTES = {
-
     1: {
         nome: "1º Lote",
         vagas: 50,
-
         precos: {
             estudante_fisioterapia: 80,
             fisioterapeuta: 150,
@@ -126,7 +124,6 @@ const LOTES = {
     2: {
         nome: "2º Lote",
         vagas: 75,
-
         precos: {
             estudante_fisioterapia: 100,
             fisioterapeuta: 180,
@@ -140,7 +137,6 @@ const LOTES = {
     3: {
         nome: "3º Lote",
         vagas: 100,
-
         precos: {
             estudante_fisioterapia: 120,
             fisioterapeuta: 210,
@@ -150,7 +146,6 @@ const LOTES = {
             outro: 180
         }
     }
-
 };
 // =====================================================
 // CUPOM ATUAL
