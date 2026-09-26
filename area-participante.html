@@ -698,7 +698,119 @@
             id="mensagemInscricao"
             class="form-message"
         ></p>
+<!-- =========================================
+     PAGAMENTO DA INSCRIÇÃO
+========================================== -->
 
+<section
+    id="pagamentoInscricao"
+    class="pagamento-inscricao"
+    style="display: none;"
+>
+
+    <span class="section-label">
+        PAGAMENTO
+    </span>
+
+    <h3>
+        Finalize o pagamento
+    </h3>
+
+    <p>
+        Sua inscrição foi registrada. Escolha uma das formas
+        de pagamento abaixo.
+    </p>
+
+
+    <!-- =====================================
+         PIX
+    ====================================== -->
+
+    <div class="pagamento-box">
+
+        <h4>
+            PIX
+        </h4>
+
+        <p>
+            Valor da inscrição:
+            <strong id="valorPix">
+                R$ 0,00
+            </strong>
+        </p>
+
+        <p>
+            Chave Pix:
+        </p>
+
+        <div class="pix-chave">
+            <strong id="chavePix">
+                ladrf.fampfaculdade@gmail.com
+            </strong>
+        </div>
+
+        <button
+            type="button"
+            class="btn btn-primary"
+            id="btnCopiarPix"
+        >
+            COPIAR CHAVE PIX
+        </button>
+
+        <p
+            id="mensagemPix"
+            class="form-message"
+        ></p>
+
+        <small>
+            Após realizar o pagamento, envie o comprovante
+            para a organização do CRFE.
+        </small>
+
+    </div>
+
+
+    <!-- =====================================
+         CARTÃO
+    ====================================== -->
+
+    <div class="pagamento-box">
+
+        <h4>
+            CARTÃO DE CRÉDITO
+        </h4>
+
+        <p>
+            Você também pode realizar o pagamento
+            utilizando cartão de crédito.
+        </p>
+
+        <a
+            id="btnPagamentoCartao"
+            href="#"
+            target="_blank"
+            rel="noopener noreferrer"
+            class="btn btn-primary"
+        >
+            PAGAR COM CARTÃO
+        </a>
+
+    </div>
+
+
+    <div class="pagamento-status">
+
+        <strong>
+            Status do pagamento:
+        </strong>
+
+        <span id="statusPagamento">
+            Aguardando pagamento
+        </span>
+
+    </div>
+
+</section>
 
     </form>
 
