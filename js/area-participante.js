@@ -17,7 +17,7 @@ import {
 
 
 // =====================================================
-// ELEMENTOS DA PÁGINA
+// ELEMENTOS
 // =====================================================
 
 const saudacao =
@@ -25,11 +25,6 @@ const saudacao =
 
 const btnSair =
     document.getElementById("btnSair");
-
-
-// =====================================================
-// ELEMENTOS DO PERFIL
-// =====================================================
 
 const perfilNome =
     document.getElementById("perfilNome");
@@ -58,13 +53,11 @@ const perfilInstituicao =
 const perfilCurso =
     document.getElementById("perfilCurso");
 
-
-// =====================================================
-// ELEMENTOS DA INSCRIÇÃO
-// =====================================================
-
 const formularioInscricao =
     document.getElementById("formInscricao");
+
+const categoria =
+    document.getElementById("categoria");
 
 const instituicaoInscricao =
     document.getElementById("instituicaoInscricao");
@@ -72,8 +65,32 @@ const instituicaoInscricao =
 const lote =
     document.getElementById("lote");
 
+const informacaoLote =
+    document.getElementById("informacaoLote");
+
+const cupom =
+    document.getElementById("cupom");
+
+const btnAplicarCupom =
+    document.getElementById("btnAplicarCupom");
+
+const mensagemCupom =
+    document.getElementById("mensagemCupom");
+
+const valorOriginal =
+    document.getElementById("valorOriginal");
+
+const linhaDesconto =
+    document.getElementById("linhaDesconto");
+
+const valorDesconto =
+    document.getElementById("valorDesconto");
+
 const valorInscricao =
     document.getElementById("valorInscricao");
+
+const btnContinuarInscricao =
+    document.getElementById("btnContinuarInscricao");
 
 const mensagemInscricao =
     document.getElementById("mensagemInscricao");
@@ -87,16 +104,70 @@ let dadosParticipante = null;
 
 
 // =====================================================
-// VERIFICAR LOGIN
+// CONFIGURAÇÃO DOS LOTES
+// =====================================================
+
+const LOTES = {
+
+    1: {
+        nome: "1º Lote",
+        vagas: 50,
+
+        precos: {
+            "Estudante de Fisioterapia": 80,
+            "Fisioterapeuta": 150,
+            "Profissional da Saúde": 130,
+            "Profissional do Esporte": 130,
+            "Atleta": 100,
+            "Outro": 120
+        }
+    },
+
+    2: {
+        nome: "2º Lote",
+        vagas: 75,
+
+        precos: {
+            "Estudante de Fisioterapia": 100,
+            "Fisioterapeuta": 180,
+            "Profissional da Saúde": 160,
+            "Profissional do Esporte": 160,
+            "Atleta": 120,
+            "Outro": 150
+        }
+    },
+
+    3: {
+        nome: "3º Lote",
+        vagas: 100,
+
+        precos: {
+            "Estudante de Fisioterapia": 120,
+            "Fisioterapeuta": 210,
+            "Profissional da Saúde": 190,
+            "Profissional do Esporte": 190,
+            "Atleta": 140,
+            "Outro": 180
+        }
+    }
+
+};
+
+
+// =====================================================
+// CUPOM ATUAL
+// =====================================================
+
+let cupomAplicado = null;
+
+
+// =====================================================
+// CARREGAR PARTICIPANTE
 // =====================================================
 
 onAuthStateChanged(
     auth,
     async (usuario) => {
-
-        // ==============================================
-        // NÃO ESTÁ LOGADO
-        // ==============================================
 
         if (!usuario) {
 
@@ -104,15 +175,9 @@ onAuthStateChanged(
                 "/crfe-connect/login.html";
 
             return;
-
         }
 
-
         try {
-
-            // ==========================================
-            // BUSCAR PARTICIPANTE
-            // ==========================================
 
             const referencia =
                 doc(
@@ -121,10 +186,8 @@ onAuthStateChanged(
                     usuario.uid
                 );
 
-
             const resultado =
                 await getDoc(referencia);
-
 
             if (!resultado.exists()) {
 
@@ -132,112 +195,87 @@ onAuthStateChanged(
                     "Não foi possível localizar seus dados.";
 
                 return;
-
             }
-
-
-            // ==========================================
-            // GUARDAR DADOS
-            // ==========================================
 
             dadosParticipante =
                 resultado.data();
-
 
             const dados =
                 dadosParticipante;
 
 
-            // ==========================================
+            // -----------------------------
             // SAUDAÇÃO
-            // ==========================================
-
-            const nome =
-                dados.nome ||
-                "Participante";
-
+            // -----------------------------
 
             saudacao.textContent =
-                `Olá, ${nome}! Seja bem-vindo(a) ao CRFE 2027.`;
+                `Olá, ${dados.nome || "Participante"}! Seja bem-vindo(a) ao CRFE 2027.`;
 
 
-
-            // ==========================================
+            // -----------------------------
             // PERFIL
-            // ==========================================
+            // -----------------------------
 
             perfilNome.textContent =
                 dados.nome ||
                 "Não informado";
-
 
             perfilEmail.textContent =
                 dados.email ||
                 usuario.email ||
                 "Não informado";
 
-
             perfilCpf.textContent =
                 dados.cpf ||
                 "Não informado";
-
 
             perfilNascimento.textContent =
                 formatarData(
                     dados.nascimento
                 );
 
-
             perfilTelefone.textContent =
                 dados.telefone ||
                 "Não informado";
-
 
             perfilCidade.textContent =
                 dados.cidade ||
                 "Não informado";
 
-
             perfilEstado.textContent =
                 dados.estado ||
                 "Não informado";
 
-
             perfilInstituicao.textContent =
                 dados.instituicao ||
                 "Não informado";
-
 
             perfilCurso.textContent =
                 dados.cursoProfissao ||
                 "Não informado";
 
 
-            // ==========================================
-            // PREENCHER INSTITUIÇÃO NA INSCRIÇÃO
-            // ==========================================
+            // -----------------------------
+            // INSTITUIÇÃO NA INSCRIÇÃO
+            // -----------------------------
 
             if (instituicaoInscricao) {
 
                 instituicaoInscricao.value =
                     dados.instituicao ||
                     "";
-
             }
 
-        }
 
-        catch (erro) {
+        } catch (erro) {
 
             console.error(
                 "Erro ao carregar dados:",
                 erro
             );
 
-
             saudacao.textContent =
                 "Olá! Seja bem-vindo(a) ao CRFE 2027.";
-
         }
 
     }
@@ -245,29 +283,26 @@ onAuthStateChanged(
 
 
 // =====================================================
-// CALCULAR VALOR DO LOTE
+// MUDANÇA DE CATEGORIA
 // =====================================================
 
-if (lote) {
+if (categoria) {
 
-    lote.addEventListener(
+    categoria.addEventListener(
         "change",
         () => {
 
-            const opcao =
-                lote.options[
-                    lote.selectedIndex
-                ];
+            cupomAplicado = null;
 
+            if (mensagemCupom) {
+                mensagemCupom.textContent = "";
+            }
 
-            const valor =
-                Number(
-                    opcao.dataset.valor || 0
-                );
+            if (cupom) {
+                cupom.value = "";
+            }
 
-
-            valorInscricao.textContent =
-                formatarMoeda(valor);
+            atualizarLotes();
 
         }
     );
@@ -276,7 +311,442 @@ if (lote) {
 
 
 // =====================================================
-// FINALIZAR INSCRIÇÃO
+// ATUALIZAR LOTES
+// =====================================================
+
+function atualizarLotes() {
+
+    const categoriaSelecionada =
+        categoria.value;
+
+
+    lote.innerHTML = "";
+
+
+    if (!categoriaSelecionada) {
+
+        lote.disabled = true;
+
+        lote.innerHTML = `
+            <option value="">
+                Selecione primeiro sua categoria
+            </option>
+        `;
+
+        informacaoLote.textContent = "";
+
+        limparValores();
+
+        return;
+    }
+
+
+    lote.disabled = false;
+
+
+    lote.innerHTML = `
+        <option value="">
+            Selecione o lote
+        </option>
+    `;
+
+
+    Object.entries(LOTES).forEach(
+        ([numero, dadosLote]) => {
+
+            const preco =
+                dadosLote.precos[
+                    categoriaSelecionada
+                ];
+
+
+            const opcao =
+                document.createElement("option");
+
+
+            opcao.value =
+                numero;
+
+            opcao.dataset.valor =
+                preco;
+
+            opcao.textContent =
+                `${dadosLote.nome} - ${formatarMoeda(preco)} - ${dadosLote.vagas} vagas`;
+
+
+            lote.appendChild(opcao);
+
+        }
+    );
+
+
+    informacaoLote.textContent =
+        "Selecione o lote desejado para visualizar o valor da inscrição.";
+
+    limparValores();
+}
+
+
+// =====================================================
+// MUDANÇA DE LOTE
+// =====================================================
+
+if (lote) {
+
+    lote.addEventListener(
+        "change",
+        () => {
+
+            cupomAplicado = null;
+
+            if (mensagemCupom) {
+                mensagemCupom.textContent = "";
+            }
+
+            atualizarValor();
+
+        }
+    );
+
+}
+
+
+// =====================================================
+// ATUALIZAR VALOR
+// =====================================================
+
+function atualizarValor() {
+
+    const numeroLote =
+        lote.value;
+
+
+    if (!numeroLote) {
+
+        limparValores();
+
+        return;
+    }
+
+
+    const dadosLote =
+        LOTES[numeroLote];
+
+
+    const preco =
+        dadosLote.precos[
+            categoria.value
+        ];
+
+
+    valorOriginal.textContent =
+        formatarMoeda(preco);
+
+
+    valorInscricao.textContent =
+        formatarMoeda(preco);
+
+
+    linhaDesconto.style.display =
+        "none";
+
+
+    valorDesconto.textContent =
+        formatarMoeda(0);
+
+
+    informacaoLote.textContent =
+        `${dadosLote.nome}: ${dadosLote.vagas} vagas disponíveis nesta configuração.`;
+
+}
+
+
+// =====================================================
+// LIMPAR VALORES
+// =====================================================
+
+function limparValores() {
+
+    valorOriginal.textContent =
+        formatarMoeda(0);
+
+    valorDesconto.textContent =
+        formatarMoeda(0);
+
+    valorInscricao.textContent =
+        formatarMoeda(0);
+
+    linhaDesconto.style.display =
+        "none";
+
+    if (btnContinuarInscricao) {
+
+        btnContinuarInscricao.disabled =
+            true;
+    }
+}
+
+
+// =====================================================
+// APLICAR CUPOM
+// =====================================================
+
+if (btnAplicarCupom) {
+
+    btnAplicarCupom.addEventListener(
+        "click",
+        async () => {
+
+            const codigo =
+                cupom.value
+                    .trim()
+                    .toUpperCase();
+
+
+            if (!codigo) {
+
+                mensagemCupom.textContent =
+                    "Digite um código de cupom.";
+
+                return;
+            }
+
+
+            const numeroLote =
+                lote.value;
+
+
+            if (!categoria.value ||
+                !numeroLote) {
+
+                mensagemCupom.textContent =
+                    "Selecione sua categoria e seu lote primeiro.";
+
+                return;
+            }
+
+
+            try {
+
+                mensagemCupom.textContent =
+                    "Verificando cupom...";
+
+
+                const referencia =
+                    doc(
+                        db,
+                        "cupons",
+                        codigo
+                    );
+
+
+                const resultado =
+                    await getDoc(referencia);
+
+
+                if (!resultado.exists()) {
+
+                    cupomAplicado = null;
+
+                    mensagemCupom.textContent =
+                        "Cupom não encontrado.";
+
+                    atualizarValor();
+
+                    return;
+                }
+
+
+                const dadosCupom =
+                    resultado.data();
+
+
+                if (
+                    dadosCupom.active === false
+                ) {
+
+                    cupomAplicado = null;
+
+                    mensagemCupom.textContent =
+                        "Este cupom está inativo.";
+
+                    atualizarValor();
+
+                    return;
+                }
+
+
+                if (
+                    dadosCupom.limit !== undefined &&
+                    dadosCupom.used !== undefined &&
+                    dadosCupom.used >= dadosCupom.limit
+                ) {
+
+                    cupomAplicado = null;
+
+                    mensagemCupom.textContent =
+                        "Este cupom atingiu o limite de utilizações.";
+
+                    atualizarValor();
+
+                    return;
+                }
+
+
+                const preco =
+                    LOTES[numeroLote]
+                        .precos[categoria.value];
+
+
+                let desconto = 0;
+
+
+                if (
+                    dadosCupom.type ===
+                    "percentual"
+                ) {
+
+                    desconto =
+                        preco *
+                        (
+                            Number(
+                                dadosCupom.value
+                            ) / 100
+                        );
+
+                } else {
+
+                    desconto =
+                        Number(
+                            dadosCupom.value
+                        );
+                }
+
+
+                if (desconto > preco) {
+                    desconto = preco;
+                }
+
+
+                const total =
+                    preco - desconto;
+
+
+                cupomAplicado = {
+
+                    codigo:
+                        codigo,
+
+                    desconto:
+                        desconto,
+
+                    tipo:
+                        dadosCupom.type,
+
+                    valor:
+                        Number(
+                            dadosCupom.value
+                        )
+
+                };
+
+
+                valorOriginal.textContent =
+                    formatarMoeda(preco);
+
+
+                valorDesconto.textContent =
+                    `- ${formatarMoeda(desconto)}`;
+
+
+                linhaDesconto.style.display =
+                    "flex";
+
+
+                valorInscricao.textContent =
+                    formatarMoeda(total);
+
+
+                mensagemCupom.textContent =
+                    "Cupom aplicado com sucesso!";
+
+
+                btnContinuarInscricao.disabled =
+                    false;
+
+
+            } catch (erro) {
+
+                console.error(
+                    "Erro ao verificar cupom:",
+                    erro
+                );
+
+                mensagemCupom.textContent =
+                    "Não foi possível verificar o cupom.";
+            }
+
+        }
+    );
+
+}
+
+
+// =====================================================
+// PERMITIR CONTINUAR SEM CUPOM
+// =====================================================
+
+if (categoria) {
+
+    categoria.addEventListener(
+        "change",
+        () => {
+
+            verificarBotaoInscricao();
+
+        }
+    );
+}
+
+
+if (lote) {
+
+    lote.addEventListener(
+        "change",
+        () => {
+
+            verificarBotaoInscricao();
+
+        }
+    );
+}
+
+
+function verificarBotaoInscricao() {
+
+    if (!btnContinuarInscricao) {
+        return;
+    }
+
+
+    if (
+        categoria.value &&
+        lote.value
+    ) {
+
+        btnContinuarInscricao.disabled =
+            false;
+
+    } else {
+
+        btnContinuarInscricao.disabled =
+            true;
+    }
+}
+
+
+// =====================================================
+// ENVIAR INSCRIÇÃO
 // =====================================================
 
 if (formularioInscricao) {
@@ -288,10 +758,6 @@ if (formularioInscricao) {
             event.preventDefault();
 
 
-            // ==========================================
-            // VERIFICAR USUÁRIO
-            // ==========================================
-
             const usuario =
                 auth.currentUser;
 
@@ -302,41 +768,25 @@ if (formularioInscricao) {
                     "Sua sessão expirou. Faça login novamente.";
 
                 return;
-
             }
 
 
-            // ==========================================
-            // PEGAR CAMPOS
-            // ==========================================
-
-            const categoria =
-                document
-                    .getElementById("categoria")
-                    .value;
+            const categoriaSelecionada =
+                categoria.value;
 
 
             const loteSelecionado =
                 lote.value;
 
 
-            // ==========================================
-            // VALIDAR CATEGORIA
-            // ==========================================
-
-            if (!categoria) {
+            if (!categoriaSelecionada) {
 
                 mensagemInscricao.textContent =
                     "Selecione sua categoria.";
 
                 return;
-
             }
 
-
-            // ==========================================
-            // VALIDAR LOTE
-            // ==========================================
 
             if (!loteSelecionado) {
 
@@ -344,29 +794,28 @@ if (formularioInscricao) {
                     "Selecione o lote de inscrição.";
 
                 return;
-
             }
 
 
-            // ==========================================
-            // PEGAR VALOR
-            // ==========================================
-
-            const opcao =
-                lote.options[
-                    lote.selectedIndex
-                ];
+            const preco =
+                LOTES[loteSelecionado]
+                    .precos[categoriaSelecionada];
 
 
-            const valor =
-                Number(
-                    opcao.dataset.valor || 0
-                );
+            let desconto =
+                0;
 
 
-            // ==========================================
-            // PEGAR MINICURSOS
-            // ==========================================
+            if (cupomAplicado) {
+
+                desconto =
+                    cupomAplicado.desconto;
+            }
+
+
+            const total =
+                preco - desconto;
+
 
             const minicursos =
                 Array.from(
@@ -374,27 +823,23 @@ if (formularioInscricao) {
                         'input[name="minicurso"]:checked'
                     )
                 ).map(
-                    (item) => item.value
+                    item => item.value
                 );
 
 
             try {
 
+                btnContinuarInscricao.disabled =
+                    true;
+
+
                 mensagemInscricao.textContent =
                     "Salvando sua inscrição...";
 
 
-                // ======================================
-                // CRIAR ID DA INSCRIÇÃO
-                // ======================================
-
                 const inscricaoId =
                     usuario.uid;
 
-
-                // ======================================
-                // SALVAR NO FIRESTORE
-                // ======================================
 
                 await setDoc(
                     doc(
@@ -421,17 +866,34 @@ if (formularioInscricao) {
                             "",
 
                         categoria:
-                            categoria,
+                            categoriaSelecionada,
 
                         instituicao:
                             dadosParticipante?.instituicao ||
                             "",
 
                         lote:
-                            Number(loteSelecionado),
+                            Number(
+                                loteSelecionado
+                            ),
 
-                        valor:
-                            valor,
+                        loteNome:
+                            LOTES[
+                                loteSelecionado
+                            ].nome,
+
+                        valorOriginal:
+                            preco,
+
+                        desconto:
+                            desconto,
+
+                        valorFinal:
+                            total,
+
+                        cupom:
+                            cupomAplicado?.codigo ||
+                            null,
 
                         minicursos:
                             minicursos,
@@ -449,10 +911,6 @@ if (formularioInscricao) {
                 );
 
 
-                // ======================================
-                // SUCESSO
-                // ======================================
-
                 mensagemInscricao.textContent =
                     "Inscrição registrada com sucesso!";
 
@@ -463,9 +921,7 @@ if (formularioInscricao) {
                 );
 
 
-            }
-
-            catch (erro) {
+            } catch (erro) {
 
                 console.error(
                     "Erro ao salvar inscrição:",
@@ -476,6 +932,9 @@ if (formularioInscricao) {
                 mensagemInscricao.textContent =
                     "Não foi possível registrar sua inscrição.";
 
+
+                btnContinuarInscricao.disabled =
+                    false;
             }
 
         }
@@ -485,16 +944,36 @@ if (formularioInscricao) {
 
 
 // =====================================================
-// FORMATAR MOEDA
+// SAIR
 // =====================================================
 
-function formatarMoeda(valor) {
+if (btnSair) {
 
-    return valor.toLocaleString(
-        "pt-BR",
-        {
-            style: "currency",
-            currency: "BRL"
+    btnSair.addEventListener(
+        "click",
+        async (event) => {
+
+            event.preventDefault();
+
+
+            try {
+
+                await signOut(auth);
+
+
+                window.location.href =
+                    "/crfe-connect/login.html";
+
+
+            } catch (erro) {
+
+                console.error(
+                    "Erro ao sair:",
+                    erro
+                );
+
+            }
+
         }
     );
 
@@ -502,15 +981,26 @@ function formatarMoeda(valor) {
 
 
 // =====================================================
-// FORMATAR DATA
+// FUNÇÕES AUXILIARES
 // =====================================================
+
+function formatarMoeda(valor) {
+
+    return Number(valor || 0)
+        .toLocaleString(
+            "pt-BR",
+            {
+                style: "currency",
+                currency: "BRL"
+            }
+        );
+}
+
 
 function formatarData(data) {
 
     if (!data) {
-
         return "Não informado";
-
     }
 
 
@@ -519,9 +1009,7 @@ function formatarData(data) {
 
 
     if (partes.length !== 3) {
-
         return data;
-
     }
 
 
@@ -532,39 +1020,4 @@ function formatarData(data) {
         "/" +
         partes[0]
     );
-
 }
-
-
-// =====================================================
-// SAIR
-// =====================================================
-
-btnSair.addEventListener(
-    "click",
-    async (event) => {
-
-        event.preventDefault();
-
-
-        try {
-
-            await signOut(auth);
-
-
-            window.location.href =
-                "/crfe-connect/login.html";
-
-        }
-
-        catch (erro) {
-
-            console.error(
-                "Erro ao sair:",
-                erro
-            );
-
-        }
-
-    }
-);
