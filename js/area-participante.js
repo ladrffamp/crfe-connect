@@ -846,37 +846,37 @@ if (formularioInscricao) {
                 auth.currentUser;
 
 
-            if (!usuario) {
+            if (
+    dadosCupom.ativo !== true
+) {
 
-                mensagemInscricao.textContent =
-                    "Sua sessão expirou. Faça login novamente.";
+    cupomAplicado = null;
 
-                return;
-            }
+    mensagemCupom.textContent =
+        "Este cupom está inativo.";
 
+    atualizarValor();
 
-            const categoriaSelecionada =
-                categoria.value;
-
-
-            const loteSelecionado =
-                lote.value;
+    return;
+}
 
 
-            if (!categoriaSelecionada) {
+if (
+    dadosCupom.usados !== undefined &&
+    dadosCupom.limite !== undefined &&
+    Number(dadosCupom.usados) >=
+    Number(dadosCupom.limite)
+) {
 
-                mensagemInscricao.textContent =
-                    "Selecione sua categoria.";
+    cupomAplicado = null;
 
-                return;
-            }
+    mensagemCupom.textContent =
+        "Este cupom atingiu o limite de utilizações.";
 
+    atualizarValor();
 
-            if (!loteSelecionado) {
-
-                mensagemInscricao.textContent =
-                    "Selecione o lote de inscrição.";
-
+    return;
+}
                 return;
             }
 
