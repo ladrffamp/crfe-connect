@@ -309,14 +309,16 @@ if (categoria) {
 // ATUALIZAR LOTES
 // =====================================================
 
-function atualizarLotes() {
+// =====================================================
+// ATUALIZAR LOTES
+// =====================================================
+
+async function atualizarLotes() {
 
     const categoriaSelecionada =
         categoria.value;
 
-
     lote.innerHTML = "";
-
 
     if (!categoriaSelecionada) {
 
@@ -335,53 +337,140 @@ function atualizarLotes() {
         return;
     }
 
-
-    lote.disabled = false;
-
+    lote.disabled = true;
 
     lote.innerHTML = `
         <option value="">
-            Selecione o lote
+            Carregando lotes...
         </option>
     `;
 
+    try {
 
-    Object.entries(LOTES).forEach(
-        ([numero, dadosLote]) => {
+        const referenciaLotes =
+            collection(
+                db,
+                "lotes"
+            );
 
-            const preco =
-                dadosLote.precos[
-                    categoriaSelecionada
-                ];
+        const resultadoLotes =
+            await getDocs(
+                referenciaLotes
+            );
 
+        lote.innerHTML = `
+            <option value="">
+                Selecione o lote
+            </option>
+        `;
 
-            const opcao =
-                document.createElement("option");
+        let lotesDisponiveis = 0;
 
+        resultadoLotes.forEach(
+            (documento) => {
 
-            opcao.value =
-                numero;
+                const numero =
+                    documento.id;
 
-            opcao.dataset.valor =
-                preco;
+                const dadosFirestore =
+                    documento.data();
 
-            opcao.textContent =
-    `${dadosLote.nome} - ${formatarMoeda(preco)}`;
+                const dadosLote =
+                    LOTES[numero];
 
+                if (!dadosLote) {
+                    return;
+                }
 
-            lote.appendChild(opcao);
+                const limite =
+                    Number(
+                        dadosFirestore.limite || 0
+                    );
+
+                const inscritos =
+                    Number(
+                        dadosFirestore.inscritos || 0
+                    );
+
+                const ativo =
+                    dadosFirestore.ativo !== false;
+
+                const preco =
+                    dadosLote.precos[
+                        categoriaSelecionada
+                    ];
+
+                if (
+                    !ativo ||
+                    inscritos >= limite ||
+                    preco === undefined
+                ) {
+                    return;
+                }
+
+                const opcao =
+                    document.createElement("option");
+
+                opcao.value =
+                    numero;
+
+                opcao.dataset.valor =
+                    preco;
+
+                opcao.textContent =
+                    `${dadosLote.nome} - ${formatarMoeda(preco)}`;
+
+                lote.appendChild(opcao);
+
+                lotesDisponiveis++;
+
+            }
+        );
+
+        lote.disabled =
+            lotesDisponiveis === 0;
+
+        if (lotesDisponiveis === 0) {
+
+            lote.innerHTML = `
+                <option value="">
+                    Não há lotes disponíveis
+                </option>
+            `;
+
+            informacaoLote.textContent =
+                "No momento, não há lotes disponíveis para esta categoria.";
+
+        } else {
+
+            informacaoLote.textContent =
+                "Selecione o lote desejado para visualizar o valor da inscrição.";
 
         }
-    );
 
+        limparValores();
 
-    informacaoLote.textContent =
-        "Selecione o lote desejado para visualizar o valor da inscrição.";
+    } catch (erro) {
 
-    limparValores();
+        console.error(
+            "Erro ao carregar lotes:",
+            erro
+        );
+
+        lote.disabled = true;
+
+        lote.innerHTML = `
+            <option value="">
+                Erro ao carregar lotes
+            </option>
+        `;
+
+        informacaoLote.textContent =
+            "Não foi possível carregar os lotes.";
+
+        limparValores();
+    }
 }
-
-
 // =====================================================
 // MUDANÇA DE LOTE
 // =====================================================
