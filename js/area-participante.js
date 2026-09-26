@@ -369,7 +369,7 @@ function atualizarLotes() {
                 preco;
 
             opcao.textContent =
-                `${dadosLote.nome} - ${formatarMoeda(preco)} - ${dadosLote.vagas} vagas`;
+    `${dadosLote.nome} - ${formatarMoeda(preco)}`;
 
 
             lote.appendChild(opcao);
