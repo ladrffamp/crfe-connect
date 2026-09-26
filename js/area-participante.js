@@ -686,9 +686,9 @@ if (btnAplicarCupom) {
 
 
                 if (
-                    dadosCupom.type ===
-                    "percentual"
-                ) {
+    dadosCupom.tipo ===
+    "percentual"
+)
 
                     desconto =
                         preco *
