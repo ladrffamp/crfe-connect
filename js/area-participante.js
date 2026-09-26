@@ -454,7 +454,7 @@ function atualizarValor() {
 
 
     informacaoLote.textContent =
-        `${dadosLote.nome}: ${dadosLote.vagas} vagas disponíveis nesta configuração.`;
+    `Valor referente ao ${dadosLote.nome}.`;
 
 }
 
