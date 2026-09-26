@@ -374,275 +374,339 @@
 
         <!-- =========================================
              INSCRIÇÃO
-        ========================================== -->
+       <!-- =========================================
+     INSCRIÇÃO
+========================================== -->
 
-        <div
-            id="inscricao"
-            class="participant-panel"
-        >
+<div
+    id="inscricao"
+    class="participant-panel"
+>
 
-            <span class="section-label">
-                INSCRIÇÃO
-            </span>
+    <span class="section-label">
+        INSCRIÇÃO
+    </span>
 
-            <h2>
-                Minha inscrição
-            </h2>
+    <h2>
+        Minha inscrição
+    </h2>
 
-            <p class="panel-description">
-                Preencha os dados abaixo para realizar
-                sua inscrição no CRFE 2027.
+    <p class="panel-description">
+        Preencha os dados abaixo para realizar
+        sua inscrição no CRFE 2027.
+    </p>
+
+
+    <form id="formInscricao">
+
+
+        <!-- =====================================
+             CATEGORIA
+        ====================================== -->
+
+        <div class="inscricao-form-section">
+
+            <label for="categoria">
+                Categoria do participante
+            </label>
+
+            <select
+                id="categoria"
+                required
+            >
+
+                <option value="">
+                    Selecione sua categoria
+                </option>
+
+                <option value="estudante_fisioterapia">
+                    Estudante de Fisioterapia
+                </option>
+
+                <option value="fisioterapeuta">
+                    Fisioterapeuta
+                </option>
+
+                <option value="profissional_saude">
+                    Profissional da Saúde
+                </option>
+
+                <option value="profissional_esporte">
+                    Profissional do Esporte
+                </option>
+
+                <option value="atleta">
+                    Atleta
+                </option>
+
+                <option value="outro">
+                    Outro
+                </option>
+
+            </select>
+
+        </div>
+
+
+
+        <!-- =====================================
+             INSTITUIÇÃO
+        ====================================== -->
+
+        <div class="inscricao-form-section">
+
+            <label for="instituicaoInscricao">
+                Instituição
+            </label>
+
+            <input
+                type="text"
+                id="instituicaoInscricao"
+                readonly
+            >
+
+            <small>
+                Informação vinculada ao seu cadastro.
+            </small>
+
+        </div>
+
+
+
+        <!-- =====================================
+             LOTE
+        ====================================== -->
+
+        <div class="inscricao-form-section">
+
+            <label for="lote">
+                Lote de inscrição
+            </label>
+
+            <select
+                id="lote"
+                required
+                disabled
+            >
+
+                <option value="">
+                    Selecione primeiro sua categoria
+                </option>
+
+            </select>
+
+            <small id="informacaoLote">
+                Selecione sua categoria para visualizar
+                os lotes disponíveis.
+            </small>
+
+        </div>
+
+
+
+        <!-- =====================================
+             CUPOM DE DESCONTO
+        ====================================== -->
+
+        <div class="inscricao-form-section">
+
+            <label for="cupom">
+                Cupom de desconto
+            </label>
+
+            <div class="cupom-area">
+
+                <input
+                    type="text"
+                    id="cupom"
+                    placeholder="Digite seu cupom"
+                    autocomplete="off"
+                >
+
+                <button
+                    type="button"
+                    id="btnAplicarCupom"
+                    class="btn btn-secondary"
+                >
+                    APLICAR
+                </button>
+
+            </div>
+
+            <small id="mensagemCupom">
+                Se você possui um cupom, digite-o acima.
+            </small>
+
+        </div>
+
+
+
+        <!-- =====================================
+             MINICURSOS
+        ====================================== -->
+
+        <div class="inscricao-form-section">
+
+            <label>
+                Minicursos
+            </label>
+
+            <p class="form-help">
+                Os minicursos serão divulgados
+                posteriormente.
             </p>
 
 
-            <form id="formInscricao">
+            <div class="minicursos-list">
 
 
-                <!-- =====================================
-                     CATEGORIA
-                ====================================== -->
-
-                <div class="inscricao-form-section">
-
-                    <label for="categoria">
-                        Categoria do participante
-                    </label>
-
-                    <select
-                        id="categoria"
-                        required
-                    >
-
-                        <option value="">
-                            Selecione sua categoria
-                        </option>
-
-                        <option value="estudante_fisioterapia">
-                            Estudante de Fisioterapia
-                        </option>
-
-                        <option value="fisioterapeuta">
-                            Fisioterapeuta
-                        </option>
-
-                        <option value="profissional_saude">
-                            Profissional da Saúde
-                        </option>
-
-                        <option value="profissional_esporte">
-                            Profissional do Esporte
-                        </option>
-
-                        <option value="atleta">
-                            Atleta
-                        </option>
-
-                        <option value="outro">
-                            Outro
-                        </option>
-
-                    </select>
-
-                </div>
-
-
-
-                <!-- =====================================
-                     INSTITUIÇÃO
-                ====================================== -->
-
-                <div class="inscricao-form-section">
-
-                    <label for="instituicaoInscricao">
-                        Instituição
-                    </label>
+                <label class="checkbox-option">
 
                     <input
-                        type="text"
-                        id="instituicaoInscricao"
-                        readonly
+                        type="checkbox"
+                        name="minicurso"
+                        value="minicurso_1"
+                        disabled
                     >
-
-                    <small>
-                        Informação vinculada ao seu cadastro.
-                    </small>
-
-                </div>
-
-
-
-                <!-- =====================================
-                     LOTE
-                ====================================== -->
-
-                <div class="inscricao-form-section">
-
-                    <label for="lote">
-                        Lote de inscrição
-                    </label>
-
-                    <select
-                        id="lote"
-                        required
-                    >
-
-                        <option value="">
-                            Selecione o lote
-                        </option>
-
-                        <option
-                            value="1"
-                            data-valor="0"
-                        >
-                            1º Lote
-                        </option>
-
-                        <option
-                            value="2"
-                            data-valor="0"
-                        >
-                            2º Lote
-                        </option>
-
-                        <option
-                            value="3"
-                            data-valor="0"
-                        >
-                            3º Lote
-                        </option>
-
-                    </select>
-
-                </div>
-
-
-
-                <!-- =====================================
-                     MINICURSOS
-                ====================================== -->
-
-                <div class="inscricao-form-section">
-
-                    <label>
-                        Minicursos
-                    </label>
-
-                    <p class="form-help">
-                        Os minicursos serão divulgados
-                        posteriormente.
-                    </p>
-
-
-                    <div class="minicursos-list">
-
-
-                        <label class="checkbox-option">
-
-                            <input
-                                type="checkbox"
-                                name="minicurso"
-                                value="minicurso_1"
-                                disabled
-                            >
-
-                            <span>
-                                Minicurso 1
-                            </span>
-
-                            <small>
-                                Em breve
-                            </small>
-
-                        </label>
-
-
-
-                        <label class="checkbox-option">
-
-                            <input
-                                type="checkbox"
-                                name="minicurso"
-                                value="minicurso_2"
-                                disabled
-                            >
-
-                            <span>
-                                Minicurso 2
-                            </span>
-
-                            <small>
-                                Em breve
-                            </small>
-
-                        </label>
-
-
-
-                        <label class="checkbox-option">
-
-                            <input
-                                type="checkbox"
-                                name="minicurso"
-                                value="minicurso_3"
-                                disabled
-                            >
-
-                            <span>
-                                Minicurso 3
-                            </span>
-
-                            <small>
-                                Em breve
-                            </small>
-
-                        </label>
-
-
-                    </div>
-
-                </div>
-
-
-
-                <!-- =====================================
-                     RESUMO
-                ====================================== -->
-
-                <div class="inscricao-resumo">
 
                     <span>
-                        Valor da inscrição
+                        Minicurso 1
                     </span>
 
-                    <strong id="valorInscricao">
-                        R$ 0,00
-                    </strong>
+                    <small>
+                        Em breve
+                    </small>
 
-                </div>
-
-
-
-                <!-- =====================================
-                     BOTÃO
-                ====================================== -->
-
-                <button
-                    type="submit"
-                    class="btn btn-primary btn-inscricao"
-                >
-                    CONTINUAR INSCRIÇÃO
-                </button>
+                </label>
 
 
-                <p
-                    id="mensagemInscricao"
-                    class="form-message"
-                ></p>
+
+                <label class="checkbox-option">
+
+                    <input
+                        type="checkbox"
+                        name="minicurso"
+                        value="minicurso_2"
+                        disabled
+                    >
+
+                    <span>
+                        Minicurso 2
+                    </span>
+
+                    <small>
+                        Em breve
+                    </small>
+
+                </label>
 
 
-            </form>
+
+                <label class="checkbox-option">
+
+                    <input
+                        type="checkbox"
+                        name="minicurso"
+                        value="minicurso_3"
+                        disabled
+                    >
+
+                    <span>
+                        Minicurso 3
+                    </span>
+
+                    <small>
+                        Em breve
+                    </small>
+
+                </label>
+
+
+            </div>
 
         </div>
+
+
+
+        <!-- =====================================
+             RESUMO FINANCEIRO
+        ====================================== -->
+
+        <div class="inscricao-resumo">
+
+
+            <div class="resumo-linha">
+
+                <span>
+                    Valor da inscrição
+                </span>
+
+                <strong id="valorOriginal">
+                    R$ 0,00
+                </strong>
+
+            </div>
+
+
+
+            <div
+                class="resumo-linha desconto"
+                id="linhaDesconto"
+                style="display: none;"
+            >
+
+                <span>
+                    Desconto
+                </span>
+
+                <strong id="valorDesconto">
+                    - R$ 0,00
+                </strong>
+
+            </div>
+
+
+
+            <div class="resumo-linha resumo-total">
+
+                <span>
+                    Total
+                </span>
+
+                <strong id="valorInscricao">
+                    R$ 0,00
+                </strong>
+
+            </div>
+
+
+        </div>
+
+
+
+        <!-- =====================================
+             BOTÃO
+        ====================================== -->
+
+        <button
+            type="submit"
+            class="btn btn-primary btn-inscricao"
+            disabled
+            id="btnContinuarInscricao"
+        >
+            CONTINUAR INSCRIÇÃO
+        </button>
+
+
+        <p
+            id="mensagemInscricao"
+            class="form-message"
+        ></p>
+
+
+    </form>
+
+</div>
 
 
 
