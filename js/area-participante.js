@@ -1329,7 +1329,38 @@ if (formularioInscricao) {
 
                 mensagemInscricao.textContent =
                     "Inscrição registrada com sucesso!";
+// =========================================
+// MOSTRAR PAGAMENTO
+// =========================================
 
+if (pagamentoInscricao) {
+
+    pagamentoInscricao.style.display = "block";
+
+    const valorPago =
+        cupomAplicado
+            ? (
+                LOTES[Number(lote.value)]
+                    .precos[categoria.value]
+                - cupomAplicado.desconto
+            )
+            : LOTES[Number(lote.value)]
+                .precos[categoria.value];
+
+    valorPix.textContent =
+        valorPago.toLocaleString("pt-BR", {
+            style: "currency",
+            currency: "BRL"
+        });
+
+    chavePix.textContent =
+        CHAVE_PIX;
+
+    statusPagamento.textContent =
+        "Aguardando pagamento";
+
+}
+                
 
                 console.log(
                     "Inscrição criada:",
