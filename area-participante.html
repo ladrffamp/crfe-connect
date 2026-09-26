@@ -389,10 +389,262 @@
                 Minha inscrição
             </h2>
 
-            <p>
-                Em breve você poderá realizar sua inscrição
-                no CRFE 2027 por esta área.
+            <p class="panel-description">
+                Preencha os dados abaixo para realizar
+                sua inscrição no CRFE 2027.
             </p>
+
+
+            <form id="formInscricao">
+
+
+                <!-- =====================================
+                     CATEGORIA
+                ====================================== -->
+
+                <div class="inscricao-form-section">
+
+                    <label for="categoria">
+                        Categoria do participante
+                    </label>
+
+                    <select
+                        id="categoria"
+                        required
+                    >
+
+                        <option value="">
+                            Selecione sua categoria
+                        </option>
+
+                        <option value="estudante_fisioterapia">
+                            Estudante de Fisioterapia
+                        </option>
+
+                        <option value="estudante_educacao_fisica">
+                            Estudante de Educação Física
+                        </option>
+
+                        <option value="fisioterapeuta">
+                            Fisioterapeuta
+                        </option>
+
+                        <option value="profissional_saude">
+                            Profissional da Saúde
+                        </option>
+
+                        <option value="profissional_esporte">
+                            Profissional do Esporte
+                        </option>
+
+                        <option value="atleta">
+                            Atleta
+                        </option>
+
+                        <option value="outro">
+                            Outro
+                        </option>
+
+                    </select>
+
+                </div>
+
+
+
+                <!-- =====================================
+                     INSTITUIÇÃO
+                ====================================== -->
+
+                <div class="inscricao-form-section">
+
+                    <label for="instituicaoInscricao">
+                        Instituição
+                    </label>
+
+                    <input
+                        type="text"
+                        id="instituicaoInscricao"
+                        readonly
+                    >
+
+                    <small>
+                        Informação vinculada ao seu cadastro.
+                    </small>
+
+                </div>
+
+
+
+                <!-- =====================================
+                     LOTE
+                ====================================== -->
+
+                <div class="inscricao-form-section">
+
+                    <label for="lote">
+                        Lote de inscrição
+                    </label>
+
+                    <select
+                        id="lote"
+                        required
+                    >
+
+                        <option value="">
+                            Selecione o lote
+                        </option>
+
+                        <option
+                            value="1"
+                            data-valor="0"
+                        >
+                            1º Lote
+                        </option>
+
+                        <option
+                            value="2"
+                            data-valor="0"
+                        >
+                            2º Lote
+                        </option>
+
+                        <option
+                            value="3"
+                            data-valor="0"
+                        >
+                            3º Lote
+                        </option>
+
+                    </select>
+
+                </div>
+
+
+
+                <!-- =====================================
+                     MINICURSOS
+                ====================================== -->
+
+                <div class="inscricao-form-section">
+
+                    <label>
+                        Minicursos
+                    </label>
+
+                    <p class="form-help">
+                        Os minicursos serão divulgados
+                        posteriormente.
+                    </p>
+
+
+                    <div class="minicursos-list">
+
+
+                        <label class="checkbox-option">
+
+                            <input
+                                type="checkbox"
+                                name="minicurso"
+                                value="minicurso_1"
+                                disabled
+                            >
+
+                            <span>
+                                Minicurso 1
+                            </span>
+
+                            <small>
+                                Em breve
+                            </small>
+
+                        </label>
+
+
+
+                        <label class="checkbox-option">
+
+                            <input
+                                type="checkbox"
+                                name="minicurso"
+                                value="minicurso_2"
+                                disabled
+                            >
+
+                            <span>
+                                Minicurso 2
+                            </span>
+
+                            <small>
+                                Em breve
+                            </small>
+
+                        </label>
+
+
+
+                        <label class="checkbox-option">
+
+                            <input
+                                type="checkbox"
+                                name="minicurso"
+                                value="minicurso_3"
+                                disabled
+                            >
+
+                            <span>
+                                Minicurso 3
+                            </span>
+
+                            <small>
+                                Em breve
+                            </small>
+
+                        </label>
+
+
+                    </div>
+
+                </div>
+
+
+
+                <!-- =====================================
+                     RESUMO
+                ====================================== -->
+
+                <div class="inscricao-resumo">
+
+                    <span>
+                        Valor da inscrição
+                    </span>
+
+                    <strong id="valorInscricao">
+                        R$ 0,00
+                    </strong>
+
+                </div>
+
+
+
+                <!-- =====================================
+                     BOTÃO
+                ====================================== -->
+
+                <button
+                    type="submit"
+                    class="btn btn-primary btn-inscricao"
+                >
+                    CONTINUAR INSCRIÇÃO
+                </button>
+
+
+                <p
+                    id="mensagemInscricao"
+                    class="form-message"
+                ></p>
+
+
+            </form>
 
         </div>
 
