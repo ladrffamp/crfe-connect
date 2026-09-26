@@ -973,3 +973,25 @@ footer p {
         grid-column: auto;
     }
 }
+
+/* =========================================
+   BOTÃO APLICAR CUPOM
+========================================= */
+
+#btnAplicarCupom {
+    background: #0B7A3B;
+    color: #ffffff;
+    border: 1px solid #0B7A3B;
+    font-weight: 700;
+    cursor: pointer;
+    transition: 0.2s ease;
+}
+
+#btnAplicarCupom:hover {
+    background: #096832;
+    border-color: #096832;
+}
+
+#btnAplicarCupom:active {
+    transform: scale(0.98);
+}
