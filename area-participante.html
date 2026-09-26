@@ -21,6 +21,7 @@
 
 </head>
 
+
 <body>
 
 
@@ -53,7 +54,9 @@
 
 <main>
 
-    <section class="section">
+
+    <section class="section participant-page">
+
 
         <span class="section-label">
             CRFE CONNECT
@@ -70,84 +73,405 @@
         </p>
 
 
-        <div class="cards">
+
+        <!-- =========================================
+             MENU DO PARTICIPANTE
+        ========================================== -->
+
+        <div class="participant-menu">
 
 
-            <div class="card">
+            <a
+                href="#perfil"
+                class="participant-menu-card active"
+            >
 
-                <span>
-                    INSCRIÇÃO
+                <span class="participant-menu-icon">
+                    👤
                 </span>
 
-                <h3>
-                    Minha inscrição
-                </h3>
+                <div>
 
-                <p>
-                    Em breve você poderá realizar
-                    e acompanhar sua inscrição
-                    no CRFE 2027.
-                </p>
+                    <strong>
+                        Meu Perfil
+                    </strong>
+
+                    <span>
+                        Seus dados pessoais
+                    </span>
+
+                </div>
+
+            </a>
+
+
+
+            <a
+                href="#inscricao"
+                class="participant-menu-card"
+            >
+
+                <span class="participant-menu-icon">
+                    🎟️
+                </span>
+
+                <div>
+
+                    <strong>
+                        Minha Inscrição
+                    </strong>
+
+                    <span>
+                        Inscrição no CRFE 2027
+                    </span>
+
+                </div>
+
+            </a>
+
+
+
+            <a
+                href="#programacao"
+                class="participant-menu-card"
+            >
+
+                <span class="participant-menu-icon">
+                    📅
+                </span>
+
+                <div>
+
+                    <strong>
+                        Minha Programação
+                    </strong>
+
+                    <span>
+                        Palestras e minicursos
+                    </span>
+
+                </div>
+
+            </a>
+
+
+
+            <a
+                href="#credencial"
+                class="participant-menu-card"
+            >
+
+                <span class="participant-menu-icon">
+                    📱
+                </span>
+
+                <div>
+
+                    <strong>
+                        Minha Credencial
+                    </strong>
+
+                    <span>
+                        QR Code e acesso
+                    </span>
+
+                </div>
+
+            </a>
+
+
+
+            <a
+                href="#certificado"
+                class="participant-menu-card"
+            >
+
+                <span class="participant-menu-icon">
+                    📄
+                </span>
+
+                <div>
+
+                    <strong>
+                        Meu Certificado
+                    </strong>
+
+                    <span>
+                        Certificado do congresso
+                    </span>
+
+                </div>
+
+            </a>
+
+
+        </div>
+
+
+
+        <!-- =========================================
+             PERFIL
+        ========================================== -->
+
+        <div
+            id="perfil"
+            class="participant-panel"
+        >
+
+
+            <div class="participant-panel-header">
+
+                <div>
+
+                    <span class="section-label">
+                        MEU PERFIL
+                    </span>
+
+                    <h2>
+                        Dados do participante
+                    </h2>
+
+                </div>
 
             </div>
 
 
 
-            <div class="card">
+            <div class="profile-grid">
 
-                <span>
-                    PROGRAMAÇÃO
-                </span>
 
-                <h3>
-                    Minha programação
-                </h3>
+                <div class="profile-item">
 
-                <p>
-                    Consulte palestras,
-                    mesas-redondas e minicursos.
-                </p>
+                    <span>
+                        Nome completo
+                    </span>
+
+                    <strong id="perfilNome">
+                        Carregando...
+                    </strong>
+
+                </div>
+
+
+
+                <div class="profile-item">
+
+                    <span>
+                        E-mail
+                    </span>
+
+                    <strong id="perfilEmail">
+                        Carregando...
+                    </strong>
+
+                </div>
+
+
+
+                <div class="profile-item">
+
+                    <span>
+                        CPF
+                    </span>
+
+                    <strong id="perfilCpf">
+                        Carregando...
+                    </strong>
+
+                </div>
+
+
+
+                <div class="profile-item">
+
+                    <span>
+                        Data de nascimento
+                    </span>
+
+                    <strong id="perfilNascimento">
+                        Carregando...
+                    </strong>
+
+                </div>
+
+
+
+                <div class="profile-item">
+
+                    <span>
+                        Telefone / WhatsApp
+                    </span>
+
+                    <strong id="perfilTelefone">
+                        Carregando...
+                    </strong>
+
+                </div>
+
+
+
+                <div class="profile-item">
+
+                    <span>
+                        Cidade
+                    </span>
+
+                    <strong id="perfilCidade">
+                        Carregando...
+                    </strong>
+
+                </div>
+
+
+
+                <div class="profile-item">
+
+                    <span>
+                        Estado
+                    </span>
+
+                    <strong id="perfilEstado">
+                        Carregando...
+                    </strong>
+
+                </div>
+
+
+
+                <div class="profile-item">
+
+                    <span>
+                        Instituição
+                    </span>
+
+                    <strong id="perfilInstituicao">
+                        Carregando...
+                    </strong>
+
+                </div>
+
+
+
+                <div class="profile-item">
+
+                    <span>
+                        Curso / Profissão
+                    </span>
+
+                    <strong id="perfilCurso">
+                        Carregando...
+                    </strong>
+
+                </div>
+
 
             </div>
 
 
-
-            <div class="card">
-
-                <span>
-                    CREDENCIAL
-                </span>
-
-                <h3>
-                    Meu acesso
-                </h3>
-
-                <p>
-                    Seu QR Code e credencial
-                    estarão disponíveis aqui.
-                </p>
-
-            </div>
+        </div>
 
 
 
-            <div class="card">
+        <!-- =========================================
+             INSCRIÇÃO
+        ========================================== -->
 
-                <span>
-                    CERTIFICADO
-                </span>
+        <div
+            id="inscricao"
+            class="participant-panel"
+        >
 
-                <h3>
-                    Meu certificado
-                </h3>
+            <span class="section-label">
+                INSCRIÇÃO
+            </span>
 
-                <p>
-                    Após o evento, seu certificado
-                    poderá ser disponibilizado aqui.
-                </p>
+            <h2>
+                Minha inscrição
+            </h2>
 
-            </div>
+            <p>
+                Em breve você poderá realizar sua inscrição
+                no CRFE 2027 por esta área.
+            </p>
 
+        </div>
+
+
+
+        <!-- =========================================
+             PROGRAMAÇÃO
+        ========================================== -->
+
+        <div
+            id="programacao"
+            class="participant-panel"
+        >
+
+            <span class="section-label">
+                PROGRAMAÇÃO
+            </span>
+
+            <h2>
+                Minha programação
+            </h2>
+
+            <p>
+                Sua programação personalizada ficará
+                disponível aqui.
+            </p>
+
+        </div>
+
+
+
+        <!-- =========================================
+             CREDENCIAL
+        ========================================== -->
+
+        <div
+            id="credencial"
+            class="participant-panel"
+        >
+
+            <span class="section-label">
+                CREDENCIAL
+            </span>
+
+            <h2>
+                Minha credencial
+            </h2>
+
+            <p>
+                Seu QR Code de acesso ao CRFE 2027
+                aparecerá aqui após a inscrição.
+            </p>
+
+        </div>
+
+
+
+        <!-- =========================================
+             CERTIFICADO
+        ========================================== -->
+
+        <div
+            id="certificado"
+            class="participant-panel"
+        >
+
+            <span class="section-label">
+                CERTIFICADO
+            </span>
+
+            <h2>
+                Meu certificado
+            </h2>
+
+            <p>
+                Após a participação no congresso,
+                seu certificado poderá ser disponibilizado
+                nesta área.
+            </p>
 
         </div>
 
@@ -160,7 +484,7 @@
 
 <script
     type="module"
-    src="js/area-participante.js"
+    src="js/area-participante.js?v=3"
 ></script>
 
 
