@@ -14,6 +14,10 @@ import {
 } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
 
 
+// =====================================================
+// ELEMENTOS DA PÁGINA
+// =====================================================
+
 const saudacao =
     document.getElementById("saudacao");
 
@@ -21,73 +25,217 @@ const btnSair =
     document.getElementById("btnSair");
 
 
+// PERFIL
 
-onAuthStateChanged(auth, async (usuario) => {
+const perfilNome =
+    document.getElementById("perfilNome");
 
-    if (!usuario) {
+const perfilEmail =
+    document.getElementById("perfilEmail");
 
-        window.location.href =
-            "/crfe-connect/login.html";
+const perfilCpf =
+    document.getElementById("perfilCpf");
 
-        return;
+const perfilNascimento =
+    document.getElementById("perfilNascimento");
 
-    }
+const perfilTelefone =
+    document.getElementById("perfilTelefone");
 
+const perfilCidade =
+    document.getElementById("perfilCidade");
 
-    // Mostra imediatamente que o usuário está autenticado
+const perfilEstado =
+    document.getElementById("perfilEstado");
 
-    saudacao.textContent =
-        `Olá! Seja bem-vindo(a) ao CRFE 2027.`;
+const perfilInstituicao =
+    document.getElementById("perfilInstituicao");
 
-
-
-    try {
-
-        const referencia =
-            doc(
-                db,
-                "usuarios",
-                usuario.uid
-            );
-
-
-        const resultado =
-            await getDoc(referencia);
+const perfilCurso =
+    document.getElementById("perfilCurso");
 
 
-        if (resultado.exists()) {
+// =====================================================
+// VERIFICAR LOGIN
+// =====================================================
 
-            const dados =
-                resultado.data();
+onAuthStateChanged(
+    auth,
+    async (usuario) => {
 
+        // ==============================================
+        // USUÁRIO NÃO ESTÁ LOGADO
+        // ==============================================
 
-            const nome =
-                dados.nome || "participante";
+        if (!usuario) {
 
+            window.location.href =
+                "/crfe-connect/login.html";
 
-            saudacao.textContent =
-                `Olá, ${nome}! Seja bem-vindo(a) ao CRFE 2027.`;
+            return;
 
         }
 
-    } catch (erro) {
 
-        console.error(
-            "Erro ao carregar dados do participante:",
-            erro
-        );
+        // ==============================================
+        // BUSCAR DADOS DO FIRESTORE
+        // ==============================================
 
-        // Mantém a área funcionando mesmo
-        // se houver problema momentâneo no Firestore.
+        try {
 
-        saudacao.textContent =
-            `Olá! Seja bem-vindo(a) ao CRFE 2027.`;
+            const referencia =
+                doc(
+                    db,
+                    "usuarios",
+                    usuario.uid
+                );
+
+
+            const resultado =
+                await getDoc(
+                    referencia
+                );
+
+
+            // ==========================================
+            // DOCUMENTO ENCONTRADO
+            // ==========================================
+
+            if (resultado.exists()) {
+
+                const dados =
+                    resultado.data();
+
+
+                // ========================================
+                // NOME
+                // ========================================
+
+                const nome =
+                    dados.nome ||
+                    "Participante";
+
+
+                saudacao.textContent =
+                    `Olá, ${nome}! Seja bem-vindo(a) ao CRFE 2027.`;
+
+
+                // ========================================
+                // PREENCHER PERFIL
+                // ========================================
+
+                perfilNome.textContent =
+                    dados.nome ||
+                    "Não informado";
+
+
+                perfilEmail.textContent =
+                    dados.email ||
+                    usuario.email ||
+                    "Não informado";
+
+
+                perfilCpf.textContent =
+                    dados.cpf ||
+                    "Não informado";
+
+
+                perfilNascimento.textContent =
+                    formatarData(
+                        dados.nascimento
+                    );
+
+
+                perfilTelefone.textContent =
+                    dados.telefone ||
+                    "Não informado";
+
+
+                perfilCidade.textContent =
+                    dados.cidade ||
+                    "Não informado";
+
+
+                perfilEstado.textContent =
+                    dados.estado ||
+                    "Não informado";
+
+
+                perfilInstituicao.textContent =
+                    dados.instituicao ||
+                    "Não informado";
+
+
+                perfilCurso.textContent =
+                    dados.cursoProfissao ||
+                    "Não informado";
+
+            }
+
+            else {
+
+                saudacao.textContent =
+                    "Olá! Seja bem-vindo(a) ao CRFE 2027.";
+
+            }
+
+        }
+
+        catch (erro) {
+
+            console.error(
+                "Erro ao carregar dados:",
+                erro
+            );
+
+
+            saudacao.textContent =
+                "Olá! Seja bem-vindo(a) ao CRFE 2027.";
+
+        }
+
+    }
+);
+
+
+// =====================================================
+// FORMATAR DATA
+// =====================================================
+
+function formatarData(data) {
+
+    if (!data) {
+
+        return "Não informado";
 
     }
 
-});
+
+    const partes =
+        data.split("-");
 
 
+    if (partes.length !== 3) {
+
+        return data;
+
+    }
+
+
+    return (
+        partes[2] +
+        "/" +
+        partes[1] +
+        "/" +
+        partes[0]
+    );
+
+}
+
+
+// =====================================================
+// SAIR
+// =====================================================
 
 btnSair.addEventListener(
     "click",
@@ -104,8 +252,9 @@ btnSair.addEventListener(
             window.location.href =
                 "/crfe-connect/login.html";
 
+        }
 
-        } catch (erro) {
+        catch (erro) {
 
             console.error(
                 "Erro ao sair:",
