@@ -11,12 +11,12 @@ import {
 import {
     doc,
     getDoc,
-    setDoc,
     serverTimestamp,
     collection,
     getDocs,
     runTransaction
 } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+
 
 // =====================================================
 // ELEMENTOS
@@ -110,6 +110,7 @@ let dadosParticipante = null;
 // =====================================================
 
 const LOTES = {
+
     1: {
         nome: "1º Lote",
         vagas: 50,
@@ -148,7 +149,10 @@ const LOTES = {
             outro: 180
         }
     }
+
 };
+
+
 // =====================================================
 // CUPOM ATUAL
 // =====================================================
@@ -199,17 +203,9 @@ onAuthStateChanged(
                 dadosParticipante;
 
 
-            // -----------------------------
-            // SAUDAÇÃO
-            // -----------------------------
-
             saudacao.textContent =
                 `Olá, ${dados.nome || "Participante"}! Seja bem-vindo(a) ao CRFE 2027.`;
 
-
-            // -----------------------------
-            // PERFIL
-            // -----------------------------
 
             perfilNome.textContent =
                 dados.nome ||
@@ -250,17 +246,13 @@ onAuthStateChanged(
                 "Não informado";
 
 
-            // -----------------------------
-            // INSTITUIÇÃO NA INSCRIÇÃO
-            // -----------------------------
-
             if (instituicaoInscricao) {
 
                 instituicaoInscricao.value =
                     dados.instituicao ||
                     "";
-            }
 
+            }
 
         } catch (erro) {
 
@@ -271,6 +263,7 @@ onAuthStateChanged(
 
             saudacao.textContent =
                 "Olá! Seja bem-vindo(a) ao CRFE 2027.";
+
         }
 
     }
@@ -309,16 +302,13 @@ if (categoria) {
 // ATUALIZAR LOTES
 // =====================================================
 
-// =====================================================
-// ATUALIZAR LOTES
-// =====================================================
-
 async function atualizarLotes() {
 
     const categoriaSelecionada =
         categoria.value;
 
     lote.innerHTML = "";
+
 
     if (!categoriaSelecionada) {
 
@@ -337,6 +327,7 @@ async function atualizarLotes() {
         return;
     }
 
+
     lote.disabled = true;
 
     lote.innerHTML = `
@@ -344,6 +335,7 @@ async function atualizarLotes() {
             Carregando lotes...
         </option>
     `;
+
 
     try {
 
@@ -358,13 +350,16 @@ async function atualizarLotes() {
                 referenciaLotes
             );
 
+
         lote.innerHTML = `
             <option value="">
                 Selecione o lote
             </option>
         `;
 
+
         let lotesDisponiveis = 0;
+
 
         resultadoLotes.forEach(
             (documento) => {
@@ -378,27 +373,33 @@ async function atualizarLotes() {
                 const dadosLote =
                     LOTES[numero];
 
+
                 if (!dadosLote) {
                     return;
                 }
+
 
                 const limite =
                     Number(
                         dadosFirestore.limite || 0
                     );
 
+
                 const inscritos =
                     Number(
                         dadosFirestore.inscritos || 0
                     );
 
+
                 const ativo =
                     dadosFirestore.ativo !== false;
+
 
                 const preco =
                     dadosLote.precos[
                         categoriaSelecionada
                     ];
+
 
                 if (
                     !ativo ||
@@ -408,17 +409,22 @@ async function atualizarLotes() {
                     return;
                 }
 
+
                 const opcao =
                     document.createElement("option");
+
 
                 opcao.value =
                     numero;
 
+
                 opcao.dataset.valor =
                     preco;
 
+
                 opcao.textContent =
                     `${dadosLote.nome} - ${formatarMoeda(preco)}`;
+
 
                 lote.appendChild(opcao);
 
@@ -427,8 +433,10 @@ async function atualizarLotes() {
             }
         );
 
+
         lote.disabled =
             lotesDisponiveis === 0;
+
 
         if (lotesDisponiveis === 0) {
 
@@ -448,7 +456,9 @@ async function atualizarLotes() {
 
         }
 
+
         limparValores();
+
 
     } catch (erro) {
 
@@ -469,8 +479,12 @@ async function atualizarLotes() {
             "Não foi possível carregar os lotes.";
 
         limparValores();
+
     }
+
 }
+
+
 // =====================================================
 // MUDANÇA DE LOTE
 // =====================================================
@@ -487,7 +501,13 @@ if (lote) {
                 mensagemCupom.textContent = "";
             }
 
+            if (cupom) {
+                cupom.value = "";
+            }
+
             atualizarValor();
+
+            verificarBotaoInscricao();
 
         }
     );
@@ -540,7 +560,7 @@ function atualizarValor() {
 
 
     informacaoLote.textContent =
-    `Valor referente ao ${dadosLote.nome}.`;
+        `Valor referente ao ${dadosLote.nome}.`;
 
 }
 
@@ -563,11 +583,14 @@ function limparValores() {
     linhaDesconto.style.display =
         "none";
 
+
     if (btnContinuarInscricao) {
 
         btnContinuarInscricao.disabled =
             true;
+
     }
+
 }
 
 
@@ -600,8 +623,10 @@ if (btnAplicarCupom) {
                 lote.value;
 
 
-            if (!categoria.value ||
-                !numeroLote) {
+            if (
+                !categoria.value ||
+                !numeroLote
+            ) {
 
                 mensagemCupom.textContent =
                     "Selecione sua categoria e seu lote primeiro.";
@@ -625,7 +650,9 @@ if (btnAplicarCupom) {
 
 
                 const resultado =
-                    await getDoc(referencia);
+                    await getDoc(
+                        referencia
+                    );
 
 
                 if (!resultado.exists()) {
@@ -645,8 +672,12 @@ if (btnAplicarCupom) {
                     resultado.data();
 
 
+                // =====================================
+                // VERIFICAR CUPOM ATIVO
+                // =====================================
+
                 if (
-                    dadosCupom.active === false
+                    dadosCupom.ativo !== true
                 ) {
 
                     cupomAplicado = null;
@@ -660,10 +691,15 @@ if (btnAplicarCupom) {
                 }
 
 
+                // =====================================
+                // VERIFICAR LIMITE DO CUPOM
+                // =====================================
+
                 if (
-                    dadosCupom.limit !== undefined &&
-                    dadosCupom.used !== undefined &&
-                    dadosCupom.used >= dadosCupom.limit
+                    dadosCupom.usados !== undefined &&
+                    dadosCupom.limite !== undefined &&
+                    Number(dadosCupom.usados) >=
+                    Number(dadosCupom.limite)
                 ) {
 
                     cupomAplicado = null;
@@ -679,22 +715,28 @@ if (btnAplicarCupom) {
 
                 const preco =
                     LOTES[numeroLote]
-                        .precos[categoria.value];
+                        .precos[
+                            categoria.value
+                        ];
 
 
                 let desconto = 0;
 
 
+                // =====================================
+                // CALCULAR DESCONTO
+                // =====================================
+
                 if (
-    dadosCupom.tipo ===
-    "percentual"
-)
+                    dadosCupom.tipo ===
+                    "percentual"
+                ) {
 
                     desconto =
                         preco *
                         (
                             Number(
-                                dadosCupom.value
+                                dadosCupom.valor
                             ) / 100
                         );
 
@@ -702,19 +744,27 @@ if (btnAplicarCupom) {
 
                     desconto =
                         Number(
-                            dadosCupom.value
+                            dadosCupom.valor
                         );
+
                 }
 
 
                 if (desconto > preco) {
-                    desconto = preco;
+
+                    desconto =
+                        preco;
+
                 }
 
 
                 const total =
                     preco - desconto;
 
+
+                // =====================================
+                // GUARDAR CUPOM APLICADO
+                // =====================================
 
                 cupomAplicado = {
 
@@ -725,11 +775,11 @@ if (btnAplicarCupom) {
                         desconto,
 
                     tipo:
-                        dadosCupom.type,
+                        dadosCupom.tipo,
 
                     valor:
                         Number(
-                            dadosCupom.value
+                            dadosCupom.valor
                         )
 
                 };
@@ -768,6 +818,7 @@ if (btnAplicarCupom) {
 
                 mensagemCupom.textContent =
                     "Não foi possível verificar o cupom.";
+
             }
 
         }
@@ -790,19 +841,7 @@ if (categoria) {
 
         }
     );
-}
 
-
-if (lote) {
-
-    lote.addEventListener(
-        "change",
-        () => {
-
-            verificarBotaoInscricao();
-
-        }
-    );
 }
 
 
@@ -825,7 +864,9 @@ function verificarBotaoInscricao() {
 
         btnContinuarInscricao.disabled =
             true;
+
     }
+
 }
 
 
@@ -846,44 +887,46 @@ if (formularioInscricao) {
                 auth.currentUser;
 
 
-            if (
-    dadosCupom.ativo !== true
-) {
+            if (!usuario) {
 
-    cupomAplicado = null;
+                mensagemInscricao.textContent =
+                    "Sua sessão expirou. Faça login novamente.";
 
-    mensagemCupom.textContent =
-        "Este cupom está inativo.";
-
-    atualizarValor();
-
-    return;
-}
+                return;
+            }
 
 
-if (
-    dadosCupom.usados !== undefined &&
-    dadosCupom.limite !== undefined &&
-    Number(dadosCupom.usados) >=
-    Number(dadosCupom.limite)
-) {
+            const categoriaSelecionada =
+                categoria.value;
 
-    cupomAplicado = null;
 
-    mensagemCupom.textContent =
-        "Este cupom atingiu o limite de utilizações.";
+            const loteSelecionado =
+                lote.value;
 
-    atualizarValor();
 
-    return;
-}
+            if (!categoriaSelecionada) {
+
+                mensagemInscricao.textContent =
+                    "Selecione sua categoria.";
+
+                return;
+            }
+
+
+            if (!loteSelecionado) {
+
+                mensagemInscricao.textContent =
+                    "Selecione o lote de inscrição.";
+
                 return;
             }
 
 
             const preco =
                 LOTES[loteSelecionado]
-                    .precos[categoriaSelecionada];
+                    .precos[
+                        categoriaSelecionada
+                    ];
 
 
             let desconto =
@@ -894,6 +937,7 @@ if (
 
                 desconto =
                     cupomAplicado.desconto;
+
             }
 
 
@@ -913,267 +957,409 @@ if (
 
             try {
 
-    btnContinuarInscricao.disabled =
-        true;
-
-    mensagemInscricao.textContent =
-        "Verificando disponibilidade do lote...";
-
-    const inscricaoId =
-        usuario.uid;
-
-    const referenciaLote =
-        doc(
-            db,
-            "lotes",
-            loteSelecionado
-        );
-
-    const referenciaInscricao =
-        doc(
-            db,
-            "inscricoes",
-            inscricaoId
-        );
+                btnContinuarInscricao.disabled =
+                    true;
 
 
-    await runTransaction(
-        db,
-        async (transacao) => {
+                mensagemInscricao.textContent =
+                    "Verificando disponibilidade do lote...";
 
-            // =========================================
-            // LER LOTE
-            // =========================================
 
-            const loteSnapshot =
-                await transacao.get(
-                    referenciaLote
+                const inscricaoId =
+                    usuario.uid;
+
+
+                const referenciaLote =
+                    doc(
+                        db,
+                        "lotes",
+                        loteSelecionado
+                    );
+
+
+                const referenciaInscricao =
+                    doc(
+                        db,
+                        "inscricoes",
+                        inscricaoId
+                    );
+
+
+                // =====================================
+                // REFERÊNCIA DO CUPOM
+                // =====================================
+
+                let referenciaCupom = null;
+
+
+                if (
+                    cupomAplicado?.codigo
+                ) {
+
+                    referenciaCupom =
+                        doc(
+                            db,
+                            "cupons",
+                            cupomAplicado.codigo
+                        );
+
+                }
+
+
+                // =====================================
+                // TRANSAÇÃO
+                // =====================================
+
+                await runTransaction(
+                    db,
+                    async (transacao) => {
+
+                        // ---------------------------------
+                        // LER LOTE
+                        // ---------------------------------
+
+                        const loteSnapshot =
+                            await transacao.get(
+                                referenciaLote
+                            );
+
+
+                        if (
+                            !loteSnapshot.exists()
+                        ) {
+
+                            throw new Error(
+                                "LOTE_NAO_ENCONTRADO"
+                            );
+
+                        }
+
+
+                        const dadosLoteFirestore =
+                            loteSnapshot.data();
+
+
+                        const limite =
+                            Number(
+                                dadosLoteFirestore.limite || 0
+                            );
+
+
+                        const inscritos =
+                            Number(
+                                dadosLoteFirestore.inscritos || 0
+                            );
+
+
+                        const ativo =
+                            dadosLoteFirestore.ativo !== false;
+
+
+                        // ---------------------------------
+                        // VERIFICAR LOTE
+                        // ---------------------------------
+
+                        if (!ativo) {
+
+                            throw new Error(
+                                "LOTE_INATIVO"
+                            );
+
+                        }
+
+
+                        if (
+                            inscritos >=
+                            limite
+                        ) {
+
+                            throw new Error(
+                                "LOTE_ESGOTADO"
+                            );
+
+                        }
+
+
+                        // ---------------------------------
+                        // VERIFICAR INSCRIÇÃO
+                        // ---------------------------------
+
+                        const inscricaoExistente =
+                            await transacao.get(
+                                referenciaInscricao
+                            );
+
+
+                        if (
+                            inscricaoExistente.exists()
+                        ) {
+
+                            throw new Error(
+                                "INSCRICAO_EXISTENTE"
+                            );
+
+                        }
+
+
+                        // ---------------------------------
+                        // VERIFICAR E CONSUMIR CUPOM
+                        // ---------------------------------
+
+                        if (referenciaCupom) {
+
+                            const cupomSnapshot =
+                                await transacao.get(
+                                    referenciaCupom
+                                );
+
+
+                            if (
+                                !cupomSnapshot.exists()
+                            ) {
+
+                                throw new Error(
+                                    "CUPOM_NAO_ENCONTRADO"
+                                );
+
+                            }
+
+
+                            const dadosCupomFirestore =
+                                cupomSnapshot.data();
+
+
+                            const cupomAtivo =
+                                dadosCupomFirestore.ativo === true;
+
+
+                            const limiteCupom =
+                                Number(
+                                    dadosCupomFirestore.limite || 0
+                                );
+
+
+                            const usadosCupom =
+                                Number(
+                                    dadosCupomFirestore.usados || 0
+                                );
+
+
+                            if (!cupomAtivo) {
+
+                                throw new Error(
+                                    "CUPOM_INATIVO"
+                                );
+
+                            }
+
+
+                            if (
+                                usadosCupom >=
+                                limiteCupom
+                            ) {
+
+                                throw new Error(
+                                    "CUPOM_ESGOTADO"
+                                );
+
+                            }
+
+
+                            transacao.update(
+                                referenciaCupom,
+                                {
+                                    usados:
+                                        usadosCupom + 1
+                                }
+                            );
+
+                        }
+
+
+                        // ---------------------------------
+                        // CRIAR INSCRIÇÃO
+                        // ---------------------------------
+
+                        transacao.set(
+                            referenciaInscricao,
+                            {
+
+                                uid:
+                                    usuario.uid,
+
+                                nome:
+                                    dadosParticipante?.nome ||
+                                    "",
+
+                                email:
+                                    dadosParticipante?.email ||
+                                    usuario.email ||
+                                    "",
+
+                                cpf:
+                                    dadosParticipante?.cpf ||
+                                    "",
+
+                                categoria:
+                                    categoriaSelecionada,
+
+                                instituicao:
+                                    dadosParticipante?.instituicao ||
+                                    "",
+
+                                lote:
+                                    Number(
+                                        loteSelecionado
+                                    ),
+
+                                loteNome:
+                                    LOTES[
+                                        loteSelecionado
+                                    ].nome,
+
+                                valorOriginal:
+                                    preco,
+
+                                desconto:
+                                    desconto,
+
+                                valorFinal:
+                                    total,
+
+                                cupom:
+                                    cupomAplicado?.codigo ||
+                                    null,
+
+                                minicursos:
+                                    minicursos,
+
+                                status:
+                                    "aguardando_pagamento",
+
+                                pagamento:
+                                    "pendente",
+
+                                criadoEm:
+                                    serverTimestamp()
+
+                            }
+                        );
+
+
+                        // ---------------------------------
+                        // AUMENTAR INSCRITOS
+                        // ---------------------------------
+
+                        transacao.update(
+                            referenciaLote,
+                            {
+                                inscritos:
+                                    inscritos + 1
+                            }
+                        );
+
+                    }
                 );
 
 
-            if (!loteSnapshot.exists()) {
-
-                throw new Error(
-                    "LOTE_NAO_ENCONTRADO"
-                );
-            }
+                mensagemInscricao.textContent =
+                    "Inscrição registrada com sucesso!";
 
 
-            const dadosLoteFirestore =
-                loteSnapshot.data();
-
-
-            const limite =
-                Number(
-                    dadosLoteFirestore.limite || 0
+                console.log(
+                    "Inscrição criada:",
+                    inscricaoId
                 );
 
 
-            const inscritos =
-                Number(
-                    dadosLoteFirestore.inscritos || 0
+            } catch (erro) {
+
+                console.error(
+                    "Erro ao salvar inscrição:",
+                    erro
                 );
 
 
-            const ativo =
-                dadosLoteFirestore.ativo !== false;
-
-
-            // =========================================
-            // VERIFICAR DISPONIBILIDADE
-            // =========================================
-
-            if (!ativo) {
-
-                throw new Error(
-                    "LOTE_INATIVO"
-                );
-            }
-
-
-            if (inscritos >= limite) {
-
-                throw new Error(
+                if (
+                    erro.message ===
                     "LOTE_ESGOTADO"
-                );
-            }
+                ) {
+
+                    mensagemInscricao.textContent =
+                        "Este lote acabou de atingir o limite de vagas. Escolha outro lote.";
+
+                    await atualizarLotes();
 
 
-            // =========================================
-            // VERIFICAR INSCRIÇÃO EXISTENTE
-            // =========================================
+                } else if (
+                    erro.message ===
+                    "LOTE_INATIVO"
+                ) {
 
-            const inscricaoExistente =
-                await transacao.get(
-                    referenciaInscricao
-                );
+                    mensagemInscricao.textContent =
+                        "Este lote não está disponível.";
+
+                    await atualizarLotes();
 
 
-            if (inscricaoExistente.exists()) {
+                } else if (
+                    erro.message ===
+                    "LOTE_NAO_ENCONTRADO"
+                ) {
 
-                throw new Error(
+                    mensagemInscricao.textContent =
+                        "Não foi possível localizar este lote.";
+
+                    await atualizarLotes();
+
+
+                } else if (
+                    erro.message ===
                     "INSCRICAO_EXISTENTE"
-                );
-            }
+                ) {
+
+                    mensagemInscricao.textContent =
+                        "Você já possui uma inscrição no CRFE 2027.";
 
 
-            // =========================================
-            // CRIAR INSCRIÇÃO
-            // =========================================
+                } else if (
+                    erro.message ===
+                    "CUPOM_NAO_ENCONTRADO"
+                ) {
 
-            transacao.set(
-                referenciaInscricao,
-                {
+                    mensagemInscricao.textContent =
+                        "O cupom informado não foi encontrado.";
 
-                    uid:
-                        usuario.uid,
 
-                    nome:
-                        dadosParticipante?.nome ||
-                        "",
+                } else if (
+                    erro.message ===
+                    "CUPOM_INATIVO"
+                ) {
 
-                    email:
-                        dadosParticipante?.email ||
-                        usuario.email ||
-                        "",
+                    mensagemInscricao.textContent =
+                        "Este cupom não está mais disponível.";
 
-                    cpf:
-                        dadosParticipante?.cpf ||
-                        "",
 
-                    categoria:
-                        categoriaSelecionada,
+                } else if (
+                    erro.message ===
+                    "CUPOM_ESGOTADO"
+                ) {
 
-                    instituicao:
-                        dadosParticipante?.instituicao ||
-                        "",
+                    mensagemInscricao.textContent =
+                        "Este cupom atingiu o limite de utilizações.";
 
-                    lote:
-                        Number(
-                            loteSelecionado
-                        ),
 
-                    loteNome:
-                        LOTES[
-                            loteSelecionado
-                        ].nome,
+                } else {
 
-                    valorOriginal:
-                        preco,
-
-                    desconto:
-                        desconto,
-
-                    valorFinal:
-                        total,
-
-                    cupom:
-                        cupomAplicado?.codigo ||
-                        null,
-
-                    minicursos:
-                        minicursos,
-
-                    status:
-                        "aguardando_pagamento",
-
-                    pagamento:
-                        "pendente",
-
-                    criadoEm:
-                        serverTimestamp()
+                    mensagemInscricao.textContent =
+                        "Não foi possível registrar sua inscrição.";
 
                 }
-            );
 
 
-            // =========================================
-            // AUMENTAR INSCRITOS
-            // =========================================
+                btnContinuarInscricao.disabled =
+                    false;
 
-            transacao.update(
-                referenciaLote,
-                {
-                    inscritos:
-                        inscritos + 1
-                }
-            );
-
-        }
-    );
-
-
-    mensagemInscricao.textContent =
-        "Inscrição registrada com sucesso!";
-
-
-    console.log(
-        "Inscrição criada:",
-        inscricaoId
-    );
-
-
-} catch (erro) {
-
-    console.error(
-        "Erro ao salvar inscrição:",
-        erro
-    );
-
-
-    if (
-        erro.message ===
-        "LOTE_ESGOTADO"
-    ) {
-
-        mensagemInscricao.textContent =
-            "Este lote acabou de atingir o limite de vagas. Escolha outro lote.";
-
-        await atualizarLotes();
-
-
-    } else if (
-        erro.message ===
-        "LOTE_INATIVO"
-    ) {
-
-        mensagemInscricao.textContent =
-            "Este lote não está disponível.";
-
-        await atualizarLotes();
-
-
-    } else if (
-        erro.message ===
-        "LOTE_NAO_ENCONTRADO"
-    ) {
-
-        mensagemInscricao.textContent =
-            "Não foi possível localizar este lote.";
-
-        await atualizarLotes();
-
-
-    } else if (
-        erro.message ===
-        "INSCRICAO_EXISTENTE"
-    ) {
-
-        mensagemInscricao.textContent =
-            "Você já possui uma inscrição no CRFE 2027.";
-
-
-    } else {
-
-        mensagemInscricao.textContent =
-            "Não foi possível registrar sua inscrição.";
-
-    }
-
-
-    btnContinuarInscricao.disabled =
-        false;
-}
             }
 
         }
@@ -1233,6 +1419,7 @@ function formatarMoeda(valor) {
                 currency: "BRL"
             }
         );
+
 }
 
 
@@ -1247,8 +1434,12 @@ function formatarData(data) {
         data.split("-");
 
 
-    if (partes.length !== 3) {
+    if (
+        partes.length !== 3
+    ) {
+
         return data;
+
     }
 
 
@@ -1259,4 +1450,5 @@ function formatarData(data) {
         "/" +
         partes[0]
     );
+
 }
