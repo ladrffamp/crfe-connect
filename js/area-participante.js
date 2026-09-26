@@ -114,12 +114,12 @@ const LOTES = {
         vagas: 50,
 
         precos: {
-            "Estudante de Fisioterapia": 80,
-            "Fisioterapeuta": 150,
-            "Profissional da Saúde": 130,
-            "Profissional do Esporte": 130,
-            "Atleta": 100,
-            "Outro": 120
+            estudante_fisioterapia: 80,
+            fisioterapeuta: 150,
+            profissional_saude: 130,
+            profissional_esporte: 130,
+            atleta: 100,
+            outro: 120
         }
     },
 
@@ -128,12 +128,12 @@ const LOTES = {
         vagas: 75,
 
         precos: {
-            "Estudante de Fisioterapia": 100,
-            "Fisioterapeuta": 180,
-            "Profissional da Saúde": 160,
-            "Profissional do Esporte": 160,
-            "Atleta": 120,
-            "Outro": 150
+            estudante_fisioterapia: 100,
+            fisioterapeuta: 180,
+            profissional_saude: 160,
+            profissional_esporte: 160,
+            atleta: 120,
+            outro: 150
         }
     },
 
@@ -142,18 +142,16 @@ const LOTES = {
         vagas: 100,
 
         precos: {
-            "Estudante de Fisioterapia": 120,
-            "Fisioterapeuta": 210,
-            "Profissional da Saúde": 190,
-            "Profissional do Esporte": 190,
-            "Atleta": 140,
-            "Outro": 180
+            estudante_fisioterapia: 120,
+            fisioterapeuta: 210,
+            profissional_saude: 190,
+            profissional_esporte: 190,
+            atleta: 140,
+            outro: 180
         }
     }
 
 };
-
-
 // =====================================================
 // CUPOM ATUAL
 // =====================================================
