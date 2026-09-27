@@ -1,188 +1,75 @@
-import { auth, db } from "./firebase.js";
+import { db } from "./firebase.js";
 
 import {
-    collection,
-    getDocs,
-    query,
-    where
+    doc,
+    getDoc
 } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
 
-import {
-    onAuthStateChanged
-} from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
-
 
 // =====================================================
-// ADMIN
+// PEGAR CÓDIGO PELA URL
 // =====================================================
 
-const EMAIL_ADMIN =
-    "admin@ladrf.com";
+const parametros = new URLSearchParams(
+    window.location.search
+);
+
+const codigo = parametros.get("codigo");
 
 
 // =====================================================
 // ELEMENTOS
 // =====================================================
 
-const validacaoLoading =
-    document.getElementById(
-        "validacaoLoading"
-    );
+const loading = document.getElementById("validacaoLoading");
+const resultado = document.getElementById("resultadoValidacao");
 
-const resultadoValidacao =
-    document.getElementById(
-        "resultadoValidacao"
-    );
+const statusBox = document.getElementById("statusBox");
+const statusIcone = document.getElementById("statusIcone");
+const statusTitulo = document.getElementById("statusTitulo");
+const statusDescricao = document.getElementById("statusDescricao");
 
-const statusBox =
-    document.getElementById(
-        "statusBox"
-    );
+const dadosNome = document.getElementById("dadosNome");
+const dadosCategoria = document.getElementById("dadosCategoria");
+const dadosInstituicao = document.getElementById("dadosInstituicao");
+const dadosLote = document.getElementById("dadosLote");
+const dadosPagamento = document.getElementById("dadosPagamento");
+const dadosFormaPagamento = document.getElementById("dadosFormaPagamento");
 
-const statusIcone =
-    document.getElementById(
-        "statusIcone"
-    );
-
-const statusTitulo =
-    document.getElementById(
-        "statusTitulo"
-    );
-
-const statusDescricao =
-    document.getElementById(
-        "statusDescricao"
-    );
-
-const dadosNome =
-    document.getElementById(
-        "dadosNome"
-    );
-
-const dadosCategoria =
-    document.getElementById(
-        "dadosCategoria"
-    );
-
-const dadosInstituicao =
-    document.getElementById(
-        "dadosInstituicao"
-    );
-
-const dadosLote =
-    document.getElementById(
-        "dadosLote"
-    );
-
-const dadosPagamento =
-    document.getElementById(
-        "dadosPagamento"
-    );
-
-const dadosFormaPagamento =
-    document.getElementById(
-        "dadosFormaPagamento"
-    );
-
-const codigoValidacao =
-    document.getElementById(
-        "codigoValidacao"
-    );
-
-
-// =====================================================
-// CATEGORIAS
-// =====================================================
-
-const nomesCategorias = {
-
-    estudante_fisioterapia:
-        "Estudante de Fisioterapia",
-
-    fisioterapeuta:
-        "Fisioterapeuta",
-
-    profissional_saude:
-        "Profissional da Saúde",
-
-    profissional_esporte:
-        "Profissional do Esporte",
-
-    atleta:
-        "Atleta",
-
-    outro:
-        "Outro"
-};
-
-
-// =====================================================
-// PEGAR CÓDIGO DA URL
-// =====================================================
-
-const parametros =
-    new URLSearchParams(
-        window.location.search
-    );
-
-const codigo =
-    parametros.get("codigo");
+const codigoValidacao = document.getElementById("codigoValidacao");
 
 
 // =====================================================
 // MOSTRAR ERRO
 // =====================================================
 
-function mostrarErro(
-    titulo,
-    descricao
-) {
+function mostrarErro(titulo, descricao) {
 
-    validacaoLoading.style.display =
-        "none";
+    loading.style.display = "none";
 
-    resultadoValidacao.style.display =
-        "block";
+    resultado.style.display = "block";
 
-    statusBox.className =
-        "status-box erro";
+    statusBox.className = "status-box status-invalido";
 
-    statusIcone.textContent =
-        "×";
+    statusIcone.textContent = "✕";
 
-    statusTitulo.textContent =
-        titulo;
+    statusTitulo.textContent = titulo;
 
-    statusDescricao.textContent =
-        descricao;
+    statusDescricao.textContent = descricao;
 
-    dadosNome.textContent =
-        "-";
+    dadosNome.textContent = "-";
+    dadosCategoria.textContent = "-";
+    dadosInstituicao.textContent = "-";
+    dadosLote.textContent = "-";
+    dadosPagamento.textContent = "-";
+    dadosFormaPagamento.textContent = "-";
 
-    dadosCategoria.textContent =
-        "-";
-
-    dadosInstituicao.textContent =
-        "-";
-
-    dadosLote.textContent =
-        "-";
-
-    dadosPagamento.textContent =
-        "-";
-
-    dadosFormaPagamento.textContent =
-        "-";
-
-    codigoValidacao.textContent =
-        codigo
-            ? `Código consultado: ${codigo}`
-            : "Nenhum código foi informado.";
+    codigoValidacao.textContent = codigo || "-";
 }
 
 
 // =====================================================
-// BUSCAR INSCRIÇÃO
+// VALIDAR CREDENCIAL
 // =====================================================
 
 async function validarInscricao() {
@@ -190,239 +77,128 @@ async function validarInscricao() {
     if (!codigo) {
 
         mostrarErro(
-            "CÓDIGO INVÁLIDO",
-            "Nenhum código de credencial foi informado."
+            "CÓDIGO AUSENTE",
+            "Nenhum código de validação foi informado."
         );
 
         return;
     }
 
-
     try {
 
-        /*
-         * O código é salvo no documento da inscrição
-         * como codigoCredencial.
-         */
+        const referencia = doc(
+            db,
+            "validacoes",
+            codigo
+        );
 
-        const inscricoesRef =
-            collection(
-                db,
-                "inscricoes"
-            );
+        const documento = await getDoc(referencia);
 
 
-        const consulta =
-            query(
-                inscricoesRef,
-                where(
-                    "codigoCredencial",
-                    "==",
-                    codigo
-                )
-            );
+        // =================================================
+        // CÓDIGO NÃO ENCONTRADO
+        // =================================================
 
-
-        const resultado =
-            await getDocs(
-                consulta
-            );
-
-
-        if (
-            resultado.empty
-        ) {
+        if (!documento.exists()) {
 
             mostrarErro(
-                "INSCRIÇÃO NÃO ENCONTRADA",
-                "Não foi encontrada uma inscrição correspondente a este código."
+                "CREDENCIAL NÃO ENCONTRADA",
+                "O código informado não corresponde a uma credencial válida do CRFE 2027."
             );
 
             return;
         }
 
 
-        const documento =
-            resultado.docs[0];
-
-        const inscricao =
-            documento.data();
-
-
         // =================================================
-        // BUSCAR DADOS DO PARTICIPANTE
+        // DADOS PÚBLICOS
         // =================================================
 
-        let usuario = null;
+        const dados = documento.data();
 
-
-        if (inscricao.uid) {
-
-            /*
-             * A página está sendo acessada pelo administrador.
-             * Os dados públicos necessários à validação
-             * serão obtidos do cadastro do participante.
-             */
-
-            const resposta =
-                await getDocs(
-                    query(
-                        collection(
-                            db,
-                            "usuarios"
-                        ),
-                        where(
-                            "__name__",
-                            "==",
-                            inscricao.uid
-                        )
-                    )
-                );
-
-
-            if (
-                !resposta.empty
-            ) {
-
-                usuario =
-                    resposta.docs[0].data();
-            }
-        }
-
-
-        // =================================================
-        // PREENCHER DADOS
-        // =================================================
 
         dadosNome.textContent =
-            usuario?.nome ||
-            "Participante";
+            dados.nome || "-";
 
         dadosCategoria.textContent =
-            nomesCategorias[
-                inscricao.categoria
-            ] ||
-            inscricao.categoria ||
-            "-";
+            dados.categoria || "-";
 
         dadosInstituicao.textContent =
-            inscricao.instituicao ||
-            usuario?.instituicao ||
-            "-";
+            dados.instituicao || "-";
 
         dadosLote.textContent =
-            inscricao.lote
-                ? `${inscricao.lote}º Lote`
-                : "-";
-
-
-        dadosPagamento.textContent =
-            inscricao.pagamento === "pago"
-                ? "PAGAMENTO CONFIRMADO"
-                : "PAGAMENTO PENDENTE";
-
-
-        dadosFormaPagamento.textContent =
-            inscricao.formaPagamento ||
-            "Não informado";
-
+            dados.lote || "-";
 
         codigoValidacao.textContent =
-            `Código de credencial: ${codigo}`;
+            dados.codigoCredencial || codigo;
 
 
         // =================================================
         // STATUS
         // =================================================
 
-        if (
-            inscricao.pagamento === "pago"
-        ) {
+        if (dados.status === "pago") {
 
             statusBox.className =
-                "status-box confirmada";
+                "status-box status-valido";
 
-            statusIcone.textContent =
-                "✓";
+            statusIcone.textContent = "✓";
 
             statusTitulo.textContent =
                 "INSCRIÇÃO CONFIRMADA";
 
             statusDescricao.textContent =
-                "Pagamento confirmado. Credencial válida para o CRFE 2027.";
+                "Esta credencial é válida e o pagamento da inscrição foi confirmado.";
+
+            dadosPagamento.textContent =
+                "PAGAMENTO CONFIRMADO";
+
+            dadosFormaPagamento.textContent =
+                dados.formaPagamento || "Não informado";
 
         } else {
 
             statusBox.className =
-                "status-box pendente";
+                "status-box status-pendente";
 
-            statusIcone.textContent =
-                "!";
+            statusIcone.textContent = "⚠";
 
             statusTitulo.textContent =
                 "PAGAMENTO PENDENTE";
 
             statusDescricao.textContent =
-                "A inscrição foi localizada, mas o pagamento ainda não foi confirmado.";
+                "A credencial foi localizada, mas o pagamento ainda não foi confirmado.";
+
+            dadosPagamento.textContent =
+                "PAGAMENTO PENDENTE";
+
+            dadosFormaPagamento.textContent =
+                "-";
         }
 
 
-        validacaoLoading.style.display =
-            "none";
+        loading.style.display = "none";
 
-        resultadoValidacao.style.display =
-            "block";
+        resultado.style.display = "block";
 
 
     } catch (erro) {
 
         console.error(
-            "Erro ao validar inscrição:",
+            "Erro ao validar credencial:",
             erro
         );
 
         mostrarErro(
             "ERRO NA VALIDAÇÃO",
-            "Não foi possível consultar os dados da inscrição."
+            "Não foi possível consultar a credencial. Tente novamente."
         );
     }
 }
 
 
 // =====================================================
-// AUTENTICAÇÃO
+// INICIAR
 // =====================================================
 
-onAuthStateChanged(
-    auth,
-    async (usuario) => {
-
-        if (!usuario) {
-
-            window.location.href =
-                "login.html";
-
-            return;
-        }
-
-
-        // =================================================
-        // SOMENTE ADMIN
-        // =================================================
-
-        if (
-            usuario.email !==
-            EMAIL_ADMIN
-        ) {
-
-            window.location.href =
-                "area-participante.html";
-
-            return;
-        }
-
-
-        await validarInscricao();
-
-    }
-);
+validarInscricao();
