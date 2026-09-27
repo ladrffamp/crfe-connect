@@ -19,46 +19,467 @@
         href="css/styles.css"
     >
 
+    <style>
+
+        /* =====================================================
+           PADRÃO VISUAL DO ADMINISTRADOR
+        ===================================================== */
+
+        body {
+            margin: 0;
+            background: #f6f9f7;
+            color: #173d2c;
+        }
+
+
+        /* =====================================================
+           CABEÇALHO
+        ===================================================== */
+
+        .site-header {
+            width: 100%;
+            background: #ffffff;
+            border-bottom: 1px solid #e3e9e5;
+            box-shadow: 0 2px 12px rgba(20, 60, 40, 0.04);
+        }
+
+
+        .site-header .container {
+            width: min(1180px, 92%);
+            min-height: 76px;
+            margin: 0 auto;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 30px;
+        }
+
+
+        .site-header .logo {
+            display: inline-flex;
+            align-items: baseline;
+            gap: 5px;
+            color: #0b7a3b;
+            text-decoration: none;
+            font-size: 27px;
+            font-weight: 900;
+            line-height: 1;
+            letter-spacing: -0.5px;
+        }
+
+
+        .site-header .logo span {
+            color: #173d2c;
+            font-size: 15px;
+            font-weight: 800;
+        }
+
+
+        .site-header nav {
+            display: flex;
+            align-items: center;
+            justify-content: flex-end;
+            gap: 24px;
+        }
+
+
+        .site-header nav a {
+            display: inline-flex;
+            align-items: center;
+            min-height: 42px;
+            color: #294538;
+            text-decoration: none;
+            font-size: 14px;
+            font-weight: 700;
+            white-space: nowrap;
+            transition: 0.2s ease;
+        }
+
+
+        .site-header nav a:hover {
+            color: #0b7a3b;
+        }
+
+
+        .site-header nav a:last-child {
+            padding: 0 17px;
+            border-radius: 9px;
+            background: #0b7a3b;
+            color: #ffffff;
+        }
+
+
+        .site-header nav a:last-child:hover {
+            background: #086330;
+            color: #ffffff;
+        }
+
+
+        /* =====================================================
+           CONTEÚDO
+        ===================================================== */
+
+        .admin-container {
+            width: min(1180px, 92%);
+            margin: 0 auto;
+            padding: 55px 0 70px;
+        }
+
+
+        .admin-header {
+            margin-bottom: 35px;
+        }
+
+
+        .admin-header .section-label {
+            display: inline-block;
+            margin-bottom: 10px;
+        }
+
+
+        .admin-header h1 {
+            margin: 0 0 12px;
+            color: #173d2c;
+            font-size: clamp(30px, 4vw, 42px);
+            line-height: 1.1;
+        }
+
+
+        .admin-header p {
+            max-width: 700px;
+            margin: 0;
+            color: #64756c;
+            line-height: 1.7;
+        }
+
+
+        /* =====================================================
+           CARDS DE RESUMO
+        ===================================================== */
+
+        .dashboard-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 18px;
+            margin-bottom: 28px;
+        }
+
+
+        .dashboard-card {
+            background: #ffffff;
+            border: 1px solid #e2e9e4;
+            border-radius: 14px;
+            padding: 24px;
+            box-shadow: 0 5px 18px rgba(20, 60, 40, 0.05);
+        }
+
+
+        .dashboard-card span {
+            display: block;
+            margin-bottom: 12px;
+            color: #6b7b73;
+            font-size: 11px;
+            font-weight: 800;
+            letter-spacing: 0.08em;
+        }
+
+
+        .dashboard-card strong {
+            display: block;
+            color: #0b7a3b;
+            font-size: 30px;
+            line-height: 1.1;
+        }
+
+
+        /* =====================================================
+           CARD
+        ===================================================== */
+
+        .card {
+            background: #ffffff;
+            border: 1px solid #e2e9e4;
+            border-radius: 14px;
+            box-shadow: 0 5px 18px rgba(20, 60, 40, 0.05);
+        }
+
+
+        .filters-card {
+            padding: 28px;
+            margin-bottom: 24px;
+        }
+
+
+        .card-header {
+            margin-bottom: 22px;
+        }
+
+
+        .card-header h2 {
+            margin: 5px 0 0;
+            color: #173d2c;
+            font-size: 24px;
+        }
+
+
+        .section-label {
+            color: #0b7a3b;
+            font-size: 11px;
+            font-weight: 800;
+            letter-spacing: 0.08em;
+        }
+
+
+        /* =====================================================
+           FORMULÁRIO
+        ===================================================== */
+
+        .form-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+        }
+
+
+        .form-group {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+
+        .form-group label {
+            color: #294538;
+            font-size: 13px;
+            font-weight: 700;
+        }
+
+
+        .form-group input,
+        .form-group select {
+            width: 100%;
+            min-height: 46px;
+            padding: 0 14px;
+            box-sizing: border-box;
+            border: 1px solid #d7e1db;
+            border-radius: 9px;
+            background: #ffffff;
+            color: #243b30;
+            font-family: inherit;
+            font-size: 14px;
+            outline: none;
+        }
+
+
+        .form-group input:focus,
+        .form-group select:focus {
+            border-color: #0b7a3b;
+            box-shadow: 0 0 0 3px rgba(11, 122, 59, 0.08);
+        }
+
+
+        /* =====================================================
+           LISTA
+        ===================================================== */
+
+        .admin-list {
+            display: grid;
+            gap: 18px;
+        }
+
+
+        .inscricao-admin {
+            padding: 28px;
+        }
+
+
+        .inscricao-admin h3 {
+            margin: 8px 0 5px;
+            color: #173d2c;
+            font-size: 21px;
+        }
+
+
+        .inscricao-admin p {
+            margin: 8px 0;
+            color: #596b61;
+            line-height: 1.5;
+        }
+
+
+        .inscricao-admin p strong {
+            color: #294538;
+            margin-right: 5px;
+        }
+
+
+        .inscricao-admin .btn {
+            margin-top: 15px;
+        }
+
+
+        .btn {
+            min-height: 44px;
+            padding: 0 18px;
+            border: 0;
+            border-radius: 9px;
+            font-family: inherit;
+            font-size: 13px;
+            font-weight: 800;
+            cursor: pointer;
+        }
+
+
+        .btn-primary {
+            background: #0b7a3b;
+            color: #ffffff;
+        }
+
+
+        .btn-primary:hover {
+            background: #086330;
+        }
+
+
+        /* =====================================================
+           MENSAGEM
+        ===================================================== */
+
+        .form-message {
+            margin: 15px 0;
+            color: #52665a;
+        }
+
+
+        .form-message.error {
+            color: #b42318;
+        }
+
+
+        /* =====================================================
+           RODAPÉ
+        ===================================================== */
+
+        .footer {
+            padding: 35px 0;
+            background: #173d2c;
+            color: #ffffff;
+        }
+
+
+        .footer p {
+            margin: 5px 0;
+            color: rgba(255, 255, 255, 0.82);
+        }
+
+
+        /* =====================================================
+           RESPONSIVO
+        ===================================================== */
+
+        @media (max-width: 900px) {
+
+            .dashboard-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+        }
+
+
+        @media (max-width: 700px) {
+
+            .site-header .container {
+                min-height: 68px;
+                gap: 15px;
+            }
+
+
+            .site-header .logo {
+                font-size: 23px;
+            }
+
+
+            .site-header .logo span {
+                font-size: 13px;
+            }
+
+
+            .site-header nav {
+                gap: 8px;
+            }
+
+
+            .site-header nav a {
+                font-size: 11px;
+                min-height: 38px;
+            }
+
+
+            .site-header nav a:last-child {
+                padding: 0 12px;
+            }
+
+
+            .admin-container {
+                padding: 35px 0 50px;
+            }
+
+
+            .dashboard-grid {
+                grid-template-columns: 1fr;
+            }
+
+
+            .form-grid {
+                grid-template-columns: 1fr;
+            }
+
+
+            .filters-card,
+            .inscricao-admin {
+                padding: 20px;
+            }
+
+        }
+
+    </style>
+
 </head>
 
 
 <body>
 
 
-<header class="topbar">
+<!-- =====================================================
+     CABEÇALHO
+====================================================== -->
 
-    <div class="container topbar-inner">
+<header class="site-header">
 
-        <div class="brand">
+    <div class="container">
 
-            <span class="brand-mark">
-                CRFE
-            </span>
-
-            <span class="brand-text">
-                2027
-            </span>
-
-        </div>
+        <a
+            href="index.html"
+            class="logo"
+        >
+            CRFE
+            <span>2027</span>
+        </a>
 
 
-        <nav class="nav">
+        <nav>
 
             <a href="index.html">
                 Início
             </a>
 
-            <a href="area-participante.html">
-                Área do participante
-            </a>
 
-            <button
+            <a
+                href="#"
                 id="btnSair"
-                class="btn btn-outline"
-                type="button"
             >
                 Sair
-            </button>
+            </a>
 
         </nav>
 
@@ -68,22 +489,28 @@
 
 
 
-<main class="container">
+<!-- =====================================================
+     CONTEÚDO
+====================================================== -->
+
+<main class="admin-container">
 
 
-    <!-- ========================================= -->
-    <!-- CABEÇALHO -->
-    <!-- ========================================= -->
+    <!-- =================================================
+         CABEÇALHO
+    ================================================== -->
 
-    <section class="page-header">
+    <section class="admin-header">
 
         <span class="section-label">
             ADMINISTRAÇÃO
         </span>
 
+
         <h1>
             Painel administrativo
         </h1>
+
 
         <p>
             Gerencie as inscrições e confirme os pagamentos
@@ -94,9 +521,9 @@
 
 
 
-    <!-- ========================================= -->
-    <!-- RESUMO -->
-    <!-- ========================================= -->
+    <!-- =================================================
+         RESUMO
+    ================================================== -->
 
     <section class="dashboard-grid">
 
@@ -157,25 +584,21 @@
 
 
 
-    <!-- ========================================= -->
-    <!-- FILTROS -->
-    <!-- ========================================= -->
+    <!-- =================================================
+         FILTROS
+    ================================================== -->
 
-    <section class="card">
+    <section class="card filters-card">
 
         <div class="card-header">
 
-            <div>
+            <span class="section-label">
+                INSCRIÇÕES
+            </span>
 
-                <span class="section-label">
-                    INSCRIÇÕES
-                </span>
-
-                <h2>
-                    Participantes
-                </h2>
-
-            </div>
+            <h2>
+                Participantes
+            </h2>
 
         </div>
 
@@ -189,6 +612,7 @@
                     Status do pagamento
                 </label>
 
+
                 <select
                     id="filtroPagamento"
                 >
@@ -197,9 +621,11 @@
                         Todos
                     </option>
 
+
                     <option value="pendente">
                         Aguardando pagamento
                     </option>
+
 
                     <option value="pago">
                         Pagamento confirmado
@@ -216,6 +642,7 @@
                     Buscar participante
                 </label>
 
+
                 <input
                     type="text"
                     id="filtroBusca"
@@ -231,9 +658,9 @@
 
 
 
-    <!-- ========================================= -->
-    <!-- MENSAGEM -->
-    <!-- ========================================= -->
+    <!-- =================================================
+         MENSAGEM
+    ================================================== -->
 
     <p
         id="mensagemAdmin"
@@ -242,9 +669,9 @@
 
 
 
-    <!-- ========================================= -->
-    <!-- LISTA DE INSCRIÇÕES -->
-    <!-- ========================================= -->
+    <!-- =================================================
+         LISTA DE INSCRIÇÕES
+    ================================================== -->
 
     <section
         id="listaInscricoes"
@@ -265,6 +692,10 @@
 </main>
 
 
+
+<!-- =====================================================
+     RODAPÉ
+====================================================== -->
 
 <footer class="footer">
 
