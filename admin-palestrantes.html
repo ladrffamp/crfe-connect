@@ -1,0 +1,595 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <title>Palestrantes | CRFE 2027</title>
+
+    <link
+        rel="stylesheet"
+        href="css/styles.css"
+    >
+
+    <style>
+
+        body {
+            margin: 0;
+            background: #f5f8f6;
+            color: #173d2c;
+            font-family: Arial, sans-serif;
+        }
+
+        .site-header {
+            width: 100%;
+            background: #ffffff;
+            border-bottom: 1px solid #e3e9e5;
+            box-shadow: 0 2px 12px rgba(20, 60, 40, 0.04);
+        }
+
+        .site-header .container {
+            width: min(1180px, 92%);
+            min-height: 76px;
+            margin: 0 auto;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 30px;
+        }
+
+        .site-header .logo {
+            display: inline-flex;
+            align-items: baseline;
+            gap: 5px;
+            color: #0b7a3b;
+            text-decoration: none;
+            font-size: 27px;
+            font-weight: 900;
+            line-height: 1;
+        }
+
+        .site-header .logo span {
+            color: #173d2c;
+            font-size: 15px;
+            font-weight: 800;
+        }
+
+        .site-header nav {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .site-header nav a {
+            color: #294538;
+            text-decoration: none;
+            font-size: 14px;
+            font-weight: 700;
+            padding: 10px 14px;
+            border-radius: 8px;
+        }
+
+        .site-header nav a:hover {
+            color: #0b7a3b;
+            background: #f1f7f3;
+        }
+
+        .site-header nav a:last-child {
+            background: #0b7a3b;
+            color: #ffffff;
+        }
+
+        .admin-container {
+            width: min(1180px, 92%);
+            margin: 40px auto 70px;
+        }
+
+        .admin-header {
+            margin-bottom: 30px;
+        }
+
+        .admin-header h1 {
+            margin: 0 0 8px;
+            font-size: 30px;
+            color: #173d2c;
+        }
+
+        .admin-header p {
+            margin: 0;
+            color: #65756d;
+        }
+
+        .layout {
+            display: grid;
+            grid-template-columns: 380px 1fr;
+            gap: 25px;
+            align-items: start;
+        }
+
+        .card {
+            background: #ffffff;
+            border: 1px solid #e3e9e5;
+            border-radius: 14px;
+            padding: 24px;
+            box-shadow: 0 4px 18px rgba(20, 60, 40, 0.05);
+        }
+
+        .card h2 {
+            margin: 0 0 20px;
+            color: #173d2c;
+            font-size: 20px;
+        }
+
+        .form-group {
+            margin-bottom: 15px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 7px;
+            font-size: 13px;
+            font-weight: 700;
+            color: #294538;
+        }
+
+        .form-group input,
+        .form-group textarea,
+        .form-group select {
+            width: 100%;
+            box-sizing: border-box;
+            padding: 12px 13px;
+            border: 1px solid #ccd8d1;
+            border-radius: 8px;
+            font-size: 14px;
+            font-family: inherit;
+            outline: none;
+            background: #ffffff;
+        }
+
+        .form-group textarea {
+            min-height: 110px;
+            resize: vertical;
+        }
+
+        .form-group input:focus,
+        .form-group textarea:focus,
+        .form-group select:focus {
+            border-color: #0b7a3b;
+            box-shadow: 0 0 0 3px rgba(11, 122, 59, 0.08);
+        }
+
+        .btn-principal {
+            width: 100%;
+            border: 0;
+            border-radius: 9px;
+            padding: 13px 18px;
+            background: #0b7a3b;
+            color: #ffffff;
+            font-size: 14px;
+            font-weight: 800;
+            cursor: pointer;
+        }
+
+        .btn-principal:hover {
+            background: #086330;
+        }
+
+        .mensagem {
+            margin-top: 12px;
+            font-size: 13px;
+            font-weight: 700;
+            text-align: center;
+        }
+
+        .lista {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+
+        .palestrante-card {
+            display: grid;
+            grid-template-columns: 90px 1fr auto;
+            gap: 18px;
+            align-items: center;
+            padding: 18px;
+            border: 1px solid #e3e9e5;
+            border-radius: 12px;
+            background: #ffffff;
+        }
+
+        .palestrante-foto {
+            width: 90px;
+            height: 90px;
+            border-radius: 50%;
+            object-fit: cover;
+            background: #edf3ef;
+        }
+
+        .palestrante-info h3 {
+            margin: 0 0 5px;
+            font-size: 18px;
+            color: #173d2c;
+        }
+
+        .palestrante-info .profissao {
+            margin: 0 0 5px;
+            color: #0b7a3b;
+            font-weight: 700;
+            font-size: 14px;
+        }
+
+        .palestrante-info p {
+            margin: 3px 0;
+            color: #68776f;
+            font-size: 13px;
+        }
+
+        .acoes {
+            display: flex;
+            flex-direction: column;
+            gap: 7px;
+        }
+
+        .btn-excluir {
+            border: 0;
+            border-radius: 7px;
+            padding: 9px 12px;
+            background: #fff0f0;
+            color: #b42318;
+            font-size: 12px;
+            font-weight: 700;
+            cursor: pointer;
+        }
+
+        .btn-excluir:hover {
+            background: #ffe1e1;
+        }
+
+        .vazio {
+            padding: 40px 20px;
+            text-align: center;
+            color: #718078;
+            border: 1px dashed #ccd8d1;
+            border-radius: 12px;
+        }
+
+        .status-ativo {
+            display: inline-block;
+            margin-top: 7px;
+            padding: 4px 8px;
+            border-radius: 20px;
+            background: #e9f7ee;
+            color: #0b7a3b;
+            font-size: 11px;
+            font-weight: 800;
+        }
+
+        .status-inativo {
+            display: inline-block;
+            margin-top: 7px;
+            padding: 4px 8px;
+            border-radius: 20px;
+            background: #f1f1f1;
+            color: #666666;
+            font-size: 11px;
+            font-weight: 800;
+        }
+
+        @media (max-width: 850px) {
+
+            .layout {
+                grid-template-columns: 1fr;
+            }
+
+        }
+
+        @media (max-width: 600px) {
+
+            .site-header .container {
+                min-height: 68px;
+            }
+
+            .site-header nav a {
+                font-size: 12px;
+                padding: 8px;
+            }
+
+            .admin-container {
+                margin-top: 25px;
+            }
+
+            .palestrante-card {
+                grid-template-columns: 70px 1fr;
+            }
+
+            .palestrante-foto {
+                width: 70px;
+                height: 70px;
+            }
+
+            .acoes {
+                grid-column: 1 / -1;
+                flex-direction: row;
+            }
+
+        }
+
+    </style>
+
+</head>
+
+
+<body>
+
+
+<header class="site-header">
+
+    <div class="container">
+
+        <a
+            href="index.html"
+            class="logo"
+        >
+            CRFE
+            <span>2027</span>
+        </a>
+
+        <nav>
+
+            <a href="admin.html">
+                Painel
+            </a>
+
+            <a href="index.html">
+                Site
+            </a>
+
+            <a href="#" id="btnSair">
+                Sair
+            </a>
+
+        </nav>
+
+    </div>
+
+</header>
+
+
+<main class="admin-container">
+
+
+    <div class="admin-header">
+
+        <h1>
+            Palestrantes
+        </h1>
+
+        <p>
+            Cadastre e gerencie os palestrantes do CRFE 2027.
+        </p>
+
+    </div>
+
+
+    <div class="layout">
+
+
+        <!-- FORMULÁRIO -->
+
+        <section class="card">
+
+            <h2>
+                Novo palestrante
+            </h2>
+
+
+            <form id="formPalestrante">
+
+
+                <div class="form-group">
+
+                    <label for="nome">
+                        Nome completo
+                    </label>
+
+                    <input
+                        type="text"
+                        id="nome"
+                        required
+                    >
+
+                </div>
+
+
+                <div class="form-group">
+
+                    <label for="profissao">
+                        Cargo / profissão
+                    </label>
+
+                    <input
+                        type="text"
+                        id="profissao"
+                        placeholder="Ex.: Fisioterapeuta Esportivo"
+                        required
+                    >
+
+                </div>
+
+
+                <div class="form-group">
+
+                    <label for="instituicao">
+                        Instituição
+                    </label>
+
+                    <input
+                        type="text"
+                        id="instituicao"
+                        placeholder="Ex.: Faculdade Morgana Potrich"
+                    >
+
+                </div>
+
+
+                <div class="form-group">
+
+                    <label for="tema">
+                        Tema
+                    </label>
+
+                    <input
+                        type="text"
+                        id="tema"
+                        placeholder="Tema da palestra ou participação"
+                    >
+
+                </div>
+
+
+                <div class="form-group">
+
+                    <label for="tipo">
+                        Tipo de participação
+                    </label>
+
+                    <select id="tipo">
+
+                        <option value="Palestra">
+                            Palestra
+                        </option>
+
+                        <option value="Mesa-redonda">
+                            Mesa-redonda
+                        </option>
+
+                        <option value="Minicurso">
+                            Minicurso
+                        </option>
+
+                        <option value="Convidado">
+                            Convidado
+                        </option>
+
+                        <option value="Outro">
+                            Outro
+                        </option>
+
+                    </select>
+
+                </div>
+
+
+                <div class="form-group">
+
+                    <label for="foto">
+                        URL da foto
+                    </label>
+
+                    <input
+                        type="url"
+                        id="foto"
+                        placeholder="https://..."
+                    >
+
+                </div>
+
+
+                <div class="form-group">
+
+                    <label for="curriculo">
+                        Mini currículo
+                    </label>
+
+                    <textarea
+                        id="curriculo"
+                        placeholder="Breve apresentação profissional..."
+                    ></textarea>
+
+                </div>
+
+
+                <div class="form-group">
+
+                    <label for="status">
+                        Status
+                    </label>
+
+                    <select id="status">
+
+                        <option value="ativo">
+                            Ativo
+                        </option>
+
+                        <option value="inativo">
+                            Inativo
+                        </option>
+
+                    </select>
+
+                </div>
+
+
+                <button
+                    type="submit"
+                    class="btn-principal"
+                >
+                    CADASTRAR PALESTRANTE
+                </button>
+
+
+                <div
+                    id="mensagemPalestrante"
+                    class="mensagem"
+                ></div>
+
+
+            </form>
+
+        </section>
+
+
+        <!-- LISTA -->
+
+        <section class="card">
+
+            <h2>
+                Palestrantes cadastrados
+            </h2>
+
+            <div
+                id="listaPalestrantes"
+                class="lista"
+            >
+
+                <div class="vazio">
+                    Carregando palestrantes...
+                </div>
+
+            </div>
+
+        </section>
+
+
+    </div>
+
+
+</main>
+
+
+<script
+    type="module"
+    src="js/admin-palestrantes.js?v=1"
+></script>
+
+
+</body>
+
+</html>
