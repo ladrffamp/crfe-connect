@@ -710,6 +710,29 @@ async function carregarMinicursos() {
 
 
 // =====================================================
+// VERIFICAR SE MINICURSO JÁ FOI ADQUIRIDO
+// =====================================================
+
+function minicursoJaAdquirido(id) {
+
+    if (!inscricaoAtual) {
+        return false;
+    }
+
+
+    const minicursos =
+        inscricaoAtual.minicursos ||
+        [];
+
+
+    return minicursos.some(
+        item =>
+            item.id === id
+    );
+}
+
+
+// =====================================================
 // RENDERIZAR MINICURSOS
 // =====================================================
 
@@ -749,6 +772,12 @@ function renderizarMinicursos() {
                 );
 
 
+            const adquirido =
+                minicursoJaAdquirido(
+                    curso.id
+                );
+
+
             const card =
                 document.createElement(
                     "div"
@@ -760,11 +789,78 @@ function renderizarMinicursos() {
 
 
             const checked =
-                inscricaoAtual?.minicursos?.some(
-                    item =>
-                        item.id ===
-                        curso.id
+                adquirido;
+
+
+            /*
+             * Se a inscrição já foi paga:
+             *
+             * - minicurso já adquirido:
+             *   permanece marcado e bloqueado;
+             *
+             * - minicurso novo:
+             *   continua selecionável;
+             *
+             * - minicurso esgotado:
+             *   fica bloqueado.
+             */
+
+            const deveBloquear =
+                disponivel <= 0 ||
+                (
+                    inscricaoConfirmada &&
+                    adquirido
                 );
+
+
+            let cursor =
+                "pointer";
+
+
+            if (deveBloquear) {
+                cursor =
+                    "not-allowed";
+            }
+
+
+            let observacao = "";
+
+
+            if (
+                inscricaoConfirmada &&
+                adquirido
+            ) {
+
+                observacao = `
+                    <div
+                        style="
+                            margin-top:8px;
+                            color:#146c43;
+                            font-weight:600;
+                        "
+                    >
+                        ✓ Minicurso adquirido
+                    </div>
+                `;
+
+            } else if (
+                inscricaoConfirmada &&
+                !adquirido &&
+                disponivel > 0
+            ) {
+
+                observacao = `
+                    <div
+                        style="
+                            margin-top:8px;
+                            color:#666;
+                            font-size:13px;
+                        "
+                    >
+                        Disponível para compra adicional
+                    </div>
+                `;
+            }
 
 
             card.innerHTML = `
@@ -772,15 +868,7 @@ function renderizarMinicursos() {
                 <label
                     style="
                         display:block;
-                        cursor:${
-                            inscricaoConfirmada
-                                ? "not-allowed"
-                                : (
-                                    disponivel > 0
-                                        ? "pointer"
-                                        : "not-allowed"
-                                )
-                        };
+                        cursor:${cursor};
                     "
                 >
 
@@ -789,12 +877,7 @@ function renderizarMinicursos() {
                         class="checkbox-minicurso"
                         value="${curso.id}"
                         ${checked ? "checked" : ""}
-                        ${
-                            disponivel <= 0 ||
-                            inscricaoConfirmada
-                                ? "disabled"
-                                : ""
-                        }
+                        ${deveBloquear ? "disabled" : ""}
                         style="margin-right:8px;"
                     >
 
@@ -841,6 +924,8 @@ function renderizarMinicursos() {
                                 : "Esgotado"
                         }
                     </div>
+
+                    ${observacao}
 
                 </label>
             `;
@@ -1084,7 +1169,8 @@ if (btnAplicarCupom) {
         "click",
         async () => {
 
-            // NÃO PERMITIR CUPOM APÓS CONFIRMAÇÃO
+            // CUPOM NÃO PODE SER ALTERADO
+            // APÓS CONFIRMAÇÃO
 
             if (
                 pagamentoFoiConfirmado()
@@ -1372,23 +1458,8 @@ async function salvarInscricao() {
     }
 
 
-    // SEGURANÇA EXTRA:
-    // NÃO ALTERAR INSCRIÇÃO CONFIRMADA
-
-    if (
-        pagamentoFoiConfirmado()
-    ) {
-
-        if (mensagemInscricao) {
-
-            mensagemInscricao.textContent =
-                "Sua inscrição já está confirmada e não pode mais ser alterada.";
-        }
-
-        bloquearInscricaoConfirmada();
-
-        return;
-    }
+    const inscricaoConfirmada =
+        pagamentoFoiConfirmado();
 
 
     const selecionados =
@@ -1427,10 +1498,6 @@ async function salvarInscricao() {
                         : {};
 
 
-                // SEGURANÇA:
-                // SE PAGAMENTO FOI CONFIRMADO
-                // NÃO ALTERA NADA
-
                 const pagamentoAnterior =
                     String(
                         inscricaoAnterior.pagamento ||
@@ -1440,21 +1507,17 @@ async function salvarInscricao() {
                     .toLowerCase();
 
 
-                if (
-                    pagamentoAnterior ===
-                        "pago" ||
-                    pagamentoAnterior ===
-                        "confirmado" ||
+                const pagamentoConfirmadoAnterior =
+                    pagamentoAnterior === "pago" ||
+                    pagamentoAnterior === "confirmado" ||
                     pagamentoAnterior.includes(
                         "confirmado"
-                    )
-                ) {
-
-                    throw new Error(
-                        "Sua inscrição já está confirmada e não pode mais ser alterada."
                     );
-                }
 
+
+                // =================================================
+                // MINICURSOS ANTERIORES
+                // =================================================
 
                 const antigos =
                     inscricaoAnterior.minicursos ||
@@ -1467,6 +1530,10 @@ async function salvarInscricao() {
                     );
 
 
+                // =================================================
+                // MINICURSOS ADICIONADOS
+                // =================================================
+
                 const adicionados =
                     novosIds.filter(
                         id =>
@@ -1475,6 +1542,10 @@ async function salvarInscricao() {
                             )
                     );
 
+
+                // =================================================
+                // MINICURSOS REMOVIDOS
+                // =================================================
 
                 const removidos =
                     antigosIds.filter(
@@ -1485,7 +1556,24 @@ async function salvarInscricao() {
                     );
 
 
+                // =================================================
+                // NÃO PERMITIR REMOVER MINICURSO JÁ PAGO
+                // =================================================
+
+                if (
+                    pagamentoConfirmadoAnterior &&
+                    removidos.length > 0
+                ) {
+
+                    throw new Error(
+                        "Um minicurso já adquirido não pode ser removido após a confirmação do pagamento."
+                    );
+                }
+
+
+                // =================================================
                 // ADICIONADOS
+                // =================================================
 
                 for (
                     const id of adicionados
@@ -1555,7 +1643,9 @@ async function salvarInscricao() {
                 }
 
 
+                // =================================================
                 // REMOVIDOS
+                // =================================================
 
                 for (
                     const id of removidos
@@ -1609,10 +1699,17 @@ async function salvarInscricao() {
                 }
 
 
+                // =================================================
                 // VALORES
+                // =================================================
 
                 const base =
-                    valorBaseCategoria();
+                    pagamentoConfirmadoAnterior
+                        ? Number(
+                            inscricaoAnterior.valorOriginal ||
+                            0
+                        )
+                        : valorBaseCategoria();
 
 
                 const totalMinicursos =
@@ -1630,7 +1727,14 @@ async function salvarInscricao() {
 
 
                 let desconto =
-                    descontoAtual || 0;
+                    pagamentoConfirmadoAnterior
+                        ? Number(
+                            inscricaoAnterior.desconto ||
+                            0
+                        )
+                        : (
+                            descontoAtual || 0
+                        );
 
 
                 if (
@@ -1643,14 +1747,9 @@ async function salvarInscricao() {
                 }
 
 
-                const total =
-                    Math.max(
-                        0,
-                        base +
-                        totalMinicursos -
-                        desconto
-                    );
-
+                // =================================================
+                // PAGAMENTO PRINCIPAL
+                // =================================================
 
                 const pagamento =
                     inscricaoAnterior.pagamento ||
@@ -1666,6 +1765,109 @@ async function salvarInscricao() {
                     inscricaoAnterior.codigoCredencial ||
                     "";
 
+
+                // =================================================
+                // VALOR PRINCIPAL
+                // =================================================
+
+                let valorFinal =
+                    Math.max(
+                        0,
+                        base +
+                        totalMinicursos -
+                        desconto
+                    );
+
+
+                // =================================================
+                // SE JÁ FOI PAGO
+                // NÃO ALTERAR O VALOR JÁ PAGO
+                // =================================================
+
+                let valorMinicursosPendente =
+                    Number(
+                        inscricaoAnterior.valorMinicursosPendente ||
+                        0
+                    );
+
+
+                let pagamentoMinicursos =
+                    inscricaoAnterior.pagamentoMinicursos ||
+                    "nao_se_aplica";
+
+
+                if (
+                    pagamentoConfirmadoAnterior
+                ) {
+
+                    /*
+                     * Calcula apenas o valor dos minicursos
+                     * adicionados posteriormente.
+                     */
+
+                    const minicursosNovos =
+                        selecionados.filter(
+                            item =>
+                                adicionados.includes(
+                                    item.id
+                                )
+                        );
+
+
+                    const valorNovosMinicursos =
+                        minicursosNovos.reduce(
+                            (
+                                total,
+                                item
+                            ) =>
+                                total +
+                                Number(
+                                    item.valor || 0
+                                ),
+                            0
+                        );
+
+
+                    const valorPendenteAnterior =
+                        Number(
+                            inscricaoAnterior.valorMinicursosPendente ||
+                            0
+                        );
+
+
+                    valorMinicursosPendente =
+                        valorPendenteAnterior +
+                        valorNovosMinicursos;
+
+
+                    pagamentoMinicursos =
+                        valorMinicursosPendente > 0
+                            ? "pendente"
+                            : (
+                                inscricaoAnterior.pagamentoMinicursos ||
+                                "nao_se_aplica"
+                            );
+
+
+                    /*
+                     * IMPORTANTE:
+                     *
+                     * O valorFinal continua sendo
+                     * exatamente o valor da inscrição
+                     * principal que já foi paga.
+                     */
+
+                    valorFinal =
+                        Number(
+                            inscricaoAnterior.valorFinal ||
+                            0
+                        );
+                }
+
+
+                // =================================================
+                // DADOS DA INSCRIÇÃO
+                // =================================================
 
                 const dadosInscricao = {
 
@@ -1688,23 +1890,51 @@ async function salvarInscricao() {
                         "",
 
                     categoria:
-                        categoria?.value ||
-                        "",
+                        pagamentoConfirmadoAnterior
+                            ? (
+                                inscricaoAnterior.categoria ||
+                                ""
+                            )
+                            : (
+                                categoria?.value ||
+                                ""
+                            ),
 
                     instituicao:
-                        instituicaoInscricao?.value ||
-                        "",
+                        pagamentoConfirmadoAnterior
+                            ? (
+                                inscricaoAnterior.instituicao ||
+                                ""
+                            )
+                            : (
+                                instituicaoInscricao?.value ||
+                                ""
+                            ),
 
                     lote:
-                        lote?.value ||
-                        "",
+                        pagamentoConfirmadoAnterior
+                            ? (
+                                inscricaoAnterior.lote ||
+                                ""
+                            )
+                            : (
+                                lote?.value ||
+                                ""
+                            ),
 
                     minicursos:
                         selecionados,
 
                     cupom:
-                        cupomAplicado ||
-                        "",
+                        pagamentoConfirmadoAnterior
+                            ? (
+                                inscricaoAnterior.cupom ||
+                                ""
+                            )
+                            : (
+                                cupomAplicado ||
+                                ""
+                            ),
 
                     desconto:
                         desconto,
@@ -1716,7 +1946,13 @@ async function salvarInscricao() {
                         totalMinicursos,
 
                     valorFinal:
-                        total,
+                        valorFinal,
+
+                    valorMinicursosPendente:
+                        valorMinicursosPendente,
+
+                    pagamentoMinicursos:
+                        pagamentoMinicursos,
 
                     pagamento:
                         pagamento,
@@ -1747,6 +1983,10 @@ async function salvarInscricao() {
         );
 
 
+        // =================================================
+        // RECARREGAR DADOS
+        // =================================================
+
         await carregarInscricao();
 
         await carregarMinicursos();
@@ -1754,10 +1994,39 @@ async function salvarInscricao() {
         atualizarValores();
 
 
+        // =================================================
+        // MENSAGEM
+        // =================================================
+
         if (mensagemInscricao) {
 
-            mensagemInscricao.textContent =
-                "Inscrição salva com sucesso.";
+            if (
+                inscricaoConfirmada
+            ) {
+
+                const pendente =
+                    Number(
+                        inscricaoAtual?.valorMinicursosPendente ||
+                        0
+                    );
+
+
+                if (pendente > 0) {
+
+                    mensagemInscricao.textContent =
+                        `Minicurso adicionado. Valor adicional pendente: ${formatarMoeda(pendente)}.`;
+
+                } else {
+
+                    mensagemInscricao.textContent =
+                        "Minicursos atualizados com sucesso.";
+                }
+
+            } else {
+
+                mensagemInscricao.textContent =
+                    "Inscrição salva com sucesso.";
+            }
         }
 
 
@@ -1792,18 +2061,6 @@ if (formInscricao) {
             evento.preventDefault();
 
 
-            // NÃO PERMITIR ENVIO APÓS CONFIRMAÇÃO
-
-            if (
-                pagamentoFoiConfirmado()
-            ) {
-
-                bloquearInscricaoConfirmada();
-
-                return;
-            }
-
-
             if (
                 btnContinuarInscricao
             ) {
@@ -1811,8 +2068,11 @@ if (formInscricao) {
                 btnContinuarInscricao.disabled =
                     true;
 
+
                 btnContinuarInscricao.textContent =
-                    "Salvando...";
+                    pagamentoFoiConfirmado()
+                        ? "Atualizando minicursos..."
+                        : "Salvando...";
             }
 
 
@@ -1820,15 +2080,17 @@ if (formInscricao) {
 
 
             if (
-                btnContinuarInscricao &&
-                !pagamentoFoiConfirmado()
+                btnContinuarInscricao
             ) {
 
                 btnContinuarInscricao.disabled =
                     false;
 
+
                 btnContinuarInscricao.textContent =
-                    "Continuar";
+                    pagamentoFoiConfirmado()
+                        ? "Atualizar minicursos"
+                        : "Continuar";
             }
         }
     );
@@ -2020,48 +2282,83 @@ function bloquearInscricaoConfirmada() {
     }
 
 
-    // -------------------------------------------------
-    // BLOQUEAR CAMPOS
-    // -------------------------------------------------
+    // =================================================
+    // BLOQUEAR DADOS PRINCIPAIS
+    // =================================================
 
-    formInscricao
-        .querySelectorAll(
-            "input, select, textarea, button"
-        )
-        .forEach(
-            elemento => {
+    if (categoria) {
 
-                elemento.disabled =
-                    true;
-            }
-        );
-
-
-    // -------------------------------------------------
-    // OCULTAR BOTÃO CONTINUAR
-    // -------------------------------------------------
-
-    if (btnContinuarInscricao) {
-
-        btnContinuarInscricao.style.display =
-            "none";
+        categoria.disabled =
+            true;
     }
 
 
-    // -------------------------------------------------
-    // OCULTAR BOTÃO CUPOM
-    // -------------------------------------------------
+    if (instituicaoInscricao) {
+
+        instituicaoInscricao.disabled =
+            true;
+    }
+
+
+    if (lote) {
+
+        lote.disabled =
+            true;
+    }
+
+
+    if (cupom) {
+
+        cupom.disabled =
+            true;
+    }
+
 
     if (btnAplicarCupom) {
+
+        btnAplicarCupom.disabled =
+            true;
 
         btnAplicarCupom.style.display =
             "none";
     }
 
 
-    // -------------------------------------------------
+    // =================================================
+    // MINICURSOS
+    // =================================================
+
+    /*
+     * Re-renderiza para garantir:
+     *
+     * já adquirido = marcado e bloqueado
+     * novo = disponível para seleção
+     * esgotado = bloqueado
+     */
+
+    renderizarMinicursos();
+
+
+    // =================================================
+    // BOTÃO
+    // =================================================
+
+    if (btnContinuarInscricao) {
+
+        btnContinuarInscricao.style.display =
+            "";
+
+        btnContinuarInscricao.disabled =
+            false;
+
+        btnContinuarInscricao.textContent =
+            "Atualizar minicursos";
+    }
+
+
+    // =================================================
     // MENSAGEM
-    // -------------------------------------------------
+    // =================================================
 
     if (mensagemInscricao) {
 
@@ -2069,7 +2366,7 @@ function bloquearInscricaoConfirmada() {
             "block";
 
         mensagemInscricao.textContent =
-            "Sua inscrição está confirmada. Os dados não podem mais ser alterados.";
+            "Inscrição confirmada. Os dados da inscrição estão bloqueados, mas você pode adicionar minicursos.";
     }
 }
 
@@ -2102,6 +2399,9 @@ function desbloquearFormularioInscricao() {
 
         btnContinuarInscricao.style.display =
             "";
+
+        btnContinuarInscricao.textContent =
+            "Continuar";
     }
 
 
@@ -2128,9 +2428,9 @@ function atualizarPagamento() {
         pagamentoFoiConfirmado();
 
 
-    // -------------------------------------------------
+    // =================================================
     // PAGAMENTO CONFIRMADO
-    // -------------------------------------------------
+    // =================================================
 
     if (pago) {
 
@@ -2245,7 +2545,7 @@ function atualizarPagamento() {
 
 
         // IMPORTANTE:
-        // BLOQUEIA A INSCRIÇÃO
+        // BLOQUEIA SOMENTE OS DADOS PRINCIPAIS
 
         bloquearInscricaoConfirmada();
 
@@ -2253,9 +2553,9 @@ function atualizarPagamento() {
     }
 
 
-    // -------------------------------------------------
+    // =================================================
     // PAGAMENTO PENDENTE
-    // -------------------------------------------------
+    // =================================================
 
     if (pagamentoConfirmado) {
 
@@ -2382,9 +2682,9 @@ async function atualizarCredencial() {
         pagamentoFoiConfirmado();
 
 
-    // -------------------------------------------------
+    // =================================================
     // NÃO PAGO
-    // -------------------------------------------------
+    // =================================================
 
     if (!pago) {
 
@@ -2412,9 +2712,9 @@ async function atualizarCredencial() {
     }
 
 
-    // -------------------------------------------------
+    // =================================================
     // CÓDIGO DA CREDENCIAL
-    // -------------------------------------------------
+    // =================================================
 
     let codigo =
         inscricaoAtual.codigoCredencial;
@@ -2463,9 +2763,9 @@ async function atualizarCredencial() {
     }
 
 
-    // -------------------------------------------------
+    // =================================================
     // MOSTRAR CREDENCIAL
-    // -------------------------------------------------
+    // =================================================
 
     if (mensagemCredencial) {
 
@@ -2533,9 +2833,9 @@ async function atualizarCredencial() {
     }
 
 
-    // -------------------------------------------------
+    // =================================================
     // QR CODE
-    // -------------------------------------------------
+    // =================================================
 
     if (qrcode) {
 
