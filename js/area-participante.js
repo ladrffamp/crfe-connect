@@ -3086,12 +3086,14 @@ async function crfeEnviarArquivoDrive(
     tokenUpload
 ) {
 
+    // =====================================================
+    // VALIDAR ARQUIVO
+    // =====================================================
+
     if (!arquivo) {
-
         throw new Error(
-            "Selecione um arquivo PDF."
+            "Nenhum arquivo foi selecionado."
         );
-
     }
 
 
@@ -3101,7 +3103,7 @@ async function crfeEnviarArquivoDrive(
     ) {
 
         throw new Error(
-            "O arquivo precisa estar no formato PDF."
+            "Envie somente arquivo PDF."
         );
 
     }
@@ -3113,16 +3115,35 @@ async function crfeEnviarArquivoDrive(
     ) {
 
         throw new Error(
-            "O arquivo não pode ultrapassar 10 MB."
+            "O arquivo deve ter no máximo 10 MB."
         );
 
     }
 
 
+    // =====================================================
+    // CONVERTER PARA BASE64
+    // =====================================================
+
     const base64 =
         await crfeArquivoParaBase64(
             arquivo
         );
+
+
+    // =====================================================
+    // PEGAR TOKEN FIREBASE
+    // =====================================================
+
+    if (
+        !usuarioAtual
+    ) {
+
+        throw new Error(
+            "Usuário não autenticado."
+        );
+
+    }
 
 
     const idToken =
@@ -3131,7 +3152,11 @@ async function crfeEnviarArquivoDrive(
         );
 
 
-    const payload = {
+    // =====================================================
+    // PREPARAR DADOS
+    // =====================================================
+
+    const dados = {
 
         token:
             tokenUpload,
@@ -3139,25 +3164,29 @@ async function crfeEnviarArquivoDrive(
         idToken:
             idToken,
 
-        fileName:
+        nomeArquivo:
             arquivo.name,
 
         mimeType:
             arquivo.type,
 
-        data:
+        tamanho:
+            arquivo.size,
+
+        base64:
             base64
 
     };
 
 
-    /*
-     * IMPORTANTE:
-     *
-     * text/plain evita o preflight
-     * OPTIONS que costuma causar problema
-     * em Web Apps do Google Apps Script.
-     */
+    console.log(
+        "Enviando PDF para o Google Drive..."
+    );
+
+
+    // =====================================================
+    // ENVIAR PARA APPS SCRIPT
+    // =====================================================
 
     const resposta =
         await fetch(
@@ -3176,31 +3205,110 @@ async function crfeEnviarArquivoDrive(
 
                 body:
                     JSON.stringify(
-                        payload
+                        dados
                     )
 
             }
         );
 
 
+    // =====================================================
+    // VERIFICAR RESPOSTA HTTP
+    // =====================================================
+
     if (!resposta.ok) {
 
         throw new Error(
+            "O Google Drive retornou erro HTTP " +
+            resposta.status +
+            "."
+        );
+
+    }
+
+
+    // =====================================================
+    // LER RESPOSTA
+    // =====================================================
+
+    const texto =
+        await resposta.text();
+
+
+    console.log(
+        "Resposta do Google Apps Script:",
+        texto
+    );
+
+
+    // =====================================================
+    // CONVERTER JSON
+    // =====================================================
+
+    let resultado;
+
+    try {
+
+        resultado =
+            JSON.parse(
+                texto
+            );
+
+    } catch (erro) {
+
+        console.error(
+            "Resposta recebida não é JSON:",
+            texto
+        );
+
+        throw new Error(
+            "O Google Drive enviou uma resposta inválida."
+        );
+
+    }
+
+
+    // =====================================================
+    // VERIFICAR RESULTADO
+    // =====================================================
+
+    if (
+        !resultado.sucesso
+    ) {
+
+        throw new Error(
+            resultado.mensagem ||
             "Não foi possível enviar o arquivo."
         );
 
     }
 
 
-    /*
-     * Não dependemos da resposta final
-     * do POST.
-     *
-     * O JSONP será usado para confirmar
-     * que o arquivo realmente chegou ao Drive.
-     */
+    if (
+        resultado.status !==
+        "concluido"
+    ) {
 
-    return true;
+        throw new Error(
+            resultado.mensagem ||
+            "O upload não foi concluído."
+        );
+
+    }
+
+
+    // =====================================================
+    // SUCESSO
+    // =====================================================
+
+    console.log(
+        "Upload concluído:",
+        resultado
+    );
+
+
+    return resultado;
+
 }
 
 
