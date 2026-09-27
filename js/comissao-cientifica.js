@@ -126,9 +126,16 @@ function gerarCardTrabalho(trabalho) {
         trabalho.tipo ||
         "Não informado";
 
-    const area =
-        trabalho.area ||
-        "Não informada";
+    const areaMap = {
+    fisioterapia_esportiva: "Fisioterapia Esportiva",
+    avaliacao_funcional: "Avaliação Funcional",
+    prevencao_lesoes: "Prevenção de Lesões",
+    reabilitacao: "Reabilitação",
+    performance: "Performance Esportiva",
+    outras: "Outras"
+};
+
+const area = areaMap[trabalho.area] || trabalho.area || "Não informada";
 
     const status =
         trabalho.status ||
