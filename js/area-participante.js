@@ -2131,13 +2131,13 @@ function atualizarResumoInscricao() {
     }
 
 
-    if (resumoCategoria) {
+   if (resumoCategoria) {
 
-        resumoCategoria.textContent =
-            textoSeguro(
-                inscricaoAtual.categoria
-            );
-    }
+    resumoCategoria.textContent =
+        formatarCategoria(
+            inscricaoAtual.categoria
+        );
+}
 
     function formatarCategoria(valor) {
 
