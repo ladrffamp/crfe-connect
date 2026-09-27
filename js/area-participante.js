@@ -742,8 +742,12 @@ async function carregarInscricao() {
         // =================================================
 
         mostrarPagamento(
-            inscricaoAtual
-        );
+    inscricaoAtual
+);
+
+mostrarCredencial(
+    inscricaoAtual
+);
 
 
         // =================================================
