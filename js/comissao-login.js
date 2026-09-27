@@ -39,8 +39,8 @@ onAuthStateChanged(auth, (user) => {
 
     if (user) {
 
-        window.location.href =
-            "comissao.html";
+       window.location.href =
+    "comissao-cientifica.html";
 
     }
 
