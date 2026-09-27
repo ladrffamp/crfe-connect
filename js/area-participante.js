@@ -346,6 +346,28 @@ function mostrarPagamento(inscricao) {
         return;
     }
 
+
+    // =================================================
+    // PAGAMENTO CONFIRMADO
+    // =================================================
+
+    if (
+        inscricao &&
+        inscricao.pagamento === "pago"
+    ) {
+
+        pagamentoInscricao.style.display =
+            "none";
+
+        return;
+
+    }
+
+
+    // =================================================
+    // PAGAMENTO PENDENTE
+    // =================================================
+
     pagamentoInscricao.style.display =
         "block";
 
@@ -354,7 +376,7 @@ function mostrarPagamento(inscricao) {
 
         valorPix.textContent =
             formatarMoeda(
-                inscricao.valorFinal
+                inscricao?.valorFinal || 0
             );
 
     }
@@ -378,24 +400,29 @@ function mostrarPagamento(inscricao) {
 
     if (statusPagamento) {
 
-        if (
-            inscricao.pagamento ===
-            "pago"
-        ) {
-
-            statusPagamento.textContent =
-                "Pagamento confirmado";
-
-        } else {
-
-            statusPagamento.textContent =
-                "Aguardando pagamento";
-
-        }
+        statusPagamento.textContent =
+            "Aguardando pagamento";
 
     }
 
 }
+
+
+// =====================================================
+// ESCONDER PAGAMENTO
+// =====================================================
+
+function esconderPagamento() {
+
+    if (pagamentoInscricao) {
+
+        pagamentoInscricao.style.display =
+            "none";
+
+    }
+
+}
+
 
 // =====================================================
 // MOSTRAR CREDENCIAL
@@ -445,7 +472,7 @@ function mostrarCredencial(inscricao) {
 
 
     // =================================================
-    // SÓ LIBERA COM PAGAMENTO CONFIRMADO
+    // SEM INSCRIÇÃO OU PAGAMENTO PENDENTE
     // =================================================
 
     if (
@@ -480,7 +507,7 @@ function mostrarCredencial(inscricao) {
 
 
     // =================================================
-    // DADOS
+    // NOME
     // =================================================
 
     if (nome) {
@@ -492,6 +519,10 @@ function mostrarCredencial(inscricao) {
 
     }
 
+
+    // =================================================
+    // CATEGORIA
+    // =================================================
 
     if (categoriaTexto) {
 
@@ -528,6 +559,10 @@ function mostrarCredencial(inscricao) {
     }
 
 
+    // =================================================
+    // INSTITUIÇÃO
+    // =================================================
+
     if (instituicao) {
 
         instituicao.textContent =
@@ -538,6 +573,10 @@ function mostrarCredencial(inscricao) {
     }
 
 
+    // =================================================
+    // CÓDIGO
+    // =================================================
+
     if (codigo) {
 
         codigo.textContent =
@@ -547,7 +586,7 @@ function mostrarCredencial(inscricao) {
 
 
     // =================================================
-    // GERAR QR CODE
+    // QR CODE
     // =================================================
 
     if (qrcode) {
@@ -555,22 +594,30 @@ function mostrarCredencial(inscricao) {
         qrcode.innerHTML =
             "";
 
-        new QRCode(
-            qrcode,
-            {
-                text:
-                    codigoCredencial,
 
-                width:
-                    180,
+        if (
+            typeof QRCode !==
+            "undefined"
+        ) {
 
-                height:
-                    180,
+            new QRCode(
+                qrcode,
+                {
+                    text:
+                        codigoCredencial,
 
-                correctLevel:
-                    QRCode.CorrectLevel.H
-            }
-        );
+                    width:
+                        180,
+
+                    height:
+                        180,
+
+                    correctLevel:
+                        QRCode.CorrectLevel.H
+                }
+            );
+
+        }
 
     }
 
@@ -592,24 +639,9 @@ function mostrarCredencial(inscricao) {
 
 }
 
-// =====================================================
-// ESCONDER PAGAMENTO
-// =====================================================
-
-function esconderPagamento() {
-
-    if (pagamentoInscricao) {
-
-        pagamentoInscricao.style.display =
-            "none";
-
-    }
-
-}
-
 
 // =====================================================
-// CARREGAR INSCRIÇÃO EXISTENTE
+// CARREGAR INSCRIÇÃO
 // =====================================================
 
 async function carregarInscricao() {
@@ -623,17 +655,27 @@ async function carregarInscricao() {
                 usuarioAtual.uid
             );
 
+
         const resultado =
             await getDoc(
                 referencia
             );
 
 
+        // =================================================
+        // NÃO POSSUI INSCRIÇÃO
+        // =================================================
+
         if (!resultado.exists()) {
 
-            inscricaoAtual = null;
+            inscricaoAtual =
+                null;
 
             esconderPagamento();
+
+            mostrarCredencial(
+                null
+            );
 
             return;
 
@@ -645,7 +687,7 @@ async function carregarInscricao() {
 
 
         // =================================================
-        // PREENCHER DADOS DA INSCRIÇÃO
+        // PREENCHER CAMPOS
         // =================================================
 
         if (categoria) {
@@ -687,10 +729,11 @@ async function carregarInscricao() {
 
 
         // =================================================
-        // RECUPERAR CUPOM DO FIRESTORE
+        // CUPOM
         // =================================================
 
-        cupomAtual = null;
+        cupomAtual =
+            null;
 
 
         if (
@@ -703,6 +746,7 @@ async function carregarInscricao() {
                     "cupons",
                     inscricaoAtual.cupom
                 );
+
 
             const cupomResultado =
                 await getDoc(
@@ -738,16 +782,21 @@ async function carregarInscricao() {
 
 
         // =================================================
-        // MOSTRAR PAGAMENTO
+        // PAGAMENTO
         // =================================================
 
         mostrarPagamento(
-    inscricaoAtual
-);
+            inscricaoAtual
+        );
 
-mostrarCredencial(
-    inscricaoAtual
-);
+
+        // =================================================
+        // CREDENCIAL
+        // =================================================
+
+        mostrarCredencial(
+            inscricaoAtual
+        );
 
 
         // =================================================
@@ -756,8 +805,20 @@ mostrarCredencial(
 
         if (mensagemInscricao) {
 
-            mensagemInscricao.textContent =
-                "Você já possui uma inscrição no CRFE 2027.";
+            if (
+                inscricaoAtual.pagamento ===
+                "pago"
+            ) {
+
+                mensagemInscricao.textContent =
+                    "Inscrição confirmada para o CRFE 2027.";
+
+            } else {
+
+                mensagemInscricao.textContent =
+                    "Você já possui uma inscrição no CRFE 2027.";
+
+            }
 
         }
 
@@ -794,6 +855,7 @@ async function carregarLotes() {
         return;
     }
 
+
     lote.innerHTML =
         '<option value="">Selecione o lote</option>';
 
@@ -815,10 +877,12 @@ async function carregarLotes() {
                 const dados =
                     documento.data();
 
+
                 const id =
                     Number(
                         documento.id
                     );
+
 
                 const configuracao =
                     LOTES[id];
@@ -834,11 +898,13 @@ async function carregarLotes() {
                         dados.inscritos || 0
                     );
 
+
                 const limite =
                     Number(
                         dados.limite ||
                         configuracao.vagas
                     );
+
 
                 const ativo =
                     dados.ativo !== false;
@@ -900,6 +966,7 @@ function obterValorBase() {
             lote?.value
         );
 
+
     const categoriaSelecionada =
         categoria?.value;
 
@@ -915,7 +982,9 @@ function obterValorBase() {
 
 
     const configuracao =
-        LOTES[loteSelecionado];
+        LOTES[
+            loteSelecionado
+        ];
 
 
     if (!configuracao) {
@@ -942,7 +1011,8 @@ function atualizarValores() {
         obterValorBase();
 
 
-    let desconto = 0;
+    let desconto =
+        0;
 
 
     if (
@@ -980,7 +1050,10 @@ function atualizarValores() {
     }
 
 
-    if (desconto > valorBase) {
+    if (
+        desconto >
+        valorBase
+    ) {
 
         desconto =
             valorBase;
@@ -1090,7 +1163,8 @@ btnAplicarCupom?.addEventListener(
                 .toUpperCase();
 
 
-        cupomAtual = null;
+        cupomAtual =
+            null;
 
 
         if (mensagemCupom) {
@@ -1126,7 +1200,9 @@ btnAplicarCupom?.addEventListener(
                 );
 
 
-            if (!resultado.exists()) {
+            if (
+                !resultado.exists()
+            ) {
 
                 mensagemCupom.textContent =
                     "Cupom não encontrado.";
@@ -1222,7 +1298,9 @@ categoria?.addEventListener(
     "change",
     () => {
 
-        cupomAtual = null;
+        cupomAtual =
+            null;
+
 
         if (mensagemCupom) {
 
@@ -1230,6 +1308,7 @@ categoria?.addEventListener(
                 "";
 
         }
+
 
         atualizarValores();
 
@@ -1380,7 +1459,8 @@ document
                 obterValorBase();
 
 
-            let desconto = 0;
+            let desconto =
+                0;
 
 
             if (
@@ -1418,7 +1498,10 @@ document
             }
 
 
-            if (desconto > valorBase) {
+            if (
+                desconto >
+                valorBase
+            ) {
 
                 desconto =
                     valorBase;
@@ -1702,19 +1785,34 @@ document
                     );
 
 
-                inscricaoAtual =
-                    resultado.data();
+                if (
+                    resultado.exists()
+                ) {
+
+                    inscricaoAtual =
+                        resultado.data();
+
+                }
 
 
                 mensagemInscricao.textContent =
                     "Inscrição registrada com sucesso!";
 
 
-                btnContinuarInscricao.disabled =
-                    true;
+                if (btnContinuarInscricao) {
+
+                    btnContinuarInscricao.disabled =
+                        true;
+
+                }
 
 
                 mostrarPagamento(
+                    inscricaoAtual
+                );
+
+
+                mostrarCredencial(
                     inscricaoAtual
                 );
 
@@ -1785,7 +1883,10 @@ document
         "click",
         async () => {
 
-            await signOut(auth);
+            await signOut(
+                auth
+            );
+
 
             window.location.href =
                 "login.html";
@@ -1818,6 +1919,10 @@ onAuthStateChanged(
 
         try {
 
+            // =============================================
+            // CARREGAR USUÁRIO
+            // =============================================
+
             const referencia =
                 doc(
                     db,
@@ -1847,7 +1952,16 @@ onAuthStateChanged(
             }
 
 
+            // =============================================
+            // CARREGAR LOTES
+            // =============================================
+
             await carregarLotes();
+
+
+            // =============================================
+            // CARREGAR INSCRIÇÃO
+            // =============================================
 
             await carregarInscricao();
 
