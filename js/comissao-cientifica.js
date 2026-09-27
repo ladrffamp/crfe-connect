@@ -207,6 +207,20 @@ const tipo =
         trabalho.status ||
         "em_avaliacao";
 
+let classeStatus = "status-avaliacao";
+
+if (status === "aprovado") {
+    classeStatus = "status-aprovado";
+}
+
+if (status === "aprovado_com_correcoes") {
+    classeStatus = "status-correcoes";
+}
+
+if (status === "reprovado") {
+    classeStatus = "status-reprovado";
+}
+    
     const avaliacaoFinalizada =
         trabalho.avaliacaoFinalizada === true;
 
