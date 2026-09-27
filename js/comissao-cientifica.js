@@ -224,6 +224,11 @@ if (status === "reprovado") {
     const avaliacaoFinalizada =
         trabalho.avaliacaoFinalizada === true;
 
+    const classeAvaliacao =
+    avaliacaoFinalizada
+        ? "avaliacao-finalizada"
+        : "";
+
     const arquivoNome =
         trabalho.arquivoNome ||
         "Arquivo não informado";
