@@ -90,6 +90,19 @@
         }
 
 
+        .palestrante-foto img {
+
+            width: 100%;
+
+            height: 100%;
+
+            object-fit: cover;
+
+            display: block;
+
+        }
+
+
         .palestrante-conteudo {
 
             padding: 22px;
@@ -120,7 +133,7 @@
         }
 
 
-        .palestrante-nome {
+        .palestrante-conteudo h3 {
 
             margin: 0 0 8px;
 
@@ -133,46 +146,28 @@
         }
 
 
-        .palestrante-profissao {
+        .palestrante-conteudo p {
 
             margin: 0 0 6px;
 
+        }
+
+
+        .palestrante-conteudo p strong {
+
             color: #0b7a3b;
-
-            font-weight: 700;
-
-        }
-
-
-        .palestrante-instituicao {
-
-            margin: 0 0 15px;
-
-            color: #64748b;
-
-            font-size: 14px;
-
-        }
-
-
-        .palestrante-tema {
-
-            padding-top: 15px;
-
-            border-top: 1px solid #e5e7eb;
-
-            color: #374151;
-
-            font-size: 15px;
-
-            line-height: 1.5;
 
         }
 
 
         .palestrante-curriculo {
 
-            margin-top: 15px;
+            margin-top: 15px !important;
+
+            padding-top: 15px;
+
+            border-top:
+                1px solid #e5e7eb;
 
             color: #64748b;
 
@@ -209,6 +204,284 @@
         }
 
 
+
+        /* =========================================
+           MINICURSOS
+        ========================================== */
+
+        .minicursos-container {
+
+            margin-top: 40px;
+
+            display: grid;
+
+            grid-template-columns:
+                repeat(
+                    auto-fit,
+                    minmax(280px, 1fr)
+                );
+
+            gap: 25px;
+
+        }
+
+
+        .minicurso-publico-card {
+
+            background: #ffffff;
+
+            border-radius: 18px;
+
+            padding: 24px;
+
+            box-shadow:
+                0 10px 30px
+                rgba(0, 0, 0, 0.08);
+
+            transition:
+                transform 0.2s ease,
+                box-shadow 0.2s ease;
+
+            text-align: left;
+
+        }
+
+
+        .minicurso-publico-card:hover {
+
+            transform:
+                translateY(-5px);
+
+            box-shadow:
+                0 15px 35px
+                rgba(0, 0, 0, 0.12);
+
+        }
+
+
+        .minicurso-publico-topo {
+
+            display: flex;
+
+            align-items: center;
+
+            justify-content:
+                space-between;
+
+            gap: 10px;
+
+            margin-bottom: 15px;
+
+        }
+
+
+        .minicurso-publico-label {
+
+            display: inline-block;
+
+            padding: 5px 10px;
+
+            border-radius: 20px;
+
+            background: #e8f5ee;
+
+            color: #0b7a3b;
+
+            font-size: 10px;
+
+            font-weight: 800;
+
+            letter-spacing: 0.08em;
+
+        }
+
+
+        .minicurso-publico-data {
+
+            color: #64748b;
+
+            font-size: 12px;
+
+            font-weight: 700;
+
+        }
+
+
+        .minicurso-publico-card h3 {
+
+            margin: 0 0 12px;
+
+            color: #111827;
+
+            font-size: 21px;
+
+            line-height: 1.25;
+
+        }
+
+
+        .minicurso-publico-card p {
+
+            color: #475569;
+
+            font-size: 14px;
+
+            line-height: 1.55;
+
+        }
+
+
+        .minicurso-publico-ministrante {
+
+            margin: 0 0 4px;
+
+        }
+
+
+        .minicurso-publico-ministrante strong {
+
+            color: #0b7a3b;
+
+        }
+
+
+        .minicurso-publico-instituicao {
+
+            margin: 0 0 15px;
+
+            color: #64748b;
+
+        }
+
+
+        .minicurso-publico-descricao {
+
+            margin-top: 15px;
+
+            padding-top: 15px;
+
+            border-top:
+                1px solid #e5e7eb;
+
+        }
+
+
+        .minicurso-publico-info {
+
+            display: grid;
+
+            gap: 10px;
+
+            margin-top: 18px;
+
+        }
+
+
+        .minicurso-publico-info span {
+
+            color: #475569;
+
+            font-size: 13px;
+
+        }
+
+
+        .minicurso-publico-info strong {
+
+            display: block;
+
+            margin-bottom: 2px;
+
+            color: #111827;
+
+        }
+
+
+        .minicurso-publico-rodape {
+
+            display: flex;
+
+            align-items: center;
+
+            justify-content:
+                space-between;
+
+            gap: 15px;
+
+            margin-top: 20px;
+
+            padding-top: 18px;
+
+            border-top:
+                1px solid #e5e7eb;
+
+        }
+
+
+        .minicurso-publico-rodape strong {
+
+            color: #0b7a3b;
+
+            font-size: 14px;
+
+        }
+
+
+        .minicurso-publico-btn {
+
+            display: inline-flex;
+
+            align-items: center;
+
+            justify-content: center;
+
+            min-height: 40px;
+
+            padding: 0 15px;
+
+            border-radius: 9px;
+
+            background: #0b7a3b;
+
+            color: #ffffff;
+
+            text-decoration: none;
+
+            font-size: 11px;
+
+            font-weight: 800;
+
+            transition:
+                background 0.2s ease;
+
+        }
+
+
+        .minicurso-publico-btn:hover {
+
+            background: #086330;
+
+        }
+
+
+        .minicursos-vazio,
+        .minicurso-publico-loading {
+
+            grid-column: 1 / -1;
+
+            padding: 35px;
+
+            border-radius: 15px;
+
+            background: #ffffff;
+
+            color: #64748b;
+
+            text-align: center;
+
+        }
+
+
         @media (max-width: 700px) {
 
             .palestrantes-container {
@@ -224,6 +497,38 @@
 
             }
 
+
+            .minicursos-container {
+
+                grid-template-columns: 1fr;
+
+            }
+
+
+            .minicurso-publico-topo {
+
+                align-items: flex-start;
+
+                flex-direction: column;
+
+            }
+
+
+            .minicurso-publico-rodape {
+
+                flex-direction: column;
+
+                align-items: stretch;
+
+            }
+
+
+            .minicurso-publico-btn {
+
+                width: 100%;
+
+            }
+
         }
 
     </style>
@@ -233,6 +538,10 @@
 
 <body>
 
+
+<!-- =========================================
+     CABEÇALHO
+========================================== -->
 
 <header class="topbar">
 
@@ -278,7 +587,6 @@
 
 
 <main>
-
 
 
     <!-- =========================================
@@ -601,10 +909,24 @@
 
         <p>
 
-            Os minicursos do CRFE 2027
-            serão divulgados em breve.
+            Escolha entre os minicursos
+            disponíveis no CRFE 2027.
 
         </p>
+
+
+        <div
+            id="listaMinicursosPublico"
+            class="minicursos-container"
+        >
+
+            <div class="minicurso-publico-loading">
+
+                Carregando minicursos...
+
+            </div>
+
+        </div>
 
 
     </section>
@@ -664,6 +986,10 @@
 
 
 
+<!-- =========================================
+     RODAPÉ
+========================================== -->
+
 <footer>
 
 
@@ -715,7 +1041,7 @@
 
 <script
     type="module"
-    src="js/index.js?v=1"
+    src="js/index.js?v=2"
 ></script>
 
 
