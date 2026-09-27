@@ -3015,6 +3015,396 @@ async function atualizarCredencial() {
     }
 }
 
+// =====================================================
+// TRABALHOS CIENTÍFICOS
+// GOOGLE DRIVE
+// =====================================================
+
+function crfeArquivoParaBase64(
+    arquivo
+) {
+
+    return new Promise(
+        (resolve, reject) => {
+
+            const reader =
+                new FileReader();
+
+            reader.onload = () => {
+
+                resolve(
+                    reader.result
+                );
+
+            };
+
+            reader.onerror = () => {
+
+                reject(
+                    new Error(
+                        "Não foi possível ler o arquivo."
+                    )
+                );
+
+            };
+
+            reader.readAsDataURL(
+                arquivo
+            );
+
+        }
+    );
+}
+
+
+// =====================================================
+// GERAR TOKEN
+// =====================================================
+
+function crfeGerarTokenUpload() {
+
+    return (
+        "crfe_" +
+        Date.now() +
+        "_" +
+        Math.random()
+            .toString(36)
+            .substring(2, 12)
+    );
+}
+
+
+// =====================================================
+// ENVIAR ARQUIVO PARA GOOGLE DRIVE
+// =====================================================
+
+async function crfeEnviarArquivoDrive(
+    arquivo,
+    tokenUpload
+) {
+
+    if (!arquivo) {
+
+        throw new Error(
+            "Selecione um arquivo PDF."
+        );
+
+    }
+
+
+    if (
+        arquivo.type !==
+        "application/pdf"
+    ) {
+
+        throw new Error(
+            "O arquivo precisa estar no formato PDF."
+        );
+
+    }
+
+
+    if (
+        arquivo.size >
+        LIMITE_ARQUIVO_TRABALHO
+    ) {
+
+        throw new Error(
+            "O arquivo não pode ultrapassar 10 MB."
+        );
+
+    }
+
+
+    const base64 =
+        await crfeArquivoParaBase64(
+            arquivo
+        );
+
+
+    const idToken =
+        await usuarioAtual.getIdToken(
+            true
+        );
+
+
+    const payload = {
+
+        token:
+            tokenUpload,
+
+        idToken:
+            idToken,
+
+        fileName:
+            arquivo.name,
+
+        mimeType:
+            arquivo.type,
+
+        data:
+            base64
+
+    };
+
+
+    /*
+     * IMPORTANTE:
+     *
+     * text/plain evita o preflight
+     * OPTIONS que costuma causar problema
+     * em Web Apps do Google Apps Script.
+     */
+
+    const resposta =
+        await fetch(
+            URL_UPLOAD_TRABALHOS,
+            {
+
+                method:
+                    "POST",
+
+                headers: {
+
+                    "Content-Type":
+                        "text/plain;charset=utf-8"
+
+                },
+
+                body:
+                    JSON.stringify(
+                        payload
+                    )
+
+            }
+        );
+
+
+    if (!resposta.ok) {
+
+        throw new Error(
+            "Não foi possível enviar o arquivo."
+        );
+
+    }
+
+
+    /*
+     * Não dependemos da resposta final
+     * do POST.
+     *
+     * O JSONP será usado para confirmar
+     * que o arquivo realmente chegou ao Drive.
+     */
+
+    return true;
+}
+
+
+// =====================================================
+// CONSULTAR STATUS VIA JSONP
+// =====================================================
+
+function crfeConsultarUpload(
+    token
+) {
+
+    return new Promise(
+        (resolve, reject) => {
+
+            const callback =
+                "crfeCallback_" +
+                Date.now() +
+                "_" +
+                Math.random()
+                    .toString(36)
+                    .substring(2, 7);
+
+
+            const script =
+                document.createElement(
+                    "script"
+                );
+
+
+            let finalizado =
+                false;
+
+
+            const limpar =
+                () => {
+
+                    if (
+                        finalizado
+                    ) {
+                        return;
+                    }
+
+
+                    finalizado =
+                        true;
+
+
+                    clearTimeout(
+                        timeout
+                    );
+
+
+                    script.remove();
+
+
+                    try {
+
+                        delete window[
+                            callback
+                        ];
+
+                    } catch {
+
+                        window[
+                            callback
+                        ] =
+                            undefined;
+
+                    }
+
+                };
+
+
+            const timeout =
+                setTimeout(
+                    () => {
+
+                        limpar();
+
+                        reject(
+                            new Error(
+                                "Tempo limite ao consultar o upload."
+                            )
+                        );
+
+                    },
+                    30000
+                );
+
+
+            window[callback] =
+                resultado => {
+
+                    limpar();
+
+                    resolve(
+                        resultado
+                    );
+
+                };
+
+
+            script.onerror =
+                () => {
+
+                    limpar();
+
+                    reject(
+                        new Error(
+                            "Não foi possível consultar o status do upload."
+                        )
+                    );
+
+                };
+
+
+            const url =
+                URL_UPLOAD_TRABALHOS +
+                "?action=status" +
+                "&token=" +
+                encodeURIComponent(
+                    token
+                ) +
+                "&callback=" +
+                encodeURIComponent(
+                    callback
+                );
+
+
+            script.src =
+                url;
+
+
+            document.body.appendChild(
+                script
+            );
+
+        }
+    );
+}
+
+
+// =====================================================
+// AGUARDAR CONCLUSÃO
+// =====================================================
+
+async function crfeAguardarUpload(
+    token
+) {
+
+    const limiteTentativas =
+        60;
+
+
+    for (
+        let tentativa = 0;
+        tentativa <
+        limiteTentativas;
+        tentativa++
+    ) {
+
+        const resultado =
+            await crfeConsultarUpload(
+                token
+            );
+
+
+        if (
+            resultado &&
+            resultado.status ===
+            "concluido"
+        ) {
+
+            return resultado;
+
+        }
+
+
+        if (
+            resultado &&
+            resultado.status ===
+            "erro"
+        ) {
+
+            throw new Error(
+                resultado.erro ||
+                "Erro ao processar o arquivo."
+            );
+
+        }
+
+
+        await new Promise(
+            resolve =>
+                setTimeout(
+                    resolve,
+                    1000
+                )
+        );
+
+    }
+
+
+    throw new Error(
+        "O upload demorou mais do que o esperado."
+    );
+}
 
 // =====================================================
 // SAIR
