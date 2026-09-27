@@ -10,680 +10,1661 @@
         content="width=device-width, initial-scale=1.0"
     >
 
-    <title>
-        CRFE Connect | Área do Participante
-    </title>
+    <title>Área do Participante | CRFE 2027</title>
 
     <link
         rel="stylesheet"
         href="css/styles.css"
     >
 
+    <style>
+
+        /* =====================================================
+           ÁREA DO PARTICIPANTE
+        ===================================================== */
+
+        .participante-page {
+            min-height: 100vh;
+            background: #f5f7f6;
+        }
+
+
+        /* =====================================================
+           CONTAINER
+        ===================================================== */
+
+        .participante-container {
+            width: min(1180px, 92%);
+            margin: 0 auto;
+            padding: 40px 0 70px;
+        }
+
+
+        /* =====================================================
+           CABEÇALHO DA ÁREA
+        ===================================================== */
+
+        .participante-header {
+            margin-bottom: 30px;
+        }
+
+        .participante-header .section-label {
+            display: inline-block;
+            margin-bottom: 8px;
+            font-size: 13px;
+            font-weight: 800;
+            letter-spacing: 1.5px;
+            color: #0b7a3b;
+        }
+
+        .participante-header h1 {
+            margin: 0 0 8px;
+            font-size: clamp(28px, 4vw, 42px);
+            color: #123b29;
+        }
+
+        .participante-header p {
+            margin: 0;
+            color: #64706a;
+            font-size: 16px;
+        }
+
+
+        /* =====================================================
+           MENU
+        ===================================================== */
+
+        .participante-menu {
+            display: grid;
+            grid-template-columns: repeat(5, 1fr);
+            gap: 12px;
+            margin-bottom: 35px;
+        }
+
+        .participante-menu a {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            min-height: 52px;
+            padding: 12px 10px;
+            border-radius: 12px;
+            background: #ffffff;
+            border: 1px solid #e3e9e5;
+            color: #244235;
+            text-decoration: none;
+            font-size: 14px;
+            font-weight: 700;
+            transition: 0.2s ease;
+        }
+
+        .participante-menu a:hover {
+            border-color: #0b7a3b;
+            color: #0b7a3b;
+            transform: translateY(-1px);
+        }
+
+
+        /* =====================================================
+           SEÇÕES
+        ===================================================== */
+
+        .participante-section {
+            margin-bottom: 28px;
+            padding: 30px;
+            background: #ffffff;
+            border: 1px solid #e3e9e5;
+            border-radius: 18px;
+            box-shadow: 0 8px 30px rgba(20, 60, 40, 0.05);
+        }
+
+        .participante-section .section-label {
+            display: block;
+            margin-bottom: 6px;
+            font-size: 12px;
+            font-weight: 800;
+            letter-spacing: 1.4px;
+            color: #0b7a3b;
+        }
+
+        .participante-section h2 {
+            margin: 0 0 8px;
+            color: #173d2c;
+            font-size: 24px;
+        }
+
+        .participante-section > p {
+            margin: 0 0 25px;
+            color: #69756f;
+        }
+
+
+        /* =====================================================
+           PERFIL
+        ===================================================== */
+
+        .perfil-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 16px;
+        }
+
+        .perfil-item {
+            padding: 16px;
+            border-radius: 12px;
+            background: #f7f9f8;
+            border: 1px solid #e5ebe7;
+        }
+
+        .perfil-item .label {
+            display: block;
+            margin-bottom: 5px;
+            color: #78847e;
+            font-size: 12px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .perfil-item strong {
+            display: block;
+            color: #1f352a;
+            font-size: 15px;
+            word-break: break-word;
+        }
+
+
+        /* =====================================================
+           FORMULÁRIO
+        ===================================================== */
+
+        .form-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 20px;
+        }
+
+        .form-group {
+            display: flex;
+            flex-direction: column;
+            gap: 7px;
+        }
+
+        .form-group.full {
+            grid-column: 1 / -1;
+        }
+
+        .form-group label {
+            color: #263c31;
+            font-size: 14px;
+            font-weight: 800;
+        }
+
+        .form-group small {
+            color: #7b867f;
+            font-size: 12px;
+        }
+
+        .form-group input,
+        .form-group select {
+            width: 100%;
+            box-sizing: border-box;
+            min-height: 48px;
+            padding: 12px 14px;
+            border: 1px solid #d9e2dc;
+            border-radius: 10px;
+            background: #ffffff;
+            color: #263c31;
+            font-family: inherit;
+            font-size: 14px;
+            outline: none;
+        }
+
+        .form-group input:focus,
+        .form-group select:focus {
+            border-color: #0b7a3b;
+            box-shadow: 0 0 0 3px rgba(11, 122, 59, 0.08);
+        }
+
+        .form-group input[readonly] {
+            background: #f5f7f6;
+            color: #66736c;
+        }
+
+
+        /* =====================================================
+           CUPOM
+        ===================================================== */
+
+        .cupom-row {
+            display: grid;
+            grid-template-columns: 1fr auto;
+            gap: 10px;
+        }
+
+        .btn-secondary {
+            min-height: 48px;
+            padding: 0 20px;
+            border: 1px solid #0b7a3b;
+            border-radius: 10px;
+            background: #ffffff;
+            color: #0b7a3b;
+            font-family: inherit;
+            font-weight: 800;
+            cursor: pointer;
+            transition: 0.2s ease;
+        }
+
+        .btn-secondary:hover {
+            background: #0b7a3b;
+            color: #ffffff;
+        }
+
+        .form-message {
+            margin-top: 8px;
+            font-size: 13px;
+            font-weight: 600;
+        }
+
+
+        /* =====================================================
+           MINICURSOS
+        ===================================================== */
+
+        .minicursos {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 14px;
+        }
+
+        .minicurso-card {
+            position: relative;
+            padding: 18px;
+            border: 1px solid #e2e8e4;
+            border-radius: 12px;
+            background: #f8faf9;
+        }
+
+        .minicurso-card label {
+            display: flex;
+            align-items: flex-start;
+            gap: 10px;
+            cursor: pointer;
+        }
+
+        .minicurso-card input {
+            margin-top: 3px;
+            accent-color: #0b7a3b;
+        }
+
+        .minicurso-card strong {
+            display: block;
+            margin-bottom: 4px;
+            color: #244235;
+        }
+
+        .minicurso-card small {
+            color: #7b867f;
+        }
+
+
+        /* =====================================================
+           VALORES
+        ===================================================== */
+
+        .valores-box {
+            margin-top: 25px;
+            padding: 22px;
+            border-radius: 14px;
+            background: #f7f9f8;
+            border: 1px solid #e3e9e5;
+        }
+
+        .valor-linha {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 20px;
+            padding: 8px 0;
+            color: #536158;
+            font-size: 14px;
+        }
+
+        .valor-linha.desconto {
+            color: #168344;
+        }
+
+        .valor-linha.total {
+            margin-top: 8px;
+            padding-top: 16px;
+            border-top: 1px solid #dce4df;
+            color: #173d2c;
+            font-size: 19px;
+            font-weight: 900;
+        }
+
+
+        /* =====================================================
+           BOTÕES
+        ===================================================== */
+
+        .btn-primary {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            min-height: 50px;
+            padding: 0 28px;
+            border: none;
+            border-radius: 10px;
+            background: #0b7a3b;
+            color: #ffffff;
+            font-family: inherit;
+            font-size: 14px;
+            font-weight: 900;
+            cursor: pointer;
+            transition: 0.2s ease;
+        }
+
+        .btn-primary:hover {
+            background: #086330;
+            transform: translateY(-1px);
+        }
+
+        .form-actions {
+            display: flex;
+            justify-content: flex-end;
+            margin-top: 25px;
+        }
+
+
+        /* =====================================================
+           RESUMO DA INSCRIÇÃO
+        ===================================================== */
+
+        .inscricao-resumo {
+            display: none;
+        }
+
+        .inscricao-status {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+            margin-bottom: 24px;
+            padding: 18px 20px;
+            border-radius: 14px;
+            background: #eef8f1;
+            border: 1px solid #cfe7d7;
+        }
+
+        .inscricao-status-icon {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 42px;
+            height: 42px;
+            flex-shrink: 0;
+            border-radius: 50%;
+            background: #0b7a3b;
+            color: #ffffff;
+            font-size: 21px;
+            font-weight: 900;
+        }
+
+        .inscricao-status strong {
+            display: block;
+            margin-bottom: 3px;
+            color: #155d32;
+        }
+
+        .inscricao-status span {
+            color: #52705d;
+            font-size: 13px;
+        }
+
+        .resumo-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 15px;
+        }
+
+        .resumo-item {
+            padding: 17px;
+            border-radius: 12px;
+            background: #f7f9f8;
+            border: 1px solid #e3e9e5;
+        }
+
+        .resumo-item .label {
+            display: block;
+            margin-bottom: 5px;
+            color: #7a857f;
+            font-size: 11px;
+            font-weight: 800;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .resumo-item strong {
+            color: #20372b;
+            font-size: 15px;
+        }
+
+        .resumo-valor {
+            margin-top: 20px;
+            padding-top: 18px;
+            border-top: 1px solid #e1e7e3;
+        }
+
+        .resumo-valor-linha {
+            display: flex;
+            justify-content: space-between;
+            padding: 6px 0;
+            color: #5d6962;
+        }
+
+        .resumo-valor-linha.total {
+            margin-top: 7px;
+            padding-top: 14px;
+            border-top: 1px solid #e1e7e3;
+            color: #173d2c;
+            font-size: 18px;
+            font-weight: 900;
+        }
+
+
+        /* =====================================================
+           PAGAMENTO
+        ===================================================== */
+
+        .pagamento-confirmado {
+            display: none;
+            align-items: center;
+            gap: 16px;
+            padding: 20px;
+            border-radius: 14px;
+            background: #eef8f1;
+            border: 1px solid #cce5d4;
+        }
+
+        .pagamento-confirmado-icon {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 46px;
+            height: 46px;
+            flex-shrink: 0;
+            border-radius: 50%;
+            background: #0b7a3b;
+            color: #ffffff;
+            font-size: 23px;
+            font-weight: 900;
+        }
+
+        .pagamento-confirmado strong {
+            display: block;
+            margin-bottom: 4px;
+            color: #155d32;
+            font-size: 17px;
+        }
+
+        .pagamento-confirmado p {
+            margin: 0;
+            color: #5c7564;
+            font-size: 13px;
+        }
+
+        .pagamento-opcoes {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+        }
+
+        .pagamento-box {
+            padding: 22px;
+            border-radius: 14px;
+            background: #f8faf9;
+            border: 1px solid #e1e8e3;
+        }
+
+        .pagamento-box h3 {
+            margin: 0 0 8px;
+            color: #203b2c;
+            font-size: 17px;
+        }
+
+        .pagamento-box p {
+            margin: 0 0 16px;
+            color: #6d7872;
+            font-size: 13px;
+        }
+
+        .pix-chave {
+            padding: 13px;
+            border-radius: 9px;
+            background: #ffffff;
+            border: 1px dashed #b8c9bd;
+            color: #173d2c;
+            font-weight: 800;
+            word-break: break-all;
+        }
+
+        .btn-copiar {
+            width: 100%;
+            margin-top: 10px;
+            min-height: 44px;
+            border: none;
+            border-radius: 9px;
+            background: #173d2c;
+            color: #ffffff;
+            font-family: inherit;
+            font-weight: 800;
+            cursor: pointer;
+        }
+
+        .btn-copiar:hover {
+            background: #0b7a3b;
+        }
+
+        .btn-cartao {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 100%;
+            min-height: 46px;
+            border-radius: 9px;
+            background: #0b7a3b;
+            color: #ffffff;
+            text-decoration: none;
+            font-weight: 900;
+        }
+
+        .btn-cartao:hover {
+            background: #086330;
+        }
+
+        .pagamento-status {
+            margin-top: 18px;
+            padding: 14px;
+            border-radius: 10px;
+            background: #fff8e8;
+            border: 1px solid #f0dfad;
+            color: #725817;
+            font-size: 13px;
+            font-weight: 700;
+        }
+
+
+        /* =====================================================
+           CREDENCIAL
+        ===================================================== */
+
+        .credencial-digital {
+            display: none;
+            overflow: hidden;
+            border-radius: 18px;
+            background: #ffffff;
+            border: 1px solid #dce6df;
+            box-shadow: 0 10px 35px rgba(15, 60, 35, 0.08);
+        }
+
+        .credencial-topo {
+            padding: 22px 25px;
+            background: #0b7a3b;
+            color: #ffffff;
+        }
+
+        .credencial-topo strong {
+            display: block;
+            font-size: 20px;
+        }
+
+        .credencial-topo span {
+            display: block;
+            margin-top: 4px;
+            opacity: 0.85;
+            font-size: 12px;
+            letter-spacing: 1px;
+        }
+
+        .credencial-conteudo {
+            display: grid;
+            grid-template-columns: 1fr 190px;
+            gap: 30px;
+            align-items: center;
+            padding: 28px;
+        }
+
+        .credencial-identificacao {
+            display: grid;
+            gap: 15px;
+        }
+
+        .credencial-identificacao div {
+            padding-bottom: 12px;
+            border-bottom: 1px solid #edf1ee;
+        }
+
+        .credencial-identificacao span {
+            display: block;
+            margin-bottom: 4px;
+            color: #7b867f;
+            font-size: 11px;
+            font-weight: 800;
+            text-transform: uppercase;
+        }
+
+        .credencial-identificacao strong {
+            color: #21372b;
+            font-size: 15px;
+        }
+
+        .qrcode-area {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            min-height: 170px;
+            border-radius: 14px;
+            background: #f7f9f8;
+        }
+
+        .credencial-status {
+            padding: 10px 14px;
+            border-radius: 8px;
+            background: #eef8f1;
+            color: #156331;
+            font-size: 12px;
+            font-weight: 800;
+        }
+
+        .credencial-codigo {
+            margin-top: 15px;
+            color: #718078;
+            font-size: 11px;
+            font-weight: 700;
+        }
+
+        .credencial-rodape {
+            padding: 15px 25px;
+            border-top: 1px solid #e6ebe8;
+            color: #7a857f;
+            font-size: 11px;
+            text-align: center;
+        }
+
+
+        /* =====================================================
+           CERTIFICADO
+        ===================================================== */
+
+        .certificado-placeholder {
+            padding: 30px;
+            border: 1px dashed #cbd8cf;
+            border-radius: 14px;
+            background: #f8faf9;
+            text-align: center;
+        }
+
+        .certificado-placeholder strong {
+            display: block;
+            margin-bottom: 6px;
+            color: #264234;
+        }
+
+        .certificado-placeholder p {
+            margin: 0;
+            color: #7a857f;
+            font-size: 13px;
+        }
+
+
+        /* =====================================================
+           RESPONSIVO
+        ===================================================== */
+
+        @media (max-width: 900px) {
+
+            .participante-menu {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .perfil-grid,
+            .resumo-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .minicursos {
+                grid-template-columns: 1fr;
+            }
+
+            .pagamento-opcoes {
+                grid-template-columns: 1fr;
+            }
+
+            .credencial-conteudo {
+                grid-template-columns: 1fr;
+            }
+
+        }
+
+
+        @media (max-width: 600px) {
+
+            .participante-container {
+                width: 94%;
+                padding-top: 25px;
+            }
+
+            .participante-section {
+                padding: 20px;
+                border-radius: 14px;
+            }
+
+            .participante-menu {
+                grid-template-columns: 1fr 1fr;
+            }
+
+            .participante-menu a {
+                min-height: 46px;
+                font-size: 12px;
+            }
+
+            .perfil-grid,
+            .resumo-grid,
+            .form-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .form-group.full {
+                grid-column: auto;
+            }
+
+            .cupom-row {
+                grid-template-columns: 1fr;
+            }
+
+            .form-actions {
+                justify-content: stretch;
+            }
+
+            .btn-primary {
+                width: 100%;
+            }
+
+            .credencial-conteudo {
+                padding: 20px;
+            }
+
+        }
+
+    </style>
+
 </head>
 
 
-<body>
+<body class="participante-page">
 
 
-<header class="topbar">
+    <!-- =====================================================
+         CABEÇALHO
+    ====================================================== -->
 
-    <div class="container topbar-content">
+    <header class="site-header">
 
-        <div class="brand">
+        <div class="container">
 
-            <strong>
-                CRFE CONNECT
-            </strong>
-
-            <span>
-                Área do Participante
-            </span>
-
-        </div>
-
-
-        <nav>
-
-            <a href="index.html">
-                Início
+            <a
+                href="index.html"
+                class="logo"
+            >
+                CRFE
+                <span>2027</span>
             </a>
 
-            <button
-                type="button"
-                id="btnSair"
-                class="btn btn-outline"
-            >
-                Sair
-            </button>
-
-        </nav>
-
-    </div>
-
-</header>
-
-
-
-<main class="container">
-
-
-    <!-- ================================================= -->
-    <!-- CABEÇALHO -->
-    <!-- ================================================= -->
-
-    <section class="page-header">
-
-        <span class="section-label">
-            CRFE 2027
-        </span>
-
-        <h1 id="saudacao">
-            Olá! Seja bem-vindo(a) ao CRFE 2027.
-        </h1>
-
-        <p>
-            Gerencie sua inscrição, acompanhe sua programação
-            e acesse sua credencial digital.
-        </p>
-
-    </section>
-
-
-
-    <!-- ================================================= -->
-    <!-- MENU -->
-    <!-- ================================================= -->
-
-    <section class="participant-menu">
-
-
-        <a
-            href="#perfil"
-            class="participant-menu-item"
-        >
-
-            <span class="menu-icon">
-                👤
-            </span>
-
-            <strong>
-                Meu Perfil
-            </strong>
-
-            <small>
-                Seus dados pessoais
-            </small>
-
-        </a>
-
-
-
-        <a
-            href="#inscricao"
-            class="participant-menu-item"
-        >
-
-            <span class="menu-icon">
-                🎟️
-            </span>
-
-            <strong>
-                Minha Inscrição
-            </strong>
-
-            <small>
-                Inscrição no CRFE 2027
-            </small>
-
-        </a>
-
-
-
-        <a
-            href="#programacao"
-            class="participant-menu-item"
-        >
-
-            <span class="menu-icon">
-                📅
-            </span>
-
-            <strong>
-                Minha Programação
-            </strong>
-
-            <small>
-                Palestras e minicursos
-            </small>
-
-        </a>
-
-
-
-        <a
-            href="#credencial"
-            class="participant-menu-item"
-        >
-
-            <span class="menu-icon">
-                📱
-            </span>
-
-            <strong>
-                Minha Credencial
-            </strong>
-
-            <small>
-                QR Code e acesso
-            </small>
-
-        </a>
-
-
-
-        <a
-            href="#certificado"
-            class="participant-menu-item"
-        >
-
-            <span class="menu-icon">
-                📄
-            </span>
-
-            <strong>
-                Meu Certificado
-            </strong>
-
-            <small>
-                Certificado do congresso
-            </small>
-
-        </a>
-
-
-    </section>
-
-
-
-    <!-- ================================================= -->
-    <!-- PERFIL -->
-    <!-- ================================================= -->
-
-    <section
-        id="perfil"
-        class="content-section"
-    >
-
-        <span class="section-label">
-            MEU PERFIL
-        </span>
-
-        <h2>
-            Dados do participante
-        </h2>
-
-        <p>
-            Confira os dados utilizados no seu cadastro.
-        </p>
-
-
-        <div class="profile-grid">
-
-
-            <div class="profile-item">
-
-                <span>
-                    Nome completo
-                </span>
-
-                <strong id="perfilNome">
-                    -
-                </strong>
-
-            </div>
-
-
-            <div class="profile-item">
-
-                <span>
-                    E-mail
-                </span>
-
-                <strong id="perfilEmail">
-                    -
-                </strong>
-
-            </div>
-
-
-            <div class="profile-item">
-
-                <span>
-                    CPF
-                </span>
-
-                <strong id="perfilCpf">
-                    -
-                </strong>
-
-            </div>
-
-
-            <div class="profile-item">
-
-                <span>
-                    Data de nascimento
-                </span>
-
-                <strong id="perfilNascimento">
-                    -
-                </strong>
-
-            </div>
-
-
-            <div class="profile-item">
-
-                <span>
-                    Telefone / WhatsApp
-                </span>
-
-                <strong id="perfilTelefone">
-                    -
-                </strong>
-
-            </div>
-
-
-            <div class="profile-item">
-
-                <span>
-                    Cidade
-                </span>
-
-                <strong id="perfilCidade">
-                    -
-                </strong>
-
-            </div>
-
-
-            <div class="profile-item">
-
-                <span>
-                    Estado
-                </span>
-
-                <strong id="perfilEstado">
-                    -
-                </strong>
-
-            </div>
-
-
-            <div class="profile-item">
-
-                <span>
-                    Instituição
-                </span>
-
-                <strong id="perfilInstituicao">
-                    -
-                </strong>
-
-            </div>
-
-
-            <div class="profile-item">
-
-                <span>
-                    Curso / Profissão
-                </span>
-
-                <strong id="perfilCurso">
-                    -
-                </strong>
-
-            </div>
-
+            <nav>
+
+                <a href="index.html">
+                    Início
+                </a>
+
+                <a href="area-participante.html">
+                    Área do Participante
+                </a>
+
+                <a
+                    href="#"
+                    id="btnSair"
+                >
+                    Sair
+                </a>
+
+            </nav>
 
         </div>
 
-    </section>
+    </header>
 
 
 
-    <!-- ================================================= -->
-    <!-- INSCRIÇÃO -->
-    <!-- ================================================= -->
+    <!-- =====================================================
+         CONTEÚDO
+    ====================================================== -->
 
-    <section
-        id="inscricao"
-        class="content-section"
-    >
+    <main class="participante-container">
 
-        <span class="section-label">
-            INSCRIÇÃO
-        </span>
 
-        <h2>
-            Minha inscrição
-        </h2>
+        <!-- CABEÇALHO -->
 
-        <p>
-            Preencha os dados abaixo para realizar sua
-            inscrição no CRFE 2027.
-        </p>
+        <div class="participante-header">
 
+            <span class="section-label">
+                CRFE CONNECT
+            </span>
 
-        <form id="formInscricao">
+            <h1>
+                Olá! Seja bem-vindo(a) ao CRFE 2027.
+            </h1>
 
+            <p>
+                Gerencie sua inscrição, programação, credencial e certificado.
+            </p>
 
-            <!-- CATEGORIA -->
+        </div>
 
-            <div class="form-group">
 
-                <label for="categoria">
-                    Categoria do participante
-                </label>
 
-                <select
-                    id="categoria"
-                    required
-                >
+        <!-- =================================================
+             MENU
+        ================================================== -->
 
-                    <option value="">
-                        Selecione sua categoria
-                    </option>
+        <div class="participante-menu">
 
-                    <option value="estudante_fisioterapia">
-                        Estudante de Fisioterapia
-                    </option>
+            <a href="#perfil">
+                Meu Perfil
+            </a>
 
-                    <option value="fisioterapeuta">
-                        Fisioterapeuta
-                    </option>
+            <a href="#inscricao">
+                Minha Inscrição
+            </a>
 
-                    <option value="profissional_saude">
-                        Profissional da Saúde
-                    </option>
+            <a href="#programacao">
+                Minha Programação
+            </a>
 
-                    <option value="profissional_esporte">
-                        Profissional do Esporte
-                    </option>
+            <a href="#credencial">
+                Minha Credencial
+            </a>
 
-                    <option value="atleta">
-                        Atleta
-                    </option>
+            <a href="#certificado">
+                Meu Certificado
+            </a>
 
-                    <option value="outro">
-                        Outro
-                    </option>
+        </div>
 
-                </select>
 
-            </div>
 
+        <!-- =================================================
+             PERFIL
+        ================================================== -->
 
+        <section
+            id="perfil"
+            class="participante-section"
+        >
 
-            <!-- INSTITUIÇÃO -->
+            <span class="section-label">
+                PERFIL
+            </span>
 
-            <div class="form-group">
+            <h2>
+                Meu Perfil
+            </h2>
 
-                <label for="instituicaoInscricao">
-                    Instituição
-                </label>
+            <p>
+                Dados vinculados à sua conta.
+            </p>
 
-                <input
-                    type="text"
-                    id="instituicaoInscricao"
-                    placeholder="Digite sua instituição"
-                    required
-                >
 
-                <small>
-                    Informação vinculada ao seu cadastro.
-                </small>
+            <div class="perfil-grid">
 
-            </div>
 
+                <div class="perfil-item">
 
-
-            <!-- LOTE -->
-
-            <div class="form-group">
-
-                <label for="lote">
-                    Lote de inscrição
-                </label>
-
-                <select
-                    id="lote"
-                    required
-                >
-
-                    <option value="">
-                        Selecione o lote
-                    </option>
-
-                </select>
-
-                <small id="informacaoLote"></small>
-
-            </div>
-
-
-
-            <!-- CUPOM -->
-
-            <div class="form-group">
-
-                <label for="cupom">
-                    Cupom de desconto
-                </label>
-
-                <div class="input-button">
-
-                    <input
-                        type="text"
-                        id="cupom"
-                        placeholder="Digite seu cupom"
-                    >
-
-                    <button
-                        type="button"
-                        id="btnAplicarCupom"
-                        class="btn btn-primary"
-                    >
-                        APLICAR
-                    </button>
-
-                </div>
-
-                <p
-                    id="mensagemCupom"
-                    class="form-message"
-                ></p>
-
-            </div>
-
-
-
-            <!-- MINICURSOS -->
-
-            <div class="form-group">
-
-                <label>
-                    Minicursos
-                </label>
-
-                <p>
-                    Os minicursos serão divulgados posteriormente.
-                </p>
-
-
-                <label class="checkbox-item">
-
-                    <input
-                        type="checkbox"
-                        name="minicurso"
-                        value="minicurso_1"
-                    >
-
-                    Minicurso 1
-
-                    <small>
-                        Em breve
-                    </small>
-
-                </label>
-
-
-                <label class="checkbox-item">
-
-                    <input
-                        type="checkbox"
-                        name="minicurso"
-                        value="minicurso_2"
-                    >
-
-                    Minicurso 2
-
-                    <small>
-                        Em breve
-                    </small>
-
-                </label>
-
-
-                <label class="checkbox-item">
-
-                    <input
-                        type="checkbox"
-                        name="minicurso"
-                        value="minicurso_3"
-                    >
-
-                    Minicurso 3
-
-                    <small>
-                        Em breve
-                    </small>
-
-                </label>
-
-            </div>
-
-
-
-            <!-- VALORES -->
-
-            <div class="price-box">
-
-                <div>
-
-                    <span>
-                        Valor da inscrição
+                    <span class="label">
+                        Nome
                     </span>
 
-                    <strong id="valorOriginal">
-                        R$ 0,00
+                    <strong id="perfilNome">
+                        -
                     </strong>
 
                 </div>
 
 
-                <div
-                    id="linhaDesconto"
-                    style="display: none;"
-                >
+                <div class="perfil-item">
 
-                    <span>
-                        Desconto
+                    <span class="label">
+                        E-mail
                     </span>
 
-                    <strong id="valorDesconto">
-                        R$ 0,00
+                    <strong id="perfilEmail">
+                        -
                     </strong>
 
                 </div>
 
 
-                <div>
+                <div class="perfil-item">
 
-                    <span>
-                        Total
+                    <span class="label">
+                        CPF
                     </span>
 
-                    <strong id="valorInscricao">
-                        R$ 0,00
+                    <strong id="perfilCpf">
+                        -
                     </strong>
 
                 </div>
+
+
+                <div class="perfil-item">
+
+                    <span class="label">
+                        Nascimento
+                    </span>
+
+                    <strong id="perfilNascimento">
+                        -
+                    </strong>
+
+                </div>
+
+
+                <div class="perfil-item">
+
+                    <span class="label">
+                        Telefone
+                    </span>
+
+                    <strong id="perfilTelefone">
+                        -
+                    </strong>
+
+                </div>
+
+
+                <div class="perfil-item">
+
+                    <span class="label">
+                        Cidade
+                    </span>
+
+                    <strong id="perfilCidade">
+                        -
+                    </strong>
+
+                </div>
+
+
+                <div class="perfil-item">
+
+                    <span class="label">
+                        Estado
+                    </span>
+
+                    <strong id="perfilEstado">
+                        -
+                    </strong>
+
+                </div>
+
+
+                <div class="perfil-item">
+
+                    <span class="label">
+                        Instituição
+                    </span>
+
+                    <strong id="perfilInstituicao">
+                        -
+                    </strong>
+
+                </div>
+
+
+                <div class="perfil-item">
+
+                    <span class="label">
+                        Curso / Profissão
+                    </span>
+
+                    <strong id="perfilCurso">
+                        -
+                    </strong>
+
+                </div>
+
+
+            </div>
+
+        </section>
+
+
+
+        <!-- =================================================
+             MINHA INSCRIÇÃO
+        ================================================== -->
+
+        <section
+            id="inscricao"
+            class="participante-section"
+        >
+
+            <span class="section-label">
+                INSCRIÇÃO
+            </span>
+
+            <h2>
+                Minha Inscrição
+            </h2>
+
+            <p id="descricaoInscricao">
+                Preencha os dados abaixo para realizar sua inscrição no CRFE 2027.
+            </p>
+
+
+
+            <!-- =============================================
+                 FORMULÁRIO NOVO
+            ============================================== -->
+
+            <div id="formularioInscricao">
+
+
+                <form id="formInscricao">
+
+
+                    <div class="form-grid">
+
+
+                        <!-- CATEGORIA -->
+
+                        <div class="form-group">
+
+                            <label for="categoria">
+                                Categoria do participante
+                            </label>
+
+                            <select
+                                id="categoria"
+                                required
+                            >
+
+                                <option value="">
+                                    Selecione sua categoria
+                                </option>
+
+                                <option value="estudante_fisioterapia">
+                                    Estudante de Fisioterapia
+                                </option>
+
+                                <option value="fisioterapeuta">
+                                    Fisioterapeuta
+                                </option>
+
+                                <option value="profissional_saude">
+                                    Profissional da Saúde
+                                </option>
+
+                                <option value="profissional_esporte">
+                                    Profissional do Esporte
+                                </option>
+
+                                <option value="atleta">
+                                    Atleta
+                                </option>
+
+                                <option value="outro">
+                                    Outro
+                                </option>
+
+                            </select>
+
+                        </div>
+
+
+
+                        <!-- INSTITUIÇÃO -->
+
+                        <div class="form-group">
+
+                            <label for="instituicaoInscricao">
+                                Instituição
+                            </label>
+
+                            <input
+                                type="text"
+                                id="instituicaoInscricao"
+                                placeholder="Digite sua instituição"
+                                required
+                            >
+
+                            <small>
+                                Informação vinculada ao seu cadastro.
+                            </small>
+
+                        </div>
+
+
+
+                        <!-- LOTE -->
+
+                        <div class="form-group">
+
+                            <label for="lote">
+                                Lote de inscrição
+                            </label>
+
+                            <select
+                                id="lote"
+                                required
+                            >
+
+                                <option value="">
+                                    Selecione o lote
+                                </option>
+
+                                <option value="1">
+                                    1º Lote - vagas disponíveis
+                                </option>
+
+                                <option value="2">
+                                    2º Lote - vagas disponíveis
+                                </option>
+
+                                <option value="3">
+                                    3º Lote - vagas disponíveis
+                                </option>
+
+                            </select>
+
+                            <small id="mensagemLote">
+                                Selecione um lote.
+                            </small>
+
+                        </div>
+
+
+
+                        <!-- CUPOM -->
+
+                        <div class="form-group">
+
+                            <label for="cupom">
+                                Cupom de desconto
+                            </label>
+
+                            <div class="cupom-row">
+
+                                <input
+                                    type="text"
+                                    id="cupom"
+                                    placeholder="Digite seu cupom"
+                                >
+
+                                <button
+                                    type="button"
+                                    id="btnAplicarCupom"
+                                    class="btn-secondary"
+                                >
+                                    APLICAR
+                                </button>
+
+                            </div>
+
+                            <div
+                                id="mensagemCupom"
+                                class="form-message"
+                            ></div>
+
+                        </div>
+
+
+                    </div>
+
+
+
+                    <!-- =====================================
+                         MINICURSOS
+                    ====================================== -->
+
+                    <div style="margin-top: 28px;">
+
+                        <div class="form-group">
+
+                            <label>
+                                Minicursos
+                            </label>
+
+                            <small>
+                                Os minicursos serão divulgados posteriormente.
+                            </small>
+
+                        </div>
+
+
+                        <div
+                            class="minicursos"
+                            style="margin-top: 12px;"
+                        >
+
+
+                            <div class="minicurso-card">
+
+                                <label>
+
+                                    <input
+                                        type="checkbox"
+                                        name="minicursos"
+                                        value="minicurso_1"
+                                        disabled
+                                    >
+
+                                    <span>
+
+                                        <strong>
+                                            Minicurso 1
+                                        </strong>
+
+                                        <small>
+                                            Em breve
+                                        </small>
+
+                                    </span>
+
+                                </label>
+
+                            </div>
+
+
+
+                            <div class="minicurso-card">
+
+                                <label>
+
+                                    <input
+                                        type="checkbox"
+                                        name="minicursos"
+                                        value="minicurso_2"
+                                        disabled
+                                    >
+
+                                    <span>
+
+                                        <strong>
+                                            Minicurso 2
+                                        </strong>
+
+                                        <small>
+                                            Em breve
+                                        </small>
+
+                                    </span>
+
+                                </label>
+
+                            </div>
+
+
+
+                            <div class="minicurso-card">
+
+                                <label>
+
+                                    <input
+                                        type="checkbox"
+                                        name="minicursos"
+                                        value="minicurso_3"
+                                        disabled
+                                    >
+
+                                    <span>
+
+                                        <strong>
+                                            Minicurso 3
+                                        </strong>
+
+                                        <small>
+                                            Em breve
+                                        </small>
+
+                                    </span>
+
+                                </label>
+
+                            </div>
+
+
+                        </div>
+
+                    </div>
+
+
+
+                    <!-- =====================================
+                         VALORES
+                    ====================================== -->
+
+                    <div class="valores-box">
+
+
+                        <div class="valor-linha">
+
+                            <span>
+                                Valor da inscrição
+                            </span>
+
+                            <strong id="valorOriginal">
+                                R$ 0,00
+                            </strong>
+
+                        </div>
+
+
+                        <div
+                            id="linhaDesconto"
+                            class="valor-linha desconto"
+                        >
+
+                            <span>
+                                Desconto
+                            </span>
+
+                            <strong id="valorDesconto">
+                                R$ 0,00
+                            </strong>
+
+                        </div>
+
+
+                        <div class="valor-linha total">
+
+                            <span>
+                                Total
+                            </span>
+
+                            <strong id="valorInscricao">
+                                R$ 0,00
+                            </strong>
+
+                        </div>
+
+
+                    </div>
+
+
+
+                    <!-- =====================================
+                         AÇÃO
+                    ====================================== -->
+
+                    <div class="form-actions">
+
+                        <button
+                            type="submit"
+                            id="btnContinuarInscricao"
+                            class="btn-primary"
+                        >
+                            CONTINUAR INSCRIÇÃO
+                        </button>
+
+                    </div>
+
+
+                    <div
+                        id="mensagemInscricao"
+                        class="form-message"
+                    ></div>
+
+
+                </form>
+
 
             </div>
 
 
 
-            <!-- BOTÃO -->
+            <!-- =============================================
+                 RESUMO DA INSCRIÇÃO
+            ============================================== -->
 
-            <button
-                type="submit"
-                id="btnContinuarInscricao"
-                class="btn btn-primary"
+            <div
+                id="inscricaoResumo"
+                class="inscricao-resumo"
             >
-                CONTINUAR INSCRIÇÃO
-            </button>
 
 
-            <p
-                id="mensagemInscricao"
-                class="form-message"
-            ></p>
+                <div class="inscricao-status">
+
+                    <div class="inscricao-status-icon">
+                        ✓
+                    </div>
+
+                    <div>
+
+                        <strong>
+                            Inscrição realizada
+                        </strong>
+
+                        <span id="statusInscricaoTexto">
+                            Sua inscrição foi registrada com sucesso.
+                        </span>
+
+                    </div>
+
+                </div>
 
 
-        </form>
+
+                <div class="resumo-grid">
+
+
+                    <div class="resumo-item">
+
+                        <span class="label">
+                            Categoria
+                        </span>
+
+                        <strong id="resumoCategoria">
+                            -
+                        </strong>
+
+                    </div>
+
+
+                    <div class="resumo-item">
+
+                        <span class="label">
+                            Instituição
+                        </span>
+
+                        <strong id="resumoInstituicao">
+                            -
+                        </strong>
+
+                    </div>
+
+
+                    <div class="resumo-item">
+
+                        <span class="label">
+                            Lote
+                        </span>
+
+                        <strong id="resumoLote">
+                            -
+                        </strong>
+
+                    </div>
+
+
+                    <div class="resumo-item">
+
+                        <span class="label">
+                            Cupom
+                        </span>
+
+                        <strong id="resumoCupom">
+                            Nenhum
+                        </strong>
+
+                    </div>
+
+
+                    <div class="resumo-item">
+
+                        <span class="label">
+                            Status do pagamento
+                        </span>
+
+                        <strong id="resumoPagamento">
+                            Aguardando pagamento
+                        </strong>
+
+                    </div>
+
+
+                    <div class="resumo-item">
+
+                        <span class="label">
+                            Forma de pagamento
+                        </span>
+
+                        <strong id="resumoFormaPagamento">
+                            -
+                        </strong>
+
+                    </div>
+
+
+                </div>
 
 
 
-        <!-- ================================================= -->
-        <!-- PAGAMENTO -->
-        <!-- ================================================= -->
+                <div class="resumo-valor">
+
+
+                    <div class="resumo-valor-linha">
+
+                        <span>
+                            Valor original
+                        </span>
+
+                        <strong id="resumoValorOriginal">
+                            R$ 0,00
+                        </strong>
+
+                    </div>
+
+
+                    <div class="resumo-valor-linha">
+
+                        <span>
+                            Desconto
+                        </span>
+
+                        <strong id="resumoValorDesconto">
+                            R$ 0,00
+                        </strong>
+
+                    </div>
+
+
+                    <div class="resumo-valor-linha total">
+
+                        <span>
+                            Total da inscrição
+                        </span>
+
+                        <strong id="resumoValorFinal">
+                            R$ 0,00
+                        </strong>
+
+                    </div>
+
+
+                </div>
+
+
+            </div>
+
+        </section>
+
+
+
+        <!-- =================================================
+             PAGAMENTO
+        ================================================== -->
 
         <section
             id="pagamentoInscricao"
-            class="pagamento-inscricao"
-            style="display: none;"
+            class="participante-section"
         >
 
             <span class="section-label">
                 PAGAMENTO
             </span>
 
-            <h3>
-                Finalize o pagamento
-            </h3>
+            <h2>
+                Pagamento da inscrição
+            </h2>
 
             <p>
-                Sua inscrição foi registrada.
-                Escolha uma das formas de pagamento abaixo.
+                Realize o pagamento para confirmar sua participação no CRFE 2027.
             </p>
 
 
-            <div class="pagamento-grid">
+
+            <!-- PAGAMENTO CONFIRMADO -->
+
+            <div
+                id="pagamentoConfirmado"
+                class="pagamento-confirmado"
+            >
+
+                <div class="pagamento-confirmado-icon">
+                    ✓
+                </div>
+
+                <div>
+
+                    <strong>
+                        Pagamento confirmado
+                    </strong>
+
+                    <p>
+                        Sua inscrição no CRFE 2027 está confirmada.
+                    </p>
+
+                </div>
+
+            </div>
+
+
+
+            <!-- OPÇÕES DE PAGAMENTO -->
+
+            <div
+                id="pagamentoOpcoes"
+                class="pagamento-opcoes"
+            >
 
 
                 <!-- PIX -->
 
                 <div class="pagamento-box">
 
-                    <span class="pagamento-icone">
-                        PIX
-                    </span>
-
-                    <h4>
+                    <h3>
                         Pagamento via PIX
-                    </h4>
+                    </h3>
 
                     <p>
                         Valor da inscrição:
@@ -692,39 +1673,25 @@
                         </strong>
                     </p>
 
-                    <span class="pix-titulo">
-                        Chave Pix
-                    </span>
-
-                    <div class="pix-chave">
-
-                        <strong id="chavePix">
-                            ladrf.fampfaculdade@gmail.com
-                        </strong>
-
+                    <div
+                        id="chavePix"
+                        class="pix-chave"
+                    >
+                        ladrf.fampfaculdade@gmail.com
                     </div>
-
 
                     <button
                         type="button"
-                        class="btn btn-primary"
                         id="btnCopiarPix"
+                        class="btn-copiar"
                     >
                         COPIAR CHAVE PIX
                     </button>
 
-
-                    <p
+                    <div
                         id="mensagemPix"
                         class="form-message"
-                    ></p>
-
-
-                    <small>
-                        Após realizar o pagamento,
-                        envie o comprovante para a
-                        organização do CRFE.
-                    </small>
+                    ></div>
 
                 </div>
 
@@ -734,27 +1701,20 @@
 
                 <div class="pagamento-box">
 
-                    <span class="pagamento-icone">
-                        CARTÃO
-                    </span>
-
-                    <h4>
+                    <h3>
                         Cartão de crédito
-                    </h4>
+                    </h3>
 
                     <p>
-                        Realize o pagamento utilizando
-                        cartão de crédito através do
-                        Mercado Pago.
+                        Você será direcionado para o pagamento online.
                     </p>
-
 
                     <a
                         id="btnPagamentoCartao"
-                        href="#"
+                        class="btn-cartao"
+                        href="https://mpago.la/2SHESXg"
                         target="_blank"
                         rel="noopener noreferrer"
-                        class="btn btn-primary"
                     >
                         PAGAR COM CARTÃO
                     </a>
@@ -768,15 +1728,185 @@
 
             <!-- STATUS -->
 
-            <div class="pagamento-status">
+            <div
+                id="statusPagamento"
+                class="pagamento-status"
+            >
+                Aguardando pagamento
+            </div>
 
-                <span>
-                    Status do pagamento
-                </span>
 
-                <strong id="statusPagamento">
-                    Aguardando pagamento
+        </section>
+
+
+
+        <!-- =================================================
+             PROGRAMAÇÃO
+        ================================================== -->
+
+        <section
+            id="programacao"
+            class="participante-section"
+        >
+
+            <span class="section-label">
+                PROGRAMAÇÃO
+            </span>
+
+            <h2>
+                Minha Programação
+            </h2>
+
+            <p>
+                Sua programação personalizada do CRFE 2027 aparecerá aqui.
+            </p>
+
+            <div class="certificado-placeholder">
+
+                <strong>
+                    Programação em breve
                 </strong>
+
+                <p>
+                    Palestras, mesas-redondas e minicursos serão adicionados posteriormente.
+                </p>
+
+            </div>
+
+        </section>
+
+
+
+        <!-- =================================================
+             CREDENCIAL
+        ================================================== -->
+
+        <section
+            id="credencial"
+            class="participante-section"
+        >
+
+            <span class="section-label">
+                CREDENCIAL
+            </span>
+
+            <h2>
+                Minha Credencial
+            </h2>
+
+            <p id="mensagemCredencial">
+                A credencial digital ficará disponível após a confirmação do pagamento.
+            </p>
+
+
+
+            <div
+                id="credencialDigital"
+                class="credencial-digital"
+            >
+
+
+                <div class="credencial-topo">
+
+                    <strong>
+                        CRFE 2027
+                    </strong>
+
+                    <span>
+                        CONGRESSO REGIONAL DE FISIOTERAPIA ESPORTIVA
+                    </span>
+
+                </div>
+
+
+
+                <div class="credencial-conteudo">
+
+
+                    <div class="credencial-identificacao">
+
+
+                        <div>
+
+                            <span>
+                                Participante
+                            </span>
+
+                            <strong id="credencialNome">
+                                -
+                            </strong>
+
+                        </div>
+
+
+                        <div>
+
+                            <span>
+                                Categoria
+                            </span>
+
+                            <strong id="credencialCategoria">
+                                -
+                            </strong>
+
+                        </div>
+
+
+                        <div>
+
+                            <span>
+                                Instituição
+                            </span>
+
+                            <strong id="credencialInstituicao">
+                                -
+                            </strong>
+
+                        </div>
+
+
+                        <div>
+
+                            <span>
+                                Status
+                            </span>
+
+                            <div class="credencial-status">
+                                INSCRIÇÃO CONFIRMADA
+                            </div>
+
+                        </div>
+
+
+                        <div
+                            id="credencialCodigo"
+                            class="credencial-codigo"
+                        >
+                            -
+                        </div>
+
+
+                    </div>
+
+
+
+                    <div class="qrcode-area">
+
+                        <div id="qrcode"></div>
+
+                    </div>
+
+
+                </div>
+
+
+
+                <div class="credencial-rodape">
+
+                    Apresente este QR Code para validação no evento.
+
+                </div>
+
 
             </div>
 
@@ -784,288 +1914,84 @@
         </section>
 
 
-    </section>
 
+        <!-- =================================================
+             CERTIFICADO
+        ================================================== -->
 
-
-    <!-- ================================================= -->
-    <!-- PROGRAMAÇÃO -->
-    <!-- ================================================= -->
-
-    <section
-        id="programacao"
-        class="content-section"
-    >
-
-        <span class="section-label">
-            PROGRAMAÇÃO
-        </span>
-
-        <h2>
-            Minha programação
-        </h2>
-
-        <p>
-            Sua programação personalizada ficará disponível aqui.
-        </p>
-
-
-        <div class="empty-state">
-
-            <span>
-                📅
-            </span>
-
-            <strong>
-                Programação em breve
-            </strong>
-
-            <small>
-                As palestras, mesas-redondas e minicursos
-                serão disponibilizados nesta área.
-            </small>
-
-        </div>
-
-    </section>
-
-
-
-    <!-- ================================================= -->
-    <!-- CREDENCIAL -->
-    <!-- ================================================= -->
-
-    <section
-        id="credencial"
-        class="content-section credencial-section"
-    >
-
-        <span class="section-label">
-            CREDENCIAL
-        </span>
-
-        <h2>
-            Minha credencial
-        </h2>
-
-        <p id="mensagemCredencial">
-            Sua credencial digital ficará disponível aqui
-            após a confirmação do pagamento.
-        </p>
-
-
-        <!-- CREDENCIAL DIGITAL -->
-
-        <div
-            id="credencialDigital"
-            class="credencial-digital"
-            style="display: none;"
+        <section
+            id="certificado"
+            class="participante-section"
         >
 
-
-            <!-- TOPO -->
-
-            <div class="credencial-topo">
-
-                <span>
-                    CRFE CONNECT
-                </span>
-
-                <strong>
-                    CRFE 2027
-                </strong>
-
-            </div>
-
-
-
-            <!-- CONTEÚDO -->
-
-            <div class="credencial-conteudo">
-
-
-                <!-- PARTICIPANTE -->
-
-                <div class="credencial-identificacao">
-
-                    <span class="credencial-label">
-                        PARTICIPANTE
-                    </span>
-
-                    <h3 id="credencialNome">
-                        -
-                    </h3>
-
-                    <p id="credencialCategoria">
-                        -
-                    </p>
-
-                    <p id="credencialInstituicao">
-                        -
-                    </p>
-
-                </div>
-
-
-
-                <!-- QR CODE -->
-
-                <div
-                    id="qrcode"
-                    class="qrcode"
-                ></div>
-
-
-
-                <!-- STATUS -->
-
-                <div class="credencial-status">
-
-                    <strong>
-                        INSCRIÇÃO CONFIRMADA
-                    </strong>
-
-                    <span>
-                        ✓
-                    </span>
-
-                </div>
-
-
-
-                <!-- CÓDIGO -->
-
-                <div class="credencial-codigo">
-
-                    <small>
-                        CÓDIGO DA CREDENCIAL
-                    </small>
-
-                    <strong id="credencialCodigo">
-                        -
-                    </strong>
-
-                </div>
-
-
-            </div>
-
-
-
-            <!-- RODAPÉ -->
-
-            <div class="credencial-rodape">
-
-                <span>
-                    Congresso Regional de Fisioterapia Esportiva
-                </span>
-
-                <span>
-                    19, 20 e 21 de fevereiro de 2027
-                </span>
-
-                <span>
-                    Mineiros - Goiás
-                </span>
-
-            </div>
-
-
-        </div>
-
-    </section>
-
-
-
-    <!-- ================================================= -->
-    <!-- CERTIFICADO -->
-    <!-- ================================================= -->
-
-    <section
-        id="certificado"
-        class="content-section"
-    >
-
-        <span class="section-label">
-            CERTIFICADO
-        </span>
-
-        <h2>
-            Meu certificado
-        </h2>
-
-        <p>
-            Após a participação no congresso,
-            seu certificado poderá ser disponibilizado
-            nesta área.
-        </p>
-
-
-        <div class="empty-state">
-
-            <span>
-                📄
+            <span class="section-label">
+                CERTIFICADO
             </span>
 
-            <strong>
-                Certificado indisponível
-            </strong>
+            <h2>
+                Meu Certificado
+            </h2>
 
-            <small>
-                O certificado será disponibilizado
-                após o congresso, conforme os critérios
-                de participação.
-            </small>
+            <p>
+                Seu certificado ficará disponível após o cumprimento dos critérios definidos pela organização.
+            </p>
+
+
+            <div class="certificado-placeholder">
+
+                <strong>
+                    Certificado ainda não disponível
+                </strong>
+
+                <p>
+                    O certificado será liberado posteriormente pela organização do CRFE 2027.
+                </p>
+
+            </div>
+
+        </section>
+
+
+    </main>
+
+
+
+    <!-- =====================================================
+         RODAPÉ
+    ====================================================== -->
+
+    <footer class="site-footer">
+
+        <div class="container">
+
+            <p>
+                © 2027 CRFE | Realização LADRF
+            </p>
 
         </div>
 
-    </section>
-
-
-</main>
+    </footer>
 
 
 
-<!-- ================================================= -->
-<!-- RODAPÉ -->
-<!-- ================================================= -->
+    <!-- =====================================================
+         QR CODE
+    ====================================================== -->
 
-<footer>
-
-    <div class="container">
-
-        <p>
-            CRFE 2027 | LADRF
-        </p>
-
-        <p>
-            Congresso Regional de Fisioterapia Esportiva
-        </p>
-
-    </div>
-
-</footer>
+    <script
+        src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"
+    ></script>
 
 
 
-<!-- ================================================= -->
-<!-- QR CODE -->
-<!-- ================================================= -->
+    <!-- =====================================================
+         JAVASCRIPT
+    ====================================================== -->
 
-<script
-    src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"
-></script>
-
-
-
-<!-- ================================================= -->
-<!-- JAVASCRIPT -->
-<!-- ================================================= -->
-
-<script
-    type="module"
-    src="js/area-participante.js?v=6"
-></script>
+    <script
+        type="module"
+        src="js/area-participante.js?v=6"
+    ></script>
 
 
 </body>
