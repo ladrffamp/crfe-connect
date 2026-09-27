@@ -510,47 +510,70 @@ function renderizarMinicursos() {
                 minicursosSelecionados.includes(curso.id);
 
             return `
-                <label class="minicurso-inscricao-card">
+                <div class="minicurso-inscricao">
 
-                    <input
-                        type="checkbox"
-                        value="${escapeHtml(curso.id)}"
-                        ${selecionado ? "checked" : ""}
-                    >
+                    <label class="minicurso-checkbox">
 
-                    <div class="minicurso-inscricao-info">
+                        <input
+                            type="checkbox"
+                            value="${escapeHtml(curso.id)}"
+                            ${selecionado ? "checked" : ""}
+                        >
 
-                        <strong>
-                            ${escapeHtml(curso.nome)}
-                        </strong>
+                        <span class="minicurso-checkbox-mark"></span>
 
-                        <span>
-                            ${escapeHtml(curso.ministrante || "")}
-                        </span>
+                        <div class="minicurso-inscricao-conteudo">
 
-                        <span>
-                            ${escapeHtml(curso.instituicao || "")}
-                        </span>
+                            <h4>
+                                ${escapeHtml(curso.nome)}
+                            </h4>
 
-                        <span>
-                            ${formatarData(curso.data)}
-                            ${curso.inicio ? ` • ${escapeHtml(curso.inicio)}` : ""}
-                            ${curso.fim ? ` às ${escapeHtml(curso.fim)}` : ""}
-                        </span>
+                            <p>
+                                <strong>Ministrante:</strong>
+                                ${escapeHtml(curso.ministrante || "-")}
+                            </p>
 
-                        ${
-                            curso.local
-                                ? `<span>${escapeHtml(curso.local)}</span>`
-                                : ""
-                        }
+                            <p>
+                                <strong>Instituição:</strong>
+                                ${escapeHtml(curso.instituicao || "-")}
+                            </p>
 
-                        <strong>
+                            <p>
+                                <strong>Data:</strong>
+                                ${formatarData(curso.data)}
+                            </p>
+
+                            <p>
+                                <strong>Horário:</strong>
+                                ${escapeHtml(curso.inicio || "-")}
+                                ${curso.fim ? ` às ${escapeHtml(curso.fim)}` : ""}
+                            </p>
+
+                            <p>
+                                <strong>Local:</strong>
+                                ${escapeHtml(curso.local || "-")}
+                            </p>
+
+                            ${
+                                curso.cargaHoraria
+                                    ? `
+                                    <p>
+                                        <strong>Carga horária:</strong>
+                                        ${escapeHtml(curso.cargaHoraria)}h
+                                    </p>
+                                    `
+                                    : ""
+                            }
+
+                        </div>
+
+                        <div class="minicurso-inscricao-preco">
                             ${formatarMoeda(curso.valor)}
-                        </strong>
+                        </div>
 
-                    </div>
+                    </label>
 
-                </label>
+                </div>
             `;
 
         }).join("");
@@ -600,8 +623,6 @@ function renderizarMinicursos() {
     });
 
 }
-
-
 // =====================================================
 // VALOR DOS MINICURSOS
 // =====================================================
