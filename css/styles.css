@@ -733,6 +733,106 @@ footer p {
     text-decoration: underline;
 }
 
+/* =====================================================
+   PROGRAMAÇÃO
+===================================================== */
+
+.programacao-participante {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+}
+
+.programacao-dia {
+    display: flex;
+    align-items: stretch;
+    gap: 18px;
+    padding: 20px;
+    background: #ffffff;
+    border: 1px solid #e3e9e5;
+    border-radius: 14px;
+    transition: 0.2s ease;
+}
+
+.programacao-dia:hover {
+    border-color: #0b7a3b;
+    box-shadow: 0 6px 20px rgba(20, 60, 40, 0.06);
+    transform: translateY(-1px);
+}
+
+.programacao-data {
+    min-width: 115px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    padding-right: 18px;
+    border-right: 3px solid #0b7a3b;
+}
+
+.programacao-data strong {
+    color: #0b7a3b;
+    font-size: 22px;
+    font-weight: 900;
+}
+
+.programacao-data span {
+    margin-top: 4px;
+    color: #64706a;
+    font-size: 13px;
+    font-weight: 700;
+}
+
+.programacao-conteudo {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.programacao-conteudo h3 {
+    margin: 0 0 6px;
+    color: #173d2c;
+    font-size: 18px;
+    font-weight: 900;
+}
+
+.programacao-conteudo p {
+    margin: 0;
+    color: #69756f;
+    font-size: 14px;
+    line-height: 1.5;
+}
+
+
+@media (max-width: 600px) {
+
+    .programacao-dia {
+        gap: 12px;
+        padding: 16px;
+    }
+
+    .programacao-data {
+        min-width: 85px;
+        padding-right: 12px;
+    }
+
+    .programacao-data strong {
+        font-size: 18px;
+    }
+
+    .programacao-data span {
+        font-size: 12px;
+    }
+
+    .programacao-conteudo h3 {
+        font-size: 16px;
+    }
+
+    .programacao-conteudo p {
+        font-size: 13px;
+    }
+
+}
+
 
 /* ==================================================
    RESPONSIVO
