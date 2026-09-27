@@ -1984,7 +1984,279 @@
         </section>
 
 
+<!-- =================================================
+     TRABALHOS CIENTÍFICOS
+================================================== -->
 
+<section
+    id="trabalhos"
+    class="participante-section"
+>
+
+    <span class="section-label">
+        PRODUÇÃO CIENTÍFICA
+    </span>
+
+    <h2>
+        Trabalhos Científicos
+    </h2>
+
+    <p>
+        Envie seu trabalho científico para avaliação da Comissão Científica do CRFE 2027.
+    </p>
+
+
+    <!-- ÁREA BLOQUEADA -->
+
+    <div
+        id="trabalhosBloqueado"
+        class="certificado-placeholder"
+        style="display: none;"
+    >
+
+        <strong>
+            Envio de trabalhos disponível para participantes inscritos
+        </strong>
+
+        <p>
+            Confirme sua inscrição para enviar um trabalho científico.
+        </p>
+
+    </div>
+
+
+    <!-- FORMULÁRIO -->
+
+    <form
+        id="formTrabalho"
+        style="display: none;"
+    >
+
+        <div class="form-grid">
+
+
+            <div class="form-group full">
+
+                <label for="trabalhoTitulo">
+                    Título do trabalho
+                </label>
+
+                <input
+                    type="text"
+                    id="trabalhoTitulo"
+                    placeholder="Digite o título completo do trabalho"
+                    required
+                >
+
+            </div>
+
+
+            <div class="form-group">
+
+                <label for="trabalhoTipo">
+                    Tipo de trabalho
+                </label>
+
+                <select
+                    id="trabalhoTipo"
+                    required
+                >
+
+                    <option value="">
+                        Selecione
+                    </option>
+
+                    <option value="resumo">
+                        Resumo
+                    </option>
+
+                    <option value="resumo_expandido">
+                        Resumo expandido
+                    </option>
+
+                    <option value="trabalho_completo">
+                        Trabalho completo
+                    </option>
+
+                </select>
+
+            </div>
+
+
+            <div class="form-group">
+
+                <label for="trabalhoArea">
+                    Área temática
+                </label>
+
+                <select
+                    id="trabalhoArea"
+                    required
+                >
+
+                    <option value="">
+                        Selecione
+                    </option>
+
+                    <option value="fisioterapia_esportiva">
+                        Fisioterapia Esportiva
+                    </option>
+
+                    <option value="prevencao_lesoes">
+                        Prevenção de Lesões
+                    </option>
+
+                    <option value="reabilitacao">
+                        Reabilitação Esportiva
+                    </option>
+
+                    <option value="avaliacao_funcional">
+                        Avaliação Funcional
+                    </option>
+
+                    <option value="performance">
+                        Performance Esportiva
+                    </option>
+
+                    <option value="outras">
+                        Outras
+                    </option>
+
+                </select>
+
+            </div>
+
+
+            <div class="form-group full">
+
+                <label for="trabalhoAutores">
+                    Autores
+                </label>
+
+                <input
+                    type="text"
+                    id="trabalhoAutores"
+                    placeholder="Ex.: Breno Lucas Ferreira Lima; João da Silva; Maria Souza"
+                    required
+                >
+
+                <small>
+                    Separe os autores por ponto e vírgula.
+                </small>
+
+            </div>
+
+
+            <div class="form-group">
+
+                <label for="trabalhoOrientador">
+                    Orientador
+                </label>
+
+                <input
+                    type="text"
+                    id="trabalhoOrientador"
+                    placeholder="Nome do orientador"
+                >
+
+            </div>
+
+
+            <div class="form-group">
+
+                <label for="trabalhoInstituicao">
+                    Instituição
+                </label>
+
+                <input
+                    type="text"
+                    id="trabalhoInstituicao"
+                    placeholder="Instituição vinculada ao trabalho"
+                    required
+                >
+
+            </div>
+
+
+            <div class="form-group full">
+
+                <label for="trabalhoArquivo">
+                    Arquivo do trabalho
+                </label>
+
+                <input
+                    type="file"
+                    id="trabalhoArquivo"
+                    accept="application/pdf,.pdf"
+                    required
+                >
+
+                <small>
+                    Envie somente arquivo PDF. Tamanho máximo: 10 MB.
+                </small>
+
+            </div>
+
+        </div>
+
+
+        <div class="form-actions">
+
+            <button
+                type="submit"
+                id="btnEnviarTrabalho"
+                class="btn-primary"
+            >
+                ENVIAR TRABALHO
+            </button>
+
+        </div>
+
+
+        <div
+            id="mensagemTrabalho"
+            class="form-message"
+        ></div>
+
+    </form>
+
+
+    <!-- MEUS TRABALHOS -->
+
+    <div
+        id="meusTrabalhos"
+        style="margin-top: 30px;"
+    >
+
+        <h3
+            style="
+                margin-bottom: 15px;
+                color: #173d2c;
+            "
+        >
+            Meus trabalhos
+        </h3>
+
+        <div id="listaTrabalhos">
+
+            <div class="certificado-placeholder">
+
+                <strong>
+                    Nenhum trabalho enviado
+                </strong>
+
+                <p>
+                    Seus trabalhos científicos aparecerão aqui após o envio.
+                </p>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</section>
+        
         <!-- =================================================
              CREDENCIAL
         ================================================== -->
