@@ -497,8 +497,11 @@ function renderizarMinicursos() {
 
     if (!minicursosDisponiveis.length) {
 
-        listaMinicursosInscricao.innerHTML =
-            `<p>Nenhum minicurso disponível no momento.</p>`;
+        listaMinicursosInscricao.innerHTML = `
+            <div class="minicursos-inscricao-vazio">
+                Nenhum minicurso disponível no momento.
+            </div>
+        `;
 
         return;
     }
@@ -510,65 +513,81 @@ function renderizarMinicursos() {
                 minicursosSelecionados.includes(curso.id);
 
             return `
-                <div class="minicurso-inscricao">
+                <div class="minicurso-inscricao-item">
 
-                    <label class="minicurso-checkbox">
+                    <input
+                        type="checkbox"
+                        id="minicurso-${escapeHtml(curso.id)}"
+                        value="${escapeHtml(curso.id)}"
+                        ${selecionado ? "checked" : ""}
+                    >
 
-                        <input
-                            type="checkbox"
-                            value="${escapeHtml(curso.id)}"
-                            ${selecionado ? "checked" : ""}
-                        >
+                    <label
+                        for="minicurso-${escapeHtml(curso.id)}"
+                        class="minicurso-inscricao-card"
+                    >
 
-                        <span class="minicurso-checkbox-mark"></span>
+                        <div class="minicurso-inscricao-topo">
 
-                        <div class="minicurso-inscricao-conteudo">
-
-                            <h4>
+                            <div class="minicurso-inscricao-nome">
                                 ${escapeHtml(curso.nome)}
-                            </h4>
+                            </div>
 
-                            <p>
+                            <div class="minicurso-inscricao-valor">
+                                ${formatarMoeda(curso.valor)}
+                            </div>
+
+                        </div>
+
+                        <div class="minicurso-inscricao-detalhes">
+
+                            <div>
                                 <strong>Ministrante:</strong>
                                 ${escapeHtml(curso.ministrante || "-")}
-                            </p>
+                            </div>
 
-                            <p>
+                            <div>
                                 <strong>Instituição:</strong>
                                 ${escapeHtml(curso.instituicao || "-")}
-                            </p>
+                            </div>
 
-                            <p>
+                            <div>
                                 <strong>Data:</strong>
                                 ${formatarData(curso.data)}
-                            </p>
+                            </div>
 
-                            <p>
+                            <div>
                                 <strong>Horário:</strong>
                                 ${escapeHtml(curso.inicio || "-")}
-                                ${curso.fim ? ` às ${escapeHtml(curso.fim)}` : ""}
-                            </p>
-
-                            <p>
-                                <strong>Local:</strong>
-                                ${escapeHtml(curso.local || "-")}
-                            </p>
+                                ${
+                                    curso.fim
+                                        ? ` às ${escapeHtml(curso.fim)}`
+                                        : ""
+                                }
+                            </div>
 
                             ${
-                                curso.cargaHoraria
+                                curso.local
                                     ? `
-                                    <p>
-                                        <strong>Carga horária:</strong>
-                                        ${escapeHtml(curso.cargaHoraria)}h
-                                    </p>
+                                    <div>
+                                        <strong>Local:</strong>
+                                        ${escapeHtml(curso.local)}
+                                    </div>
                                     `
                                     : ""
                             }
 
-                        </div>
+                            ${
+                                curso.cargaHoraria
+                                    ? `
+                                    <div>
+                                        <strong>Carga horária:</strong>
+                                        ${escapeHtml(curso.cargaHoraria)}h
+                                    </div>
+                                    `
+                                    : ""
+                            }
 
-                        <div class="minicurso-inscricao-preco">
-                            ${formatarMoeda(curso.valor)}
                         </div>
 
                     </label>
@@ -623,6 +642,8 @@ function renderizarMinicursos() {
     });
 
 }
+
+
 // =====================================================
 // VALOR DOS MINICURSOS
 // =====================================================
@@ -1048,6 +1069,7 @@ async function carregarPerfil() {
 
         }
 
+
     } catch (erro) {
 
         console.error(
@@ -1084,15 +1106,17 @@ function restaurarMinicursos() {
 
 
     minicursosSelecionados =
-        salvos.map((item) => {
+        salvos
+            .map((item) => {
 
-            if (typeof item === "string") {
-                return item;
-            }
+                if (typeof item === "string") {
+                    return item;
+                }
 
-            return item.id;
+                return item.id;
 
-        }).filter(Boolean);
+            })
+            .filter(Boolean);
 
 
     renderizarMinicursos();
