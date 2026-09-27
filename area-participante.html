@@ -10,12 +10,15 @@
         content="width=device-width, initial-scale=1.0"
     >
 
-    <title>Área do Participante | CRFE 2027</title>
+    <title>
+        Área do Participante | CRFE 2027
+    </title>
 
     <link
         rel="stylesheet"
         href="css/styles.css"
     >
+
 
     <style>
 
@@ -222,7 +225,9 @@
         .form-group input:focus,
         .form-group select:focus {
             border-color: #0b7a3b;
-            box-shadow: 0 0 0 3px rgba(11, 122, 59, 0.08);
+            box-shadow:
+                0 0 0 3px
+                rgba(11, 122, 59, 0.08);
         }
 
         .form-group input[readonly] {
@@ -267,43 +272,141 @@
 
 
         /* =====================================================
-           MINICURSOS
+           MINICURSOS DINÂMICOS
         ===================================================== */
 
-        .minicursos {
+        .minicursos-inscricao {
             display: grid;
-            grid-template-columns: repeat(3, 1fr);
+            grid-template-columns: repeat(2, 1fr);
             gap: 14px;
         }
 
-        .minicurso-card {
+
+        .minicurso-inscricao-item {
             position: relative;
-            padding: 18px;
-            border: 1px solid #e2e8e4;
-            border-radius: 12px;
-            background: #f8faf9;
         }
 
-        .minicurso-card label {
+
+        .minicurso-inscricao-item input {
+            position: absolute;
+            opacity: 0;
+            pointer-events: none;
+        }
+
+
+        .minicurso-inscricao-card {
+            display: block;
+            height: 100%;
+            box-sizing: border-box;
+            padding: 18px;
+            border: 2px solid #e2e8e4;
+            border-radius: 14px;
+            background: #f8faf9;
+            cursor: pointer;
+            transition:
+                border-color 0.2s ease,
+                background 0.2s ease,
+                box-shadow 0.2s ease,
+                transform 0.2s ease;
+        }
+
+
+        .minicurso-inscricao-card:hover {
+            border-color: #0b7a3b;
+            transform: translateY(-1px);
+        }
+
+
+        .minicurso-inscricao-item
+        input:checked
+        + .minicurso-inscricao-card {
+            border-color: #0b7a3b;
+            background: #eef8f1;
+            box-shadow:
+                0 6px 20px
+                rgba(11, 122, 59, 0.10);
+        }
+
+
+        .minicurso-inscricao-topo {
             display: flex;
             align-items: flex-start;
-            gap: 10px;
-            cursor: pointer;
+            justify-content: space-between;
+            gap: 15px;
         }
 
-        .minicurso-card input {
-            margin-top: 3px;
-            accent-color: #0b7a3b;
-        }
 
-        .minicurso-card strong {
-            display: block;
-            margin-bottom: 4px;
+        .minicurso-inscricao-nome {
             color: #244235;
+            font-size: 16px;
+            font-weight: 900;
+            line-height: 1.3;
         }
 
-        .minicurso-card small {
-            color: #7b867f;
+
+        .minicurso-inscricao-valor {
+            flex-shrink: 0;
+            color: #0b7a3b;
+            font-size: 14px;
+            font-weight: 900;
+        }
+
+
+        .minicurso-inscricao-detalhes {
+            margin-top: 10px;
+            color: #6d7872;
+            font-size: 13px;
+            line-height: 1.5;
+        }
+
+
+        .minicurso-inscricao-detalhes strong {
+            color: #30473a;
+        }
+
+
+        .minicursos-inscricao-loading,
+        .minicursos-inscricao-vazio {
+            grid-column: 1 / -1;
+            padding: 22px;
+            border-radius: 12px;
+            background: #f8faf9;
+            border: 1px solid #e3e9e5;
+            color: #69756f;
+            text-align: center;
+            font-size: 14px;
+        }
+
+
+        .resumo-minicursos {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 20px;
+            margin-top: 15px;
+            padding: 16px 18px;
+            border-radius: 12px;
+            background: #eef8f1;
+            border: 1px solid #cfe7d7;
+        }
+
+
+        .resumo-minicursos div {
+            display: flex;
+            flex-direction: column;
+            gap: 3px;
+        }
+
+
+        .resumo-minicursos span {
+            color: #63756a;
+            font-size: 12px;
+        }
+
+
+        .resumo-minicursos strong {
+            color: #0b7a3b;
+            font-size: 15px;
         }
 
 
@@ -603,7 +706,9 @@
             border-radius: 18px;
             background: #ffffff;
             border: 1px solid #dce6df;
-            box-shadow: 0 10px 35px rgba(15, 60, 35, 0.08);
+            box-shadow:
+                0 10px 35px
+                rgba(15, 60, 35, 0.08);
         }
 
         .credencial-topo {
@@ -717,6 +822,83 @@
 
 
         /* =====================================================
+           CABEÇALHO
+        ===================================================== */
+
+        .site-header {
+            width: 100%;
+            background: #ffffff;
+            border-bottom: 1px solid #e3e9e5;
+            box-shadow:
+                0 2px 12px
+                rgba(20, 60, 40, 0.04);
+        }
+
+        .site-header .container {
+            width: min(1180px, 92%);
+            min-height: 76px;
+            margin: 0 auto;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 30px;
+        }
+
+        .site-header .logo {
+            display: inline-flex;
+            align-items: baseline;
+            gap: 5px;
+            color: #0b7a3b;
+            text-decoration: none;
+            font-size: 27px;
+            font-weight: 900;
+            line-height: 1;
+            letter-spacing: -0.5px;
+        }
+
+        .site-header .logo span {
+            color: #173d2c;
+            font-size: 15px;
+            font-weight: 800;
+        }
+
+        .site-header nav {
+            display: flex;
+            align-items: center;
+            justify-content: flex-end;
+            gap: 24px;
+        }
+
+        .site-header nav a {
+            display: inline-flex;
+            align-items: center;
+            min-height: 42px;
+            color: #294538;
+            text-decoration: none;
+            font-size: 14px;
+            font-weight: 700;
+            white-space: nowrap;
+            transition: 0.2s ease;
+        }
+
+        .site-header nav a:hover {
+            color: #0b7a3b;
+        }
+
+        .site-header nav a:last-child {
+            padding: 0 17px;
+            border-radius: 9px;
+            background: #0b7a3b;
+            color: #ffffff;
+        }
+
+        .site-header nav a:last-child:hover {
+            background: #086330;
+            color: #ffffff;
+        }
+
+
+        /* =====================================================
            RESPONSIVO
         ===================================================== */
 
@@ -731,7 +913,7 @@
                 grid-template-columns: repeat(2, 1fr);
             }
 
-            .minicursos {
+            .minicursos-inscricao {
                 grid-template-columns: 1fr;
             }
 
@@ -741,6 +923,41 @@
 
             .credencial-conteudo {
                 grid-template-columns: 1fr;
+            }
+
+        }
+
+
+        @media (max-width: 700px) {
+
+            .site-header .container {
+                min-height: 68px;
+                gap: 15px;
+            }
+
+            .site-header .logo {
+                font-size: 23px;
+            }
+
+            .site-header .logo span {
+                font-size: 13px;
+            }
+
+            .site-header nav {
+                gap: 8px;
+            }
+
+            .site-header nav a {
+                font-size: 11px;
+                min-height: 38px;
+            }
+
+            .site-header nav a:first-child {
+                display: none;
+            }
+
+            .site-header nav a:last-child {
+                padding: 0 12px;
             }
 
         }
@@ -789,122 +1006,21 @@
                 width: 100%;
             }
 
+            .minicurso-inscricao-topo {
+                flex-direction: column;
+            }
+
+            .resumo-minicursos {
+                flex-direction: column;
+                align-items: stretch;
+            }
+
             .credencial-conteudo {
                 padding: 20px;
             }
 
         }
-/* =====================================================
-   CORREÇÃO DO CABEÇALHO
-===================================================== */
 
-.site-header {
-    width: 100%;
-    background: #ffffff;
-    border-bottom: 1px solid #e3e9e5;
-    box-shadow: 0 2px 12px rgba(20, 60, 40, 0.04);
-}
-
-.site-header .container {
-    width: min(1180px, 92%);
-    min-height: 76px;
-    margin: 0 auto;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    gap: 30px;
-}
-
-.site-header .logo {
-    display: inline-flex;
-    align-items: baseline;
-    gap: 5px;
-    color: #0b7a3b;
-    text-decoration: none;
-    font-size: 27px;
-    font-weight: 900;
-    line-height: 1;
-    letter-spacing: -0.5px;
-}
-
-.site-header .logo span {
-    color: #173d2c;
-    font-size: 15px;
-    font-weight: 800;
-}
-
-.site-header nav {
-    display: flex;
-    align-items: center;
-    justify-content: flex-end;
-    gap: 24px;
-}
-
-.site-header nav a {
-    display: inline-flex;
-    align-items: center;
-    min-height: 42px;
-    color: #294538;
-    text-decoration: none;
-    font-size: 14px;
-    font-weight: 700;
-    white-space: nowrap;
-    transition: 0.2s ease;
-}
-
-.site-header nav a:hover {
-    color: #0b7a3b;
-}
-
-.site-header nav a:last-child {
-    padding: 0 17px;
-    border-radius: 9px;
-    background: #0b7a3b;
-    color: #ffffff;
-}
-
-.site-header nav a:last-child:hover {
-    background: #086330;
-    color: #ffffff;
-}
-
-
-/* =====================================================
-   CABEÇALHO NO CELULAR
-===================================================== */
-
-@media (max-width: 700px) {
-
-    .site-header .container {
-        min-height: 68px;
-        gap: 15px;
-    }
-
-    .site-header .logo {
-        font-size: 23px;
-    }
-
-    .site-header .logo span {
-        font-size: 13px;
-    }
-
-    .site-header nav {
-        gap: 8px;
-    }
-
-    .site-header nav a {
-        font-size: 11px;
-        min-height: 38px;
-    }
-
-    .site-header nav a:first-child {
-        display: none;
-    }
-
-    .site-header nav a:last-child {
-        padding: 0 12px;
-    }
-} 
     </style>
 
 </head>
@@ -921,39 +1037,42 @@
 
         <div class="container">
 
-    <a
-        href="index.html"
-        class="logo"
-    >
-        CRFE
-        <span>2027</span>
-    </a>
-
-    <nav>
-
-        <a href="index.html">
-            Início
-        </a>
-
-        <a
-            href="#"
-            id="btnSair"
-        >
-            Sair
-        </a>
-
-    </nav>
-
-</div>
-
-</header>
+            <a
+                href="index.html"
+                class="logo"
+            >
+                CRFE
+                <span>2027</span>
+            </a>
 
 
-<!-- =====================================================
-     CONTEÚDO
-====================================================== -->
+            <nav>
 
-<main class="participante-container">
+                <a href="index.html">
+                    Início
+                </a>
+
+                <a
+                    href="#"
+                    id="btnSair"
+                >
+                    Sair
+                </a>
+
+            </nav>
+
+        </div>
+
+    </header>
+
+
+
+    <!-- =====================================================
+         CONTEÚDO
+    ====================================================== -->
+
+    <main class="participante-container">
+
 
         <!-- CABEÇALHO -->
 
@@ -968,7 +1087,8 @@
             </h1>
 
             <p>
-                Gerencie sua inscrição, programação, credencial e certificado.
+                Gerencie sua inscrição, programação,
+                credencial e certificado.
             </p>
 
         </div>
@@ -1177,7 +1297,7 @@
 
 
             <!-- =============================================
-                 FORMULÁRIO NOVO
+                 FORMULÁRIO
             ============================================== -->
 
             <div id="formularioInscricao">
@@ -1349,103 +1469,57 @@
                             </label>
 
                             <small>
-                                Os minicursos serão divulgados posteriormente.
+                                Selecione os minicursos que deseja realizar.
+                                Os valores adicionais serão somados à inscrição.
                             </small>
 
                         </div>
 
 
                         <div
-                            class="minicursos"
+                            id="listaMinicursosInscricao"
+                            class="minicursos-inscricao"
                             style="margin-top: 12px;"
                         >
 
+                            <div class="minicursos-inscricao-loading">
 
-                            <div class="minicurso-card">
+                                Carregando minicursos...
 
-                                <label>
+                            </div>
 
-                                    <input
-                                        type="checkbox"
-                                        name="minicursos"
-                                        value="minicurso_1"
-                                        disabled
-                                    >
+                        </div>
 
-                                    <span>
 
-                                        <strong>
-                                            Minicurso 1
-                                        </strong>
+                        <div
+                            id="resumoMinicursos"
+                            class="resumo-minicursos"
+                        >
 
-                                        <small>
-                                            Em breve
-                                        </small>
+                            <div>
 
-                                    </span>
+                                <span>
+                                    Minicursos selecionados
+                                </span>
 
-                                </label>
+                                <strong id="quantidadeMinicursos">
+                                    0
+                                </strong>
 
                             </div>
 
 
+                            <div>
 
-                            <div class="minicurso-card">
+                                <span>
+                                    Valor dos minicursos
+                                </span>
 
-                                <label>
-
-                                    <input
-                                        type="checkbox"
-                                        name="minicursos"
-                                        value="minicurso_2"
-                                        disabled
-                                    >
-
-                                    <span>
-
-                                        <strong>
-                                            Minicurso 2
-                                        </strong>
-
-                                        <small>
-                                            Em breve
-                                        </small>
-
-                                    </span>
-
-                                </label>
+                                <strong id="valorMinicursos">
+                                    R$ 0,00
+                                </strong>
 
                             </div>
-
-
-
-                            <div class="minicurso-card">
-
-                                <label>
-
-                                    <input
-                                        type="checkbox"
-                                        name="minicursos"
-                                        value="minicurso_3"
-                                        disabled
-                                    >
-
-                                    <span>
-
-                                        <strong>
-                                            Minicurso 3
-                                        </strong>
-
-                                        <small>
-                                            Em breve
-                                        </small>
-
-                                    </span>
-
-                                </label>
-
-                            </div>
-
 
                         </div>
 
@@ -1467,6 +1541,19 @@
                             </span>
 
                             <strong id="valorOriginal">
+                                R$ 0,00
+                            </strong>
+
+                        </div>
+
+
+                        <div class="valor-linha">
+
+                            <span>
+                                Minicursos
+                            </span>
+
+                            <strong id="valorMinicursosTotal">
                                 R$ 0,00
                             </strong>
 
@@ -1663,6 +1750,19 @@
                         </span>
 
                         <strong id="resumoValorOriginal">
+                            R$ 0,00
+                        </strong>
+
+                    </div>
+
+
+                    <div class="resumo-valor-linha">
+
+                        <span>
+                            Minicursos
+                        </span>
+
+                        <strong id="resumoValorMinicursos">
                             R$ 0,00
                         </strong>
 
