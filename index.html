@@ -19,6 +19,215 @@
         href="css/styles.css"
     >
 
+    <style>
+
+        /* =========================================
+           PALESTRANTES
+        ========================================== */
+
+        .palestrantes-container {
+
+            margin-top: 40px;
+
+            display: grid;
+
+            grid-template-columns:
+                repeat(
+                    auto-fit,
+                    minmax(260px, 1fr)
+                );
+
+            gap: 25px;
+
+        }
+
+
+        .palestrante-card {
+
+            background: #ffffff;
+
+            border-radius: 18px;
+
+            overflow: hidden;
+
+            box-shadow:
+                0 10px 30px
+                rgba(0, 0, 0, 0.08);
+
+            transition:
+                transform 0.2s ease,
+                box-shadow 0.2s ease;
+
+            text-align: left;
+
+        }
+
+
+        .palestrante-card:hover {
+
+            transform:
+                translateY(-5px);
+
+            box-shadow:
+                0 15px 35px
+                rgba(0, 0, 0, 0.12);
+
+        }
+
+
+        .palestrante-foto {
+
+            width: 100%;
+
+            height: 280px;
+
+            object-fit: cover;
+
+            display: block;
+
+            background: #f1f5f3;
+
+        }
+
+
+        .palestrante-conteudo {
+
+            padding: 22px;
+
+        }
+
+
+        .palestrante-tipo {
+
+            display: inline-block;
+
+            margin-bottom: 10px;
+
+            padding: 5px 10px;
+
+            border-radius: 20px;
+
+            background: #e8f5ee;
+
+            color: #0b7a3b;
+
+            font-size: 12px;
+
+            font-weight: 700;
+
+            text-transform: uppercase;
+
+        }
+
+
+        .palestrante-nome {
+
+            margin: 0 0 8px;
+
+            color: #111827;
+
+            font-size: 21px;
+
+            line-height: 1.2;
+
+        }
+
+
+        .palestrante-profissao {
+
+            margin: 0 0 6px;
+
+            color: #0b7a3b;
+
+            font-weight: 700;
+
+        }
+
+
+        .palestrante-instituicao {
+
+            margin: 0 0 15px;
+
+            color: #64748b;
+
+            font-size: 14px;
+
+        }
+
+
+        .palestrante-tema {
+
+            padding-top: 15px;
+
+            border-top: 1px solid #e5e7eb;
+
+            color: #374151;
+
+            font-size: 15px;
+
+            line-height: 1.5;
+
+        }
+
+
+        .palestrante-curriculo {
+
+            margin-top: 15px;
+
+            color: #64748b;
+
+            font-size: 14px;
+
+            line-height: 1.5;
+
+        }
+
+
+        .palestrantes-loading {
+
+            padding: 35px;
+
+            text-align: center;
+
+            color: #64748b;
+
+        }
+
+
+        .palestrantes-vazio {
+
+            padding: 35px;
+
+            border-radius: 15px;
+
+            background: #f8faf9;
+
+            color: #64748b;
+
+            text-align: center;
+
+        }
+
+
+        @media (max-width: 700px) {
+
+            .palestrantes-container {
+
+                grid-template-columns: 1fr;
+
+            }
+
+
+            .palestrante-foto {
+
+                height: 320px;
+
+            }
+
+        }
+
+    </style>
+
 </head>
 
 
@@ -106,10 +315,6 @@
 
 
 
-            <!-- =====================================
-                 DATA DO EVENTO
-            ====================================== -->
-
             <div class="event-info">
 
 
@@ -163,10 +368,6 @@
             </div>
 
 
-
-            <!-- =====================================
-                 BOTÕES
-            ====================================== -->
 
             <div class="hero-buttons">
 
@@ -265,8 +466,6 @@
         <div class="cards">
 
 
-            <!-- DIA 1 -->
-
             <div class="card">
 
                 <span>
@@ -288,8 +487,6 @@
 
 
 
-            <!-- DIA 2 -->
-
             <div class="card">
 
                 <span>
@@ -310,8 +507,6 @@
             </div>
 
 
-
-            <!-- DIA 3 -->
 
             <div class="card">
 
@@ -361,11 +556,23 @@
 
 
         <p>
-
-            Em breve, os palestrantes e convidados
-            confirmados serão apresentados aqui.
-
+            Conheça os profissionais confirmados
+            para o CRFE 2027.
         </p>
+
+
+        <div
+            id="listaPalestrantesPublico"
+            class="palestrantes-container"
+        >
+
+            <div class="palestrantes-loading">
+
+                Carregando palestrantes...
+
+            </div>
+
+        </div>
 
 
     </section>
@@ -457,10 +664,6 @@
 
 
 
-<!-- =========================================
-     RODAPÉ
-========================================== -->
-
 <footer>
 
 
@@ -507,6 +710,13 @@
 
 
 </footer>
+
+
+
+<script
+    type="module"
+    src="js/index.js?v=1"
+></script>
 
 
 </body>
