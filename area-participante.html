@@ -81,6 +81,11 @@
             Olá! Seja bem-vindo(a) ao CRFE 2027.
         </h1>
 
+        <p>
+            Gerencie sua inscrição, acompanhe sua programação
+            e acesse sua credencial digital.
+        </p>
+
     </section>
 
 
@@ -216,6 +221,10 @@
         <h2>
             Dados do participante
         </h2>
+
+        <p>
+            Confira os dados utilizados no seu cadastro.
+        </p>
 
 
         <div class="profile-grid">
@@ -522,6 +531,7 @@
                     >
 
                     Minicurso 1
+
                     <small>
                         Em breve
                     </small>
@@ -538,6 +548,7 @@
                     >
 
                     Minicurso 2
+
                     <small>
                         Em breve
                     </small>
@@ -554,6 +565,7 @@
                     >
 
                     Minicurso 3
+
                     <small>
                         Em breve
                     </small>
@@ -630,52 +642,59 @@
             ></p>
 
 
+        </form>
 
-            <!-- ================================================= -->
-            <!-- PAGAMENTO -->
-            <!-- ================================================= -->
 
-            <section
-                id="pagamentoInscricao"
-                class="pagamento-inscricao"
-                style="display: none;"
-            >
 
-                <span class="section-label">
-                    PAGAMENTO
-                </span>
+        <!-- ================================================= -->
+        <!-- PAGAMENTO -->
+        <!-- ================================================= -->
 
-                <h3>
-                    Finalize o pagamento
-                </h3>
+        <section
+            id="pagamentoInscricao"
+            class="pagamento-inscricao"
+            style="display: none;"
+        >
 
-                <p>
-                    Sua inscrição foi registrada.
-                    Escolha uma das formas de pagamento abaixo.
-                </p>
+            <span class="section-label">
+                PAGAMENTO
+            </span>
 
+            <h3>
+                Finalize o pagamento
+            </h3>
+
+            <p>
+                Sua inscrição foi registrada.
+                Escolha uma das formas de pagamento abaixo.
+            </p>
+
+
+            <div class="pagamento-grid">
 
 
                 <!-- PIX -->
 
                 <div class="pagamento-box">
 
-                    <h4>
+                    <span class="pagamento-icone">
                         PIX
+                    </span>
+
+                    <h4>
+                        Pagamento via PIX
                     </h4>
 
                     <p>
                         Valor da inscrição:
-
                         <strong id="valorPix">
                             R$ 0,00
                         </strong>
-
                     </p>
 
-                    <p>
-                        Chave Pix:
-                    </p>
+                    <span class="pix-titulo">
+                        Chave Pix
+                    </span>
 
                     <div class="pix-chave">
 
@@ -715,14 +734,18 @@
 
                 <div class="pagamento-box">
 
+                    <span class="pagamento-icone">
+                        CARTÃO
+                    </span>
+
                     <h4>
-                        CARTÃO DE CRÉDITO
+                        Cartão de crédito
                     </h4>
 
                     <p>
-                        Você também pode realizar o
-                        pagamento utilizando cartão
-                        de crédito.
+                        Realize o pagamento utilizando
+                        cartão de crédito através do
+                        Mercado Pago.
                     </p>
 
 
@@ -739,25 +762,27 @@
                 </div>
 
 
-
-                <!-- STATUS -->
-
-                <div class="pagamento-status">
-
-                    <strong>
-                        Status do pagamento:
-                    </strong>
-
-                    <span id="statusPagamento">
-                        Aguardando pagamento
-                    </span>
-
-                </div>
-
-            </section>
+            </div>
 
 
-        </form>
+
+            <!-- STATUS -->
+
+            <div class="pagamento-status">
+
+                <span>
+                    Status do pagamento
+                </span>
+
+                <strong id="statusPagamento">
+                    Aguardando pagamento
+                </strong>
+
+            </div>
+
+
+        </section>
+
 
     </section>
 
@@ -784,6 +809,24 @@
             Sua programação personalizada ficará disponível aqui.
         </p>
 
+
+        <div class="empty-state">
+
+            <span>
+                📅
+            </span>
+
+            <strong>
+                Programação em breve
+            </strong>
+
+            <small>
+                As palestras, mesas-redondas e minicursos
+                serão disponibilizados nesta área.
+            </small>
+
+        </div>
+
     </section>
 
 
@@ -794,7 +837,7 @@
 
     <section
         id="credencial"
-        class="content-section"
+        class="content-section credencial-section"
     >
 
         <span class="section-label">
@@ -807,17 +850,20 @@
 
         <p id="mensagemCredencial">
             Sua credencial digital ficará disponível aqui
-            após a confirmação da inscrição.
+            após a confirmação do pagamento.
         </p>
 
 
-        <!-- CREDENCIAL -->
+        <!-- CREDENCIAL DIGITAL -->
 
         <div
             id="credencialDigital"
             class="credencial-digital"
             style="display: none;"
         >
+
+
+            <!-- TOPO -->
 
             <div class="credencial-topo">
 
@@ -832,8 +878,13 @@
             </div>
 
 
+
+            <!-- CONTEÚDO -->
+
             <div class="credencial-conteudo">
 
+
+                <!-- PARTICIPANTE -->
 
                 <div class="credencial-identificacao">
 
@@ -866,6 +917,8 @@
 
 
 
+                <!-- STATUS -->
+
                 <div class="credencial-status">
 
                     <strong>
@@ -879,6 +932,8 @@
                 </div>
 
 
+
+                <!-- CÓDIGO -->
 
                 <div class="credencial-codigo">
 
@@ -896,6 +951,9 @@
             </div>
 
 
+
+            <!-- RODAPÉ -->
+
             <div class="credencial-rodape">
 
                 <span>
@@ -911,6 +969,7 @@
                 </span>
 
             </div>
+
 
         </div>
 
@@ -941,12 +1000,35 @@
             nesta área.
         </p>
 
+
+        <div class="empty-state">
+
+            <span>
+                📄
+            </span>
+
+            <strong>
+                Certificado indisponível
+            </strong>
+
+            <small>
+                O certificado será disponibilizado
+                após o congresso, conforme os critérios
+                de participação.
+            </small>
+
+        </div>
+
     </section>
 
 
 </main>
 
 
+
+<!-- ================================================= -->
+<!-- RODAPÉ -->
+<!-- ================================================= -->
 
 <footer>
 
@@ -966,22 +1048,23 @@
 
 
 
-<!-- ===================================================== -->
+<!-- ================================================= -->
 <!-- QR CODE -->
-<!-- ===================================================== -->
+<!-- ================================================= -->
 
 <script
     src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"
 ></script>
 
 
-<!-- ===================================================== -->
+
+<!-- ================================================= -->
 <!-- JAVASCRIPT -->
-<!-- ===================================================== -->
+<!-- ================================================= -->
 
 <script
     type="module"
-    src="js/area-participante.js?v=5"
+    src="js/area-participante.js?v=6"
 ></script>
 
 
