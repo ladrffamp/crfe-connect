@@ -3706,34 +3706,34 @@ async function crfeEnviarTrabalho() {
 
 
         // =================================================
-        // AGUARDAR DRIVE
-        // =================================================
+// UPLOAD CONCLUÍDO
+// =================================================
 
-        if (mensagemTrabalho) {
+if (mensagemTrabalho) {
 
-            mensagemTrabalho.textContent =
-                "Confirmando envio do arquivo...";
+    mensagemTrabalho.textContent =
+        "PDF enviado com sucesso. Registrando trabalho científico...";
 
-        }
-
-
-        const upload =
-            await crfeAguardarUpload(
-                token
-            );
+}
 
 
-        if (
-            !upload ||
-            !upload.fileId
-        ) {
+const upload =
+    await crfeEnviarArquivoDrive(
+        arquivo,
+        token
+    );
 
-            throw new Error(
-                "O arquivo foi processado, mas o Google Drive não retornou o identificador."
-            );
 
-        }
+if (
+    !upload ||
+    !upload.fileId
+) {
 
+    throw new Error(
+        "O arquivo foi enviado, mas o Google Drive não retornou o identificador."
+    );
+
+}
 
         // =================================================
         // CRIAR DOCUMENTO FIRESTORE
