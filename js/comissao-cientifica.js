@@ -158,6 +158,9 @@ function gerarCardTrabalho(trabalho) {
     const status =
         trabalho.status || "em_avaliacao";
 
+    const avaliacaoFinalizada =
+    trabalho.avaliacaoFinalizada === true;
+
     const arquivoNome =
         trabalho.arquivoNome ||
         "Arquivo não informado";
