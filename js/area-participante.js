@@ -3208,140 +3208,124 @@ async function crfeEnviarArquivoDrive(
 // CONSULTAR STATUS VIA JSONP
 // =====================================================
 
-function crfeConsultarUpload(
-    token
-) {
+function crfeConsultarUpload(token) {
 
-    return new Promise(
-        (resolve, reject) => {
+    return new Promise((resolve, reject) => {
 
-            const callback =
-                "crfeCallback_" +
-                Date.now() +
-                "_" +
-                Math.random()
-                    .toString(36)
-                    .substring(2, 7);
+        const callback =
+            "crfeCallback_" +
+            Date.now() +
+            "_" +
+            Math.random()
+                .toString(36)
+                .substring(2, 8);
+
+        const script =
+            document.createElement("script");
+
+        let finalizado = false;
+
+        const limpar = () => {
+
+            if (finalizado) {
+                return;
+            }
+
+            finalizado = true;
+
+            clearTimeout(timeout);
+
+            script.remove();
+
+            try {
+                delete window[callback];
+            } catch {
+                window[callback] = undefined;
+            }
+        };
 
 
-            const script =
-                document.createElement(
-                    "script"
+        const timeout =
+            setTimeout(() => {
+
+                limpar();
+
+                reject(
+                    new Error(
+                        "Tempo limite ao consultar o status do upload."
+                    )
                 );
 
-
-            let finalizado =
-                false;
+            }, 15000);
 
 
-            const limpar =
-                () => {
+        window[callback] = resultado => {
 
-                    if (
-                        finalizado
-                    ) {
-                        return;
-                    }
+            limpar();
 
-
-                    finalizado =
-                        true;
-
-
-                    clearTimeout(
-                        timeout
-                    );
-
-
-                    script.remove();
-
-
-                    try {
-
-                        delete window[
-                            callback
-                        ];
-
-                    } catch {
-
-                        window[
-                            callback
-                        ] =
-                            undefined;
-
-                    }
-
-                };
-
-
-            const timeout =
-                setTimeout(
-                    () => {
-
-                        limpar();
-
-                        reject(
-                            new Error(
-                                "Tempo limite ao consultar o upload."
-                            )
-                        );
-
-                    },
-                    30000
-                );
-
-
-            window[callback] =
-                resultado => {
-
-                    limpar();
-
-                    resolve(
-                        resultado
-                    );
-
-                };
-
-
-            script.onerror =
-                () => {
-
-                    limpar();
-
-                    reject(
-                        new Error(
-                            "Não foi possível consultar o status do upload."
-                        )
-                    );
-
-                };
-
-
-            const url =
-                URL_UPLOAD_TRABALHOS +
-                "?action=status" +
-                "&token=" +
-                encodeURIComponent(
-                    token
-                ) +
-                "&callback=" +
-                encodeURIComponent(
-                    callback
-                );
-
-
-            script.src =
-                url;
-
-
-            document.body.appendChild(
-                script
+            console.log(
+                "Resposta JSONP do upload:",
+                resultado
             );
 
-        }
-    );
-}
+            resolve(resultado);
+        };
 
+
+        script.onload = () => {
+
+            console.log(
+                "Consulta JSONP carregada:",
+                token
+            );
+
+        };
+
+
+        script.onerror = () => {
+
+            limpar();
+
+            console.error(
+                "Erro ao carregar JSONP:",
+                script.src
+            );
+
+            reject(
+                new Error(
+                    "Não foi possível consultar o status do upload."
+                )
+            );
+        };
+
+
+        const url =
+            URL_UPLOAD_TRABALHOS +
+            "?action=status" +
+            "&token=" +
+            encodeURIComponent(token) +
+            "&callback=" +
+            encodeURIComponent(callback) +
+            "&t=" +
+            Date.now();
+
+
+        console.log(
+            "Consultando status:",
+            url
+        );
+
+
+        script.src =
+            url;
+
+
+        document.head.appendChild(
+            script
+        );
+
+    });
+}
 
 // =====================================================
 // AGUARDAR CONCLUSÃO
