@@ -4,7 +4,10 @@ import {
     collection,
     getDocs,
     query,
-    orderBy
+    orderBy,
+    doc,
+    updateDoc,
+    serverTimestamp
 } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
 
 import {
@@ -13,38 +16,18 @@ import {
 } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
 
 
-// =====================================================
-// ELEMENTOS
-// =====================================================
-
-const listaTrabalhos =
-    document.getElementById("listaTrabalhos");
-
-const campoBusca =
-    document.getElementById("campoBusca");
-
-const filtroStatus =
-    document.getElementById("filtroStatus");
-
-const totalTrabalhos =
-    document.getElementById("totalTrabalhos");
-
-const totalAvaliacao =
-    document.getElementById("totalAvaliacao");
-
-const btnSair =
-    document.getElementById("btnSair");
-
-
-// =====================================================
-// ESTADO
-// =====================================================
+const listaTrabalhos = document.getElementById("listaTrabalhos");
+const campoBusca = document.getElementById("campoBusca");
+const filtroStatus = document.getElementById("filtroStatus");
+const totalTrabalhos = document.getElementById("totalTrabalhos");
+const totalAvaliacao = document.getElementById("totalAvaliacao");
+const btnSair = document.getElementById("btnSair");
 
 let todosTrabalhos = [];
 
 
 // =====================================================
-// STATUS
+// FORMATAR STATUS
 // =====================================================
 
 function formatarStatus(status) {
@@ -68,7 +51,7 @@ function formatarStatus(status) {
 
 
 // =====================================================
-// DATA
+// FORMATAR DATA
 // =====================================================
 
 function formatarData(timestamp) {
@@ -84,14 +67,11 @@ function formatarData(timestamp) {
                 ? timestamp.toDate()
                 : new Date(timestamp);
 
-        return data.toLocaleDateString(
-            "pt-BR",
-            {
-                day: "2-digit",
-                month: "2-digit",
-                year: "numeric"
-            }
-        );
+        return data.toLocaleDateString("pt-BR", {
+            day: "2-digit",
+            month: "2-digit",
+            year: "numeric"
+        });
 
     } catch (erro) {
 
@@ -101,58 +81,96 @@ function formatarData(timestamp) {
 
 
 // =====================================================
-// CARD
+// FORMATAR ÁREA
+// =====================================================
+
+function formatarArea(area) {
+
+    const areas = {
+
+        fisioterapia_esportiva:
+            "Fisioterapia Esportiva",
+
+        avaliacao_funcional:
+            "Avaliação Funcional",
+
+        prevencao_lesoes:
+            "Prevenção de Lesões",
+
+        reabilitacao:
+            "Reabilitação",
+
+        performance:
+            "Performance Esportiva",
+
+        outras:
+            "Outras"
+    };
+
+    return areas[area] || area || "Não informada";
+}
+
+
+// =====================================================
+// ESCAPAR HTML
+// =====================================================
+
+function escaparHTML(valor) {
+
+    return String(valor)
+
+        .replaceAll("&", "&amp;")
+        .replaceAll("<", "&lt;")
+        .replaceAll(">", "&gt;")
+        .replaceAll('"', "&quot;")
+        .replaceAll("'", "&#039;");
+}
+
+
+// =====================================================
+// GERAR CARD
 // =====================================================
 
 function gerarCardTrabalho(trabalho) {
 
     const titulo =
-        trabalho.titulo ||
-        "Sem título";
+        trabalho.titulo || "Sem título";
 
     const autores =
-        trabalho.autores ||
-        "Não informado";
+        trabalho.autores || "Não informado";
 
     const orientador =
-        trabalho.orientador ||
-        "Não informado";
+        trabalho.orientador || "Não informado";
 
     const instituicao =
-        trabalho.instituicao ||
-        "Não informada";
+        trabalho.instituicao || "Não informada";
 
     const tipo =
-        trabalho.tipo ||
-        "Não informado";
+        trabalho.tipo || "Não informado";
 
-    const areaMap = {
-    fisioterapia_esportiva: "Fisioterapia Esportiva",
-    avaliacao_funcional: "Avaliação Funcional",
-    prevencao_lesoes: "Prevenção de Lesões",
-    reabilitacao: "Reabilitação",
-    performance: "Performance Esportiva",
-    outras: "Outras"
-};
-
-const area = areaMap[trabalho.area] || trabalho.area || "Não informada";
+    const area =
+        formatarArea(trabalho.area);
 
     const status =
-        trabalho.status ||
-        "em_avaliacao";
+        trabalho.status || "em_avaliacao";
 
     const arquivoNome =
         trabalho.arquivoNome ||
         "Arquivo não informado";
 
     const arquivoUrl =
-        trabalho.arquivoUrl ||
-        "";
+        trabalho.arquivoUrl || "";
 
     const dataEnvio =
-        formatarData(
-            trabalho.criadoEm
-        );
+        formatarData(trabalho.criadoEm);
+
+    const observacao =
+        trabalho.observacao || "";
+
+
+    // =================================================
+    // BOTÃO PDF
+    // =================================================
 
     let botaoArquivo = "";
 
@@ -161,7 +179,7 @@ const area = areaMap[trabalho.area] || trabalho.area || "Não informada";
         botaoArquivo = `
             <a
                 class="btn-pdf"
-                href="${arquivoUrl}"
+                href="${escaparHTML(arquivoUrl)}"
                 target="_blank"
                 rel="noopener noreferrer"
             >
@@ -179,9 +197,16 @@ const area = areaMap[trabalho.area] || trabalho.area || "Não informada";
     }
 
 
+    // =================================================
+    // CARD
+    // =================================================
+
     return `
 
-        <article class="trabalho-card">
+        <article
+            class="trabalho-card"
+            data-id="${escaparHTML(trabalho.id)}"
+        >
 
             <div class="trabalho-topo">
 
@@ -203,80 +228,45 @@ const area = areaMap[trabalho.area] || trabalho.area || "Não informada";
             <div class="informacoes">
 
                 <div class="informacao">
-
-                    <span>
-                        Autores
-                    </span>
-
+                    <span>Autores</span>
                     <strong>
                         ${escaparHTML(autores)}
                     </strong>
-
                 </div>
 
-
                 <div class="informacao">
-
-                    <span>
-                        Orientador
-                    </span>
-
+                    <span>Orientador</span>
                     <strong>
                         ${escaparHTML(orientador)}
                     </strong>
-
                 </div>
 
-
                 <div class="informacao">
-
-                    <span>
-                        Instituição
-                    </span>
-
+                    <span>Instituição</span>
                     <strong>
                         ${escaparHTML(instituicao)}
                     </strong>
-
                 </div>
 
-
                 <div class="informacao">
-
-                    <span>
-                        Tipo
-                    </span>
-
+                    <span>Tipo</span>
                     <strong>
                         ${escaparHTML(tipo)}
                     </strong>
-
                 </div>
 
-
                 <div class="informacao">
-
-                    <span>
-                        Área
-                    </span>
-
+                    <span>Área</span>
                     <strong>
                         ${escaparHTML(area)}
                     </strong>
-
                 </div>
 
-
                 <div class="informacao">
-
-                    <span>
-                        Enviado em
-                    </span>
-
+                    <span>Enviado em</span>
                     <strong>
                         ${dataEnvio}
                     </strong>
-
                 </div>
 
             </div>
@@ -288,24 +278,88 @@ const area = areaMap[trabalho.area] || trabalho.area || "Não informada";
 
             </div>
 
+
+            <!-- ===================================== -->
+            <!-- AVALIAÇÃO DA COMISSÃO -->
+            <!-- ===================================== -->
+
+            <div class="avaliacao-comissao">
+
+                <h4>
+                    Avaliação da Comissão
+                </h4>
+
+
+                <label>
+                    Status da avaliação
+                </label>
+
+                <select
+                    class="campo-avaliacao-status"
+                    data-id="${escaparHTML(trabalho.id)}"
+                >
+
+                    <option
+                        value="em_avaliacao"
+                        ${status === "em_avaliacao" ? "selected" : ""}
+                    >
+                        Em avaliação
+                    </option>
+
+                    <option
+                        value="aprovado"
+                        ${status === "aprovado" ? "selected" : ""}
+                    >
+                        Aprovado
+                    </option>
+
+                    <option
+                        value="aprovado_com_correcoes"
+                        ${status === "aprovado_com_correcoes" ? "selected" : ""}
+                    >
+                        Aprovado com correções
+                    </option>
+
+                    <option
+                        value="reprovado"
+                        ${status === "reprovado" ? "selected" : ""}
+                    >
+                        Reprovado
+                    </option>
+
+                </select>
+
+
+                <label>
+                    Observação da Comissão
+                </label>
+
+                <textarea
+                    class="campo-avaliacao-observacao"
+                    data-id="${escaparHTML(trabalho.id)}"
+                    rows="4"
+                    placeholder="Digite uma observação sobre a avaliação..."
+                >${escaparHTML(observacao)}</textarea>
+
+
+                <button
+                    type="button"
+                    class="btn-salvar-avaliacao"
+                    data-id="${escaparHTML(trabalho.id)}"
+                >
+                    💾 Salvar avaliação
+                </button>
+
+
+                <div
+                    class="mensagem-avaliacao"
+                    data-id="${escaparHTML(trabalho.id)}"
+                ></div>
+
+            </div>
+
         </article>
-
     `;
-}
-
-
-// =====================================================
-// SEGURANÇA DO HTML
-// =====================================================
-
-function escaparHTML(valor) {
-
-    return String(valor)
-        .replaceAll("&", "&amp;")
-        .replaceAll("<", "&lt;")
-        .replaceAll(">", "&gt;")
-        .replaceAll('"', "&quot;")
-        .replaceAll("'", "&#039;");
 }
 
 
@@ -321,8 +375,7 @@ function renderizarTrabalhos() {
             .toLowerCase();
 
     const statusSelecionado =
-        filtroStatus?.value ||
-        "todos";
+        filtroStatus?.value || "todos";
 
 
     const filtrados =
@@ -331,15 +384,10 @@ function renderizarTrabalhos() {
             const textoBusca = [
 
                 trabalho.titulo,
-
                 trabalho.autores,
-
                 trabalho.instituicao,
-
                 trabalho.orientador,
-
                 trabalho.area,
-
                 trabalho.tipo
 
             ]
@@ -355,15 +403,14 @@ function renderizarTrabalhos() {
 
             const correspondeStatus =
                 statusSelecionado === "todos" ||
-                (trabalho.status || "em_avaliacao")
-                    === statusSelecionado;
+                (trabalho.status || "em_avaliacao") ===
+                statusSelecionado;
 
 
             return (
                 correspondeBusca &&
                 correspondeStatus
             );
-
         });
 
 
@@ -388,6 +435,191 @@ function renderizarTrabalhos() {
         filtrados
             .map(gerarCardTrabalho)
             .join("");
+
+
+    ativarBotoesAvaliacao();
+}
+
+
+// =====================================================
+// SALVAR AVALIAÇÃO
+// =====================================================
+
+async function salvarAvaliacao(id) {
+
+    const select =
+        document.querySelector(
+            `.campo-avaliacao-status[data-id="${id}"]`
+        );
+
+    const textarea =
+        document.querySelector(
+            `.campo-avaliacao-observacao[data-id="${id}"]`
+        );
+
+    const botao =
+        document.querySelector(
+            `.btn-salvar-avaliacao[data-id="${id}"]`
+        );
+
+    const mensagem =
+        document.querySelector(
+            `.mensagem-avaliacao[data-id="${id}"]`
+        );
+
+
+    if (!select || !textarea || !botao) {
+        return;
+    }
+
+
+    const novoStatus =
+        select.value;
+
+    const novaObservacao =
+        textarea.value.trim();
+
+
+    try {
+
+        botao.disabled = true;
+
+        botao.textContent =
+            "Salvando...";
+
+        mensagem.textContent = "";
+
+
+        const trabalhoRef =
+            doc(db, "trabalhos", id);
+
+
+        await updateDoc(
+            trabalhoRef,
+            {
+                status: novoStatus,
+                observacao: novaObservacao,
+                atualizadoEm: serverTimestamp()
+            }
+        );
+
+
+        // Atualiza o objeto local
+        const trabalho =
+            todosTrabalhos.find(
+                item => item.id === id
+            );
+
+
+        if (trabalho) {
+
+            trabalho.status =
+                novoStatus;
+
+            trabalho.observacao =
+                novaObservacao;
+        }
+
+
+        // Atualiza contadores
+        totalAvaliacao.textContent =
+            todosTrabalhos.filter(
+                item =>
+                    (item.status || "em_avaliacao") ===
+                    "em_avaliacao"
+            ).length;
+
+
+        mensagem.innerHTML = `
+            <span class="avaliacao-sucesso">
+                ✓ Avaliação salva com sucesso.
+            </span>
+        `;
+
+
+        botao.textContent =
+            "✓ Avaliação salva";
+
+
+        // Atualiza o selo do card
+        const card =
+            document.querySelector(
+                `.trabalho-card[data-id="${id}"]`
+            );
+
+
+        const selo =
+            card?.querySelector(".status");
+
+
+        if (selo) {
+
+            selo.textContent =
+                formatarStatus(novoStatus);
+        }
+
+
+        setTimeout(() => {
+
+            if (botao) {
+                botao.textContent =
+                    "💾 Salvar avaliação";
+            }
+
+        }, 2000);
+
+
+    } catch (erro) {
+
+        console.error(
+            "Erro ao salvar avaliação:",
+            erro
+        );
+
+
+        mensagem.innerHTML = `
+            <span class="avaliacao-erro">
+                Não foi possível salvar a avaliação.
+            </span>
+        `;
+
+        botao.textContent =
+            "Tentar novamente";
+
+
+    } finally {
+
+        botao.disabled = false;
+    }
+}
+
+
+// =====================================================
+// ATIVAR BOTÕES
+// =====================================================
+
+function ativarBotoesAvaliacao() {
+
+    const botoes =
+        document.querySelectorAll(
+            ".btn-salvar-avaliacao"
+        );
+
+
+    botoes.forEach(botao => {
+
+        botao.addEventListener(
+            "click",
+            () => {
+
+                const id =
+                    botao.dataset.id;
+
+                salvarAvaliacao(id);
+            }
+        );
+
+    });
 }
 
 
@@ -402,9 +634,7 @@ async function carregarTrabalhos() {
         listaTrabalhos.innerHTML = `
 
             <div class="estado">
-
                 Carregando trabalhos científicos...
-
             </div>
 
         `;
@@ -412,14 +642,8 @@ async function carregarTrabalhos() {
 
         const consulta =
             query(
-                collection(
-                    db,
-                    "trabalhos"
-                ),
-                orderBy(
-                    "criadoEm",
-                    "desc"
-                )
+                collection(db, "trabalhos"),
+                orderBy("criadoEm", "desc")
             );
 
 
@@ -431,9 +655,7 @@ async function carregarTrabalhos() {
             snapshot.docs.map(
                 documento => ({
 
-                    id:
-                        documento.id,
-
+                    id: documento.id,
                     ...documento.data()
 
                 })
@@ -447,8 +669,8 @@ async function carregarTrabalhos() {
         totalAvaliacao.textContent =
             todosTrabalhos.filter(
                 trabalho =>
-                    (trabalho.status || "em_avaliacao")
-                    === "em_avaliacao"
+                    (trabalho.status || "em_avaliacao") ===
+                    "em_avaliacao"
             ).length;
 
 
@@ -480,14 +702,12 @@ async function carregarTrabalhos() {
             </div>
 
         `;
-
     }
-
 }
 
 
 // =====================================================
-// FILTROS
+// BUSCA
 // =====================================================
 
 if (campoBusca) {
@@ -496,9 +716,12 @@ if (campoBusca) {
         "input",
         renderizarTrabalhos
     );
-
 }
 
+
+// =====================================================
+// FILTRO
+// =====================================================
 
 if (filtroStatus) {
 
@@ -506,7 +729,6 @@ if (filtroStatus) {
         "change",
         renderizarTrabalhos
     );
-
 }
 
 
@@ -533,12 +755,9 @@ if (btnSair) {
                     "Erro ao sair:",
                     erro
                 );
-
             }
-
         }
     );
-
 }
 
 
@@ -566,6 +785,5 @@ onAuthStateChanged(
 
 
         await carregarTrabalhos();
-
     }
 );
