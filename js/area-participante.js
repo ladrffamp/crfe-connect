@@ -2850,8 +2850,9 @@ async function atualizarCredencial() {
 
 
     const categoriaCredencial =
-        inscricaoAtual.categoria ||
-        "-";
+    formatarCategoria(
+        inscricaoAtual.categoria
+    );
 
 
     const instituicao =
