@@ -33,6 +33,15 @@ let minicursosDisponiveis = [];
 let cupomAplicado = "";
 let descontoAtual = 0;
 
+// =====================================================
+// GOOGLE DRIVE / APPS SCRIPT
+// =====================================================
+
+const URL_UPLOAD_TRABALHOS =
+    "https://script.google.com/macros/s/AKfycbyGbfNPhfyNllO0H5_kRY6J2i941qxj5nD0t20LGKR3YMO-WNMkbw8AKsWzWUlwdqur1Q/exec";
+
+const LIMITE_ARQUIVO_TRABALHO =
+    10 * 1024 * 1024;
 
 // =====================================================
 // ELEMENTOS
