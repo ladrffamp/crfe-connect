@@ -20,96 +20,40 @@ import {
 
 
 // =====================================================
-// CONFIGURAÇÕES
-// =====================================================
-
-const PIX = "ladrf.fampfaculdade@gmail.com";
-
-const LINK_CARTAO = "https://mpago.la/2SHESXg";
-
-const VALORES = {
-    estudante: 80,
-    fisioterapeuta: 120,
-    profissionalSaude: 120,
-    profissionalEsporte: 120,
-    atleta: 80,
-    outro: 120
-};
-
-
-// =====================================================
 // VARIÁVEIS
 // =====================================================
 
 let usuarioAtual = null;
-
+let perfilAtual = {};
 let inscricaoAtual = null;
+let minicursosDisponiveis = [];
 
-let minicursos = [];
-
-let minicursosSelecionados = [];
-
+let cupomAplicado = "";
 let descontoAtual = 0;
-
-let cupomAtual = "";
 
 
 // =====================================================
 // ELEMENTOS
 // =====================================================
 
-// PERFIL
+const perfilNome = document.getElementById("perfilNome");
+const perfilEmail = document.getElementById("perfilEmail");
+const perfilCpf = document.getElementById("perfilCpf");
+const perfilNascimento = document.getElementById("perfilNascimento");
+const perfilTelefone = document.getElementById("perfilTelefone");
+const perfilCidade = document.getElementById("perfilCidade");
+const perfilEstado = document.getElementById("perfilEstado");
+const perfilInstituicao = document.getElementById("perfilInstituicao");
+const perfilCurso = document.getElementById("perfilCurso");
 
-const perfilNome =
-    document.getElementById("perfilNome");
+const formInscricao = document.getElementById("formInscricao");
 
-const perfilEmail =
-    document.getElementById("perfilEmail");
-
-const perfilCpf =
-    document.getElementById("perfilCpf");
-
-const perfilNascimento =
-    document.getElementById("perfilNascimento");
-
-const perfilTelefone =
-    document.getElementById("perfilTelefone");
-
-const perfilCidade =
-    document.getElementById("perfilCidade");
-
-const perfilEstado =
-    document.getElementById("perfilEstado");
-
-const perfilInstituicao =
-    document.getElementById("perfilInstituicao");
-
-const perfilCurso =
-    document.getElementById("perfilCurso");
-
-
-// INSCRIÇÃO
-
-const formInscricao =
-    document.getElementById("formInscricao");
-
-const categoria =
-    document.getElementById("categoria");
-
-const instituicaoInscricao =
-    document.getElementById("instituicaoInscricao");
-
-const lote =
-    document.getElementById("lote");
-
-const cupom =
-    document.getElementById("cupom");
-
-const btnAplicarCupom =
-    document.getElementById("btnAplicarCupom");
-
-const mensagemCupom =
-    document.getElementById("mensagemCupom");
+const categoria = document.getElementById("categoria");
+const instituicaoInscricao = document.getElementById("instituicaoInscricao");
+const lote = document.getElementById("lote");
+const cupom = document.getElementById("cupom");
+const btnAplicarCupom = document.getElementById("btnAplicarCupom");
+const mensagemCupom = document.getElementById("mensagemCupom");
 
 const listaMinicursosInscricao =
     document.getElementById("listaMinicursosInscricao");
@@ -143,9 +87,6 @@ const btnContinuarInscricao =
 
 const mensagemInscricao =
     document.getElementById("mensagemInscricao");
-
-
-// RESUMO
 
 const inscricaoResumo =
     document.getElementById("inscricaoResumo");
@@ -183,9 +124,6 @@ const resumoValorDesconto =
 const resumoValorFinal =
     document.getElementById("resumoValorFinal");
 
-
-// PAGAMENTO
-
 const pagamentoConfirmado =
     document.getElementById("pagamentoConfirmado");
 
@@ -210,9 +148,6 @@ const btnPagamentoCartao =
 const statusPagamento =
     document.getElementById("statusPagamento");
 
-
-// CREDENCIAL
-
 const mensagemCredencial =
     document.getElementById("mensagemCredencial");
 
@@ -234,167 +169,126 @@ const qrcode =
 const credencialCodigo =
     document.getElementById("credencialCodigo");
 
-
-// SAIR
-
 const btnSair =
     document.getElementById("btnSair");
 
 
 // =====================================================
-// FUNÇÕES AUXILIARES
+// FUNÇÕES GERAIS
 // =====================================================
 
-function dinheiro(valor) {
+function textoSeguro(valor, padrao = "-") {
+    if (
+        valor === undefined ||
+        valor === null ||
+        String(valor).trim() === ""
+    ) {
+        return padrao;
+    }
 
-    return Number(valor || 0).toLocaleString(
-        "pt-BR",
-        {
-            style: "currency",
-            currency: "BRL"
-        }
-    );
-
+    return String(valor);
 }
 
 
-function texto(valor) {
+function formatarMoeda(valor) {
 
-    return (
-        valor !== undefined &&
-        valor !== null &&
-        String(valor).trim() !== ""
-    )
-        ? valor
-        : "-";
+    const numero = Number(valor || 0);
 
+    return numero.toLocaleString("pt-BR", {
+        style: "currency",
+        currency: "BRL"
+    });
 }
 
 
-// =====================================================
-// DATA
-// =====================================================
+function formatarData(valor) {
 
-function formatarData(data) {
-
-    if (!data) {
+    if (!valor) {
         return "-";
     }
 
+    try {
 
-    // Timestamp do Firebase
+        if (
+            typeof valor === "object" &&
+            valor.seconds !== undefined
+        ) {
 
-    if (
-        typeof data === "object" &&
-        typeof data.toDate === "function"
-    ) {
+            const data = new Date(
+                valor.seconds * 1000
+            );
 
-        data = data.toDate();
+            return data.toLocaleDateString("pt-BR");
+        }
 
+
+        if (valor instanceof Date) {
+
+            return valor.toLocaleDateString("pt-BR");
+        }
+
+
+        const texto = String(valor);
+
+
+        // YYYY-MM-DD
+        if (
+            /^\d{4}-\d{2}-\d{2}$/.test(texto)
+        ) {
+
+            const [ano, mes, dia] =
+                texto.split("-");
+
+            return `${dia}/${mes}/${ano}`;
+        }
+
+
+        const data = new Date(texto);
+
+        if (!isNaN(data.getTime())) {
+
+            return data.toLocaleDateString("pt-BR");
+        }
+
+
+        return texto;
+
+    } catch {
+
+        return textoSeguro(valor);
     }
-
-
-    // Date
-
-    if (data instanceof Date) {
-
-        const dia =
-            String(data.getDate())
-                .padStart(2, "0");
-
-        const mes =
-            String(data.getMonth() + 1)
-                .padStart(2, "0");
-
-        const ano =
-            data.getFullYear();
-
-        return `${dia}/${mes}/${ano}`;
-
-    }
-
-
-    const valor =
-        String(data);
-
-
-    // YYYY-MM-DD
-
-    if (
-        /^\d{4}-\d{2}-\d{2}$/.test(valor)
-    ) {
-
-        const [ano, mes, dia] =
-            valor.split("-");
-
-        return `${dia}/${mes}/${ano}`;
-
-    }
-
-
-    // YYYY-MM-DDTHH:mm:ss
-
-    if (
-        valor.includes("T") &&
-        /^\d{4}-\d{2}-\d{2}/.test(valor)
-    ) {
-
-        const [ano, mes, dia] =
-            valor.substring(0, 10)
-                .split("-");
-
-        return `${dia}/${mes}/${ano}`;
-
-    }
-
-
-    return valor;
-
 }
 
 
 // =====================================================
-// CATEGORIA
+// VALOR DA INSCRIÇÃO
 // =====================================================
 
-function valorBaseCategoria(valor) {
+function valorBaseCategoria() {
 
-    const categoriaNormalizada =
-        String(valor || "")
-            .toLowerCase()
-            .normalize("NFD")
-            .replace(/[\u0300-\u036f]/g, "");
-
-
-    if (
-        categoriaNormalizada.includes(
-            "estudante"
-        )
-    ) {
-
-        return 80;
-
-    }
+    const categoriaTexto =
+        String(
+            categoria?.value ||
+            inscricaoAtual?.categoria ||
+            ""
+        ).toLowerCase();
 
 
     if (
-        categoriaNormalizada.includes(
-            "atleta"
-        )
+        categoriaTexto.includes("estudante") ||
+        categoriaTexto.includes("atleta")
     ) {
 
         return 80;
-
     }
 
 
     return 120;
-
 }
 
 
 // =====================================================
-// PERFIL
+// CARREGAR PERFIL
 // =====================================================
 
 async function carregarPerfil() {
@@ -404,40 +298,47 @@ async function carregarPerfil() {
     }
 
 
+    let dados = {};
+
+
     try {
 
-        let dados = null;
-
-
-        // -------------------------------------------------
-        // PRIMEIRO: DOCUMENTO PELO UID
-        // -------------------------------------------------
-
-        const referencia =
+        const refUsuario =
             doc(
                 db,
                 "usuarios",
                 usuarioAtual.uid
             );
 
+        const snapUsuario =
+            await getDoc(refUsuario);
 
-        const snapshot =
-            await getDoc(referencia);
 
+        if (snapUsuario.exists()) {
 
-        if (snapshot.exists()) {
-
-            dados =
-                snapshot.data();
-
+            dados = snapUsuario.data();
         }
 
 
-        // -------------------------------------------------
-        // SEGUNDO: PROCURA PELO E-MAIL
-        // -------------------------------------------------
+    } catch (erro) {
 
-        if (!dados) {
+        console.error(
+            "Erro ao carregar perfil:",
+            erro
+        );
+    }
+
+
+    // -------------------------------------------------
+    // FALLBACK PELO EMAIL
+    // -------------------------------------------------
+
+    if (
+        !dados.nome &&
+        !dados.nomeCompleto
+    ) {
+
+        try {
 
             const consulta =
                 query(
@@ -459,262 +360,187 @@ async function carregarPerfil() {
 
                 dados =
                     resultado.docs[0].data();
-
             }
 
-        }
+        } catch (erro) {
 
-
-        // -------------------------------------------------
-        // E-MAIL
-        // -------------------------------------------------
-
-        if (perfilEmail) {
-
-            perfilEmail.textContent =
-                usuarioAtual.email || "-";
-
-        }
-
-
-        if (!dados) {
-
-            console.warn(
-                "Perfil não encontrado."
+            console.error(
+                "Erro no fallback do perfil:",
+                erro
             );
-
-            return;
-
         }
-
-
-        // -------------------------------------------------
-        // NOME
-        // -------------------------------------------------
-
-        if (perfilNome) {
-
-            perfilNome.textContent =
-                texto(
-                    dados.nome ||
-                    dados.nomeCompleto ||
-                    dados.nomeCompletoUsuario
-                );
-
-        }
-
-
-        // -------------------------------------------------
-        // CPF
-        // -------------------------------------------------
-
-        if (perfilCpf) {
-
-            perfilCpf.textContent =
-                texto(
-                    dados.cpf
-                );
-
-        }
-
-
-        // -------------------------------------------------
-        // NASCIMENTO
-        // -------------------------------------------------
-
-        if (perfilNascimento) {
-
-            perfilNascimento.textContent =
-                formatarData(
-                    dados.nascimento ||
-                    dados.dataNascimento ||
-                    dados.dataNasc
-                );
-
-        }
-
-
-        // -------------------------------------------------
-        // TELEFONE
-        // -------------------------------------------------
-
-        if (perfilTelefone) {
-
-            perfilTelefone.textContent =
-                texto(
-                    dados.telefone ||
-                    dados.celular ||
-                    dados.whatsapp
-                );
-
-        }
-
-
-        // -------------------------------------------------
-        // CIDADE
-        // -------------------------------------------------
-
-        if (perfilCidade) {
-
-            perfilCidade.textContent =
-                texto(
-                    dados.cidade
-                );
-
-        }
-
-
-        // -------------------------------------------------
-        // ESTADO
-        // -------------------------------------------------
-
-        if (perfilEstado) {
-
-            perfilEstado.textContent =
-                texto(
-                    dados.estado ||
-                    dados.uf
-                );
-
-        }
-
-
-        // -------------------------------------------------
-        // INSTITUIÇÃO
-        // -------------------------------------------------
-
-        if (perfilInstituicao) {
-
-            perfilInstituicao.textContent =
-                texto(
-                    dados.instituicao ||
-                    dados.instituicaoEnsino ||
-                    dados.faculdade
-                );
-
-        }
-
-
-        // -------------------------------------------------
-        // CURSO / PROFISSÃO
-        // -------------------------------------------------
-
-        if (perfilCurso) {
-
-            perfilCurso.textContent =
-                texto(
-                    dados.curso ||
-                    dados.profissao ||
-                    dados.cursoProfissao ||
-                    dados.cursoOuProfissao ||
-                    dados.formacao
-                );
-
-        }
-
-    } catch (erro) {
-
-        console.error(
-            "Erro ao carregar perfil:",
-            erro
-        );
-
     }
 
+
+    perfilAtual = dados;
+
+
+    // -------------------------------------------------
+    // CAMPOS
+    // -------------------------------------------------
+
+    const nome =
+        dados.nome ||
+        dados.nomeCompleto ||
+        usuarioAtual.displayName ||
+        "-";
+
+
+    const email =
+        dados.email ||
+        usuarioAtual.email ||
+        "-";
+
+
+    const cpf =
+        dados.cpf ||
+        dados.CPF ||
+        "-";
+
+
+    const nascimento =
+        dados.nascimento ||
+        dados.dataNascimento ||
+        dados.data_nascimento ||
+        "-";
+
+
+    const telefone =
+        dados.telefone ||
+        dados.celular ||
+        dados.whatsapp ||
+        "-";
+
+
+    const cidade =
+        dados.cidade ||
+        "-";
+
+
+    const estado =
+        dados.estado ||
+        dados.uf ||
+        "-";
+
+
+    const instituicao =
+        dados.instituicao ||
+        dados.instituicaoEnsino ||
+        dados.faculdade ||
+        "-";
+
+
+    const curso =
+        dados.curso ||
+        dados.profissao ||
+        dados.cursoProfissao ||
+        dados.cursoOuProfissao ||
+        dados.formacao ||
+        "-";
+
+
+    // -------------------------------------------------
+    // PREENCHER PERFIL
+    // -------------------------------------------------
+
+    if (perfilNome)
+        perfilNome.textContent = textoSeguro(nome);
+
+    if (perfilEmail)
+        perfilEmail.textContent = textoSeguro(email);
+
+    if (perfilCpf)
+        perfilCpf.textContent = textoSeguro(cpf);
+
+    if (perfilNascimento)
+        perfilNascimento.textContent =
+            formatarData(nascimento);
+
+    if (perfilTelefone)
+        perfilTelefone.textContent =
+            textoSeguro(telefone);
+
+    if (perfilCidade)
+        perfilCidade.textContent =
+            textoSeguro(cidade);
+
+    if (perfilEstado)
+        perfilEstado.textContent =
+            textoSeguro(estado);
+
+    if (perfilInstituicao)
+        perfilInstituicao.textContent =
+            textoSeguro(instituicao);
+
+    if (perfilCurso)
+        perfilCurso.textContent =
+            textoSeguro(curso);
 }
 
 
 // =====================================================
-// MINICURSOS
+// CARREGAR MINICURSOS
 // =====================================================
 
 async function carregarMinicursos() {
+
+    if (!listaMinicursosInscricao) {
+        return;
+    }
+
 
     try {
 
         const snapshot =
             await getDocs(
-                collection(
-                    db,
-                    "minicursos"
-                )
+                collection(db, "minicursos")
             );
 
 
-        minicursos = [];
+        minicursosDisponiveis = [];
 
 
-        snapshot.forEach(
-            (documento) => {
+        snapshot.forEach(item => {
 
-                const dados =
-                    documento.data();
-
-
-                if (
-                    dados.status ===
-                    "inativo"
-                ) {
-                    return;
-                }
+            const curso =
+                item.data();
 
 
-                if (
-                    dados.status ===
-                    "encerrado"
-                ) {
-                    return;
-                }
-
-
-                const vagas =
-                    Number(
-                        dados.vagas
-                    ) || 0;
-
-
-                const vagasOcupadas =
-                    Number(
-                        dados.vagasOcupadas
-                    ) || 0;
-
-
-                minicursos.push({
-
-                    id:
-                        documento.id,
-
-                    ...dados,
-
-                    vagasDisponiveis:
-                        Math.max(
-                            0,
-                            vagas -
-                            vagasOcupadas
-                        )
-
-                });
-
+            if (
+                curso.status === "cancelado"
+            ) {
+                return;
             }
-        );
 
 
-        minicursos.sort(
-            (a, b) => {
+            const vagas =
+                Number(curso.vagas || 0);
 
-                return String(
-                    a.data || ""
-                ).localeCompare(
-                    String(
-                        b.data || ""
-                    )
+            const ocupadas =
+                Number(
+                    curso.vagasOcupadas || 0
                 );
 
-            }
-        );
+
+            minicursosDisponiveis.push({
+
+                id: item.id,
+
+                ...curso,
+
+                vagasDisponiveis:
+                    Math.max(
+                        0,
+                        vagas - ocupadas
+                    )
+
+            });
+
+        });
 
 
         renderizarMinicursos();
+
 
     } catch (erro) {
 
@@ -723,8 +549,10 @@ async function carregarMinicursos() {
             erro
         );
 
-    }
 
+        listaMinicursosInscricao.innerHTML =
+            "<p>Não foi possível carregar os minicursos.</p>";
+    }
 }
 
 
@@ -739,279 +567,186 @@ function renderizarMinicursos() {
     }
 
 
-    if (minicursos.length === 0) {
+    listaMinicursosInscricao.innerHTML = "";
+
+
+    if (!minicursosDisponiveis.length) {
 
         listaMinicursosInscricao.innerHTML =
-            `
-            <p>
-                Nenhum minicurso disponível.
-            </p>
-            `;
+            "<p>Nenhum minicurso disponível no momento.</p>";
 
         return;
-
     }
 
 
-    listaMinicursosInscricao.innerHTML =
-        minicursos.map(
-            (curso) => {
+    minicursosDisponiveis.forEach(curso => {
 
-                const selecionado =
-                    minicursosSelecionados
-                        .includes(
-                            curso.id
-                        );
+        const disponivel =
+            Number(curso.vagasDisponiveis || 0);
 
 
-                const esgotado =
-                    curso.vagasDisponiveis <= 0;
+        const card =
+            document.createElement("div");
+
+        card.className =
+            "minicurso-card";
 
 
-                return `
-
-                    <div class="minicurso-card">
-
-                        <div class="minicurso-info">
-
-                            <h4>
-                                ${texto(curso.nome)}
-                            </h4>
-
-                            <p>
-                                <strong>Ministrante:</strong>
-                                ${texto(curso.ministrante)}
-                            </p>
-
-                            <p>
-                                <strong>Data:</strong>
-                                ${formatarData(curso.data)}
-                            </p>
-
-                            <p>
-                                <strong>Horário:</strong>
-                                ${texto(curso.inicio)}
-                                às
-                                ${texto(curso.fim)}
-                            </p>
-
-                            <p>
-                                <strong>Local:</strong>
-                                ${texto(curso.local)}
-                            </p>
-
-                            <p>
-                                <strong>Carga horária:</strong>
-                                ${texto(curso.cargaHoraria)}h
-                            </p>
-
-                            <p>
-                                <strong>Valor:</strong>
-                                ${dinheiro(curso.valor)}
-                            </p>
-
-                            <p>
-                                <strong>Vagas:</strong>
-                                ${
-                                    esgotado
-                                    ? "ESGOTADO"
-                                    : `${curso.vagasDisponiveis} vagas disponíveis`
-                                }
-                            </p>
-
-                        </div>
-
-                        <div class="minicurso-acao">
-
-                            ${
-                                esgotado
-
-                                ?
-
-                                `
-                                <button
-                                    type="button"
-                                    disabled
-                                >
-                                    ESGOTADO
-                                </button>
-                                `
-
-                                :
-
-                                `
-                                <label>
-
-                                    <input
-                                        type="checkbox"
-                                        value="${curso.id}"
-                                        ${
-                                            selecionado
-                                            ? "checked"
-                                            : ""
-                                        }
-                                    >
-
-                                    Selecionar
-
-                                </label>
-                                `
-                            }
-
-                        </div>
-
-                    </div>
-
-                `;
-
-            }
-        ).join("");
+        const checked =
+            inscricaoAtual?.minicursos?.some(
+                item =>
+                    item.id === curso.id
+            );
 
 
-    const inputs =
-        listaMinicursosInscricao.querySelectorAll(
-            'input[type="checkbox"]'
-        );
+        card.innerHTML = `
+
+            <label
+                style="
+                    display:block;
+                    cursor:${disponivel > 0 ? "pointer" : "not-allowed"};
+                "
+            >
+
+                <input
+                    type="checkbox"
+                    class="checkbox-minicurso"
+                    value="${curso.id}"
+                    ${checked ? "checked" : ""}
+                    ${disponivel <= 0 ? "disabled" : ""}
+                    style="margin-right:8px;"
+                >
+
+                <strong>
+                    ${textoSeguro(curso.nome)}
+                </strong>
+
+                <div style="margin-top:6px;">
+                    Ministrante:
+                    ${textoSeguro(curso.ministrante)}
+                </div>
+
+                <div>
+                    Data:
+                    ${formatarData(curso.data)}
+                </div>
+
+                <div>
+                    Horário:
+                    ${textoSeguro(curso.inicio)}
+                    -
+                    ${textoSeguro(curso.fim)}
+                </div>
+
+                <div>
+                    Local:
+                    ${textoSeguro(curso.local)}
+                </div>
+
+                <div>
+                    Carga horária:
+                    ${textoSeguro(curso.cargaHoraria)}h
+                </div>
+
+                <div>
+                    Valor:
+                    ${formatarMoeda(curso.valor)}
+                </div>
+
+                <div>
+                    ${
+                        disponivel > 0
+                            ? `${disponivel} vaga(s) disponível(is)`
+                            : "Esgotado"
+                    }
+                </div>
+
+            </label>
+        `;
 
 
-    inputs.forEach(
-        (input) => {
+        listaMinicursosInscricao.appendChild(card);
+    });
+
+
+    document
+        .querySelectorAll(".checkbox-minicurso")
+        .forEach(input => {
 
             input.addEventListener(
                 "change",
-                () => {
-
-                    const id =
-                        input.value;
-
-
-                    if (input.checked) {
-
-                        if (
-                            !minicursosSelecionados
-                                .includes(id)
-                        ) {
-
-                            minicursosSelecionados
-                                .push(id);
-
-                        }
-
-                    } else {
-
-                        minicursosSelecionados =
-                            minicursosSelecionados
-                                .filter(
-                                    (item) =>
-                                        item !== id
-                                );
-
-                    }
-
-
-                    atualizarResumoMinicursos();
-
-                    atualizarValores();
-
-                }
+                atualizarValores
             );
 
-        }
-    );
-
+        });
 }
 
 
 // =====================================================
-// RESUMO MINICURSOS
+// OBTER MINICURSOS SELECIONADOS
 // =====================================================
 
-function atualizarResumoMinicursos() {
+function obterMinicursosSelecionados() {
 
-    if (!resumoMinicursos) {
-        return;
-    }
+    const selecionados = [];
 
 
-    const selecionados =
-        minicursos.filter(
-            (curso) =>
-                minicursosSelecionados
-                    .includes(
-                        curso.id
-                    )
-        );
-
-
-    if (
-        selecionados.length === 0
-    ) {
-
-        resumoMinicursos.textContent =
-            "Nenhum minicurso selecionado.";
-
-    } else {
-
-        resumoMinicursos.innerHTML =
-            selecionados
-                .map(
-                    (curso) =>
-                        `
-                        <div>
-                            ${texto(curso.nome)}
-                            -
-                            ${dinheiro(curso.valor)}
-                        </div>
-                        `
-                )
-                .join("");
-
-    }
-
-
-    if (quantidadeMinicursos) {
-
-        quantidadeMinicursos.textContent =
-            selecionados.length;
-
-    }
-
-}
-
-
-// =====================================================
-// VALOR DOS MINICURSOS
-// =====================================================
-
-function calcularValorMinicursos() {
-
-    return minicursos
-        .filter(
-            (curso) =>
-                minicursosSelecionados
-                    .includes(
-                        curso.id
-                    )
+    document
+        .querySelectorAll(
+            ".checkbox-minicurso:checked"
         )
-        .reduce(
-            (
-                total,
-                curso
-            ) => {
+        .forEach(input => {
 
-                return (
-                    total +
-                    (
-                        Number(
-                            curso.valor
-                        ) || 0
-                    )
+            const curso =
+                minicursosDisponiveis.find(
+                    item =>
+                        item.id === input.value
                 );
 
-            },
-            0
-        );
 
+            if (curso) {
+
+                selecionados.push({
+
+                    id: curso.id,
+
+                    nome:
+                        curso.nome || "",
+
+                    ministrante:
+                        curso.ministrante || "",
+
+                    instituicao:
+                        curso.instituicao || "",
+
+                    descricao:
+                        curso.descricao || "",
+
+                    data:
+                        curso.data || "",
+
+                    inicio:
+                        curso.inicio || "",
+
+                    fim:
+                        curso.fim || "",
+
+                    cargaHoraria:
+                        curso.cargaHoraria || 0,
+
+                    valor:
+                        Number(curso.valor || 0),
+
+                    local:
+                        curso.local || ""
+
+                });
+            }
+
+        });
+
+
+    return selecionados;
 }
 
 
@@ -1022,99 +757,119 @@ function calcularValorMinicursos() {
 function atualizarValores() {
 
     const base =
-        valorBaseCategoria(
-            categoria?.value
+        valorBaseCategoria();
+
+
+    const selecionados =
+        obterMinicursosSelecionados();
+
+
+    const totalMinicursos =
+        selecionados.reduce(
+            (total, item) =>
+                total + Number(item.valor || 0),
+            0
         );
 
 
-    const cursos =
-        calcularValorMinicursos();
-
-
-    const subtotal =
-        base + cursos;
-
-
-    let desconto =
-        Number(
-            descontoAtual
-        ) || 0;
+    let desconto = descontoAtual || 0;
 
 
     if (
-        desconto > subtotal
+        cupomAplicado === "CRFE10"
     ) {
 
         desconto =
-            subtotal;
-
+            base * 0.10;
     }
 
 
     const total =
         Math.max(
             0,
-            subtotal - desconto
+            base +
+            totalMinicursos -
+            desconto
         );
 
 
-    if (valorOriginal) {
-
+    if (valorOriginal)
         valorOriginal.textContent =
-            dinheiro(base);
-
-    }
+            formatarMoeda(base);
 
 
-    if (valorMinicursos) {
-
+    if (valorMinicursos)
         valorMinicursos.textContent =
-            dinheiro(cursos);
-
-    }
+            formatarMoeda(totalMinicursos);
 
 
-    if (valorMinicursosTotal) {
-
+    if (valorMinicursosTotal)
         valorMinicursosTotal.textContent =
-            dinheiro(cursos);
-
-    }
+            formatarMoeda(totalMinicursos);
 
 
-    if (valorDesconto) {
-
-        valorDesconto.textContent =
-            dinheiro(desconto);
-
-    }
-
-
-    if (valorInscricao) {
-
-        valorInscricao.textContent =
-            dinheiro(total);
-
-    }
-
-
-    if (valorPix) {
-
-        valorPix.textContent =
-            dinheiro(total);
-
-    }
+    if (quantidadeMinicursos)
+        quantidadeMinicursos.textContent =
+            selecionados.length;
 
 
     if (linhaDesconto) {
 
         linhaDesconto.style.display =
             desconto > 0
-            ? ""
-            : "none";
-
+                ? ""
+                : "none";
     }
 
+
+    if (valorDesconto)
+        valorDesconto.textContent =
+            formatarMoeda(desconto);
+
+
+    if (valorInscricao)
+        valorInscricao.textContent =
+            formatarMoeda(total);
+
+
+    atualizarResumoMinicursos();
+}
+
+
+// =====================================================
+// RESUMO DOS MINICURSOS
+// =====================================================
+
+function atualizarResumoMinicursos() {
+
+    if (!resumoMinicursos) {
+        return;
+    }
+
+
+    const selecionados =
+        obterMinicursosSelecionados();
+
+
+    if (!selecionados.length) {
+
+        resumoMinicursos.textContent =
+            "Nenhum minicurso selecionado.";
+
+        return;
+    }
+
+
+    resumoMinicursos.innerHTML =
+        selecionados
+            .map(
+                item =>
+                    `<div>
+                        ${textoSeguro(item.nome)}
+                        - ${formatarMoeda(item.valor)}
+                    </div>`
+            )
+            .join("");
 }
 
 
@@ -1122,174 +877,164 @@ function atualizarValores() {
 // CUPOM
 // =====================================================
 
-async function aplicarCupom() {
+if (btnAplicarCupom) {
 
-    if (!cupom) {
-        return;
-    }
+    btnAplicarCupom.addEventListener(
+        "click",
+        async () => {
 
-
-    const codigo =
-        cupom.value
-            .trim()
-            .toUpperCase();
-
-
-    if (!codigo) {
-
-        descontoAtual = 0;
-
-        cupomAtual = "";
+            const codigo =
+                String(
+                    cupom?.value || ""
+                )
+                .trim()
+                .toUpperCase();
 
 
-        if (mensagemCupom) {
+            if (!codigo) {
 
-            mensagemCupom.textContent =
-                "Digite um cupom.";
+                cupomAplicado = "";
+                descontoAtual = 0;
 
-        }
+                if (mensagemCupom) {
 
+                    mensagemCupom.textContent =
+                        "Informe um cupom.";
 
-        atualizarValores();
+                }
 
-        return;
+                atualizarValores();
 
-    }
-
-
-    try {
-
-        const referencia =
-            doc(
-                db,
-                "cupons",
-                codigo
-            );
-
-
-        const snapshot =
-            await getDoc(
-                referencia
-            );
-
-
-        if (!snapshot.exists()) {
-
-            descontoAtual = 0;
-
-            cupomAtual = "";
-
-
-            if (mensagemCupom) {
-
-                mensagemCupom.textContent =
-                    "Cupom inválido.";
-
+                return;
             }
 
 
-            atualizarValores();
+            try {
 
-            return;
-
-        }
-
-
-        const dados =
-            snapshot.data();
-
-
-        if (
-            dados.ativo === false
-        ) {
-
-            descontoAtual = 0;
-
-            cupomAtual = "";
+                const refCupom =
+                    doc(
+                        db,
+                        "cupons",
+                        codigo
+                    );
 
 
-            if (mensagemCupom) {
-
-                mensagemCupom.textContent =
-                    "Cupom inativo.";
-
-            }
+                const snapCupom =
+                    await getDoc(refCupom);
 
 
-            atualizarValores();
+                if (!snapCupom.exists()) {
 
-            return;
-
-        }
-
-
-        const subtotal =
-            valorBaseCategoria(
-                categoria?.value
-            ) +
-            calcularValorMinicursos();
+                    cupomAplicado = "";
+                    descontoAtual = 0;
 
 
-        let desconto = 0;
+                    if (mensagemCupom) {
+
+                        mensagemCupom.textContent =
+                            "Cupom inválido.";
+
+                    }
 
 
-        if (
-            dados.tipo ===
-            "percentual"
-        ) {
+                    atualizarValores();
 
-            desconto =
-                subtotal *
-                (
-                    Number(
-                        dados.valor
-                    ) / 100
+                    return;
+                }
+
+
+                const dados =
+                    snapCupom.data();
+
+
+                if (
+                    dados.ativo === false
+                ) {
+
+                    cupomAplicado = "";
+                    descontoAtual = 0;
+
+
+                    if (mensagemCupom) {
+
+                        mensagemCupom.textContent =
+                            "Cupom inativo.";
+
+                    }
+
+
+                    atualizarValores();
+
+                    return;
+                }
+
+
+                cupomAplicado = codigo;
+
+
+                const base =
+                    valorBaseCategoria();
+
+
+                if (
+                    dados.tipo === "percentual" ||
+                    dados.tipo === "porcentagem"
+                ) {
+
+                    descontoAtual =
+                        base *
+                        (
+                            Number(
+                                dados.valor || 0
+                            ) / 100
+                        );
+
+                } else {
+
+                    descontoAtual =
+                        Number(
+                            dados.valor || 0
+                        );
+                }
+
+
+                if (
+                    codigo === "CRFE10"
+                ) {
+
+                    descontoAtual =
+                        base * 0.10;
+                }
+
+
+                if (mensagemCupom) {
+
+                    mensagemCupom.textContent =
+                        `Cupom aplicado! Desconto de ${formatarMoeda(descontoAtual)}.`;
+
+                }
+
+
+                atualizarValores();
+
+
+            } catch (erro) {
+
+                console.error(
+                    "Erro ao validar cupom:",
+                    erro
                 );
 
-        } else {
 
-            desconto =
-                Number(
-                    dados.valor
-                ) || 0;
+                if (mensagemCupom) {
 
+                    mensagemCupom.textContent =
+                        "Erro ao validar o cupom.";
+
+                }
+            }
         }
-
-
-        desconto =
-            Math.min(
-                desconto,
-                subtotal
-            );
-
-
-        descontoAtual =
-            desconto;
-
-
-        cupomAtual =
-            codigo;
-
-
-        if (mensagemCupom) {
-
-            mensagemCupom.textContent =
-                `Cupom ${codigo} aplicado: ${dinheiro(desconto)} de desconto.`;
-
-        }
-
-
-        atualizarValores();
-
-    } catch (erro) {
-
-        console.error(
-            "Erro ao aplicar cupom:",
-            erro
-        );
-
-    }
-
+    );
 }
 
 
@@ -1306,7 +1051,7 @@ async function carregarInscricao() {
 
     try {
 
-        const referencia =
+        const ref =
             doc(
                 db,
                 "inscricoes",
@@ -1314,149 +1059,82 @@ async function carregarInscricao() {
             );
 
 
-        const snapshot =
-            await getDoc(
-                referencia
-            );
+        const snap =
+            await getDoc(ref);
 
 
-        if (!snapshot.exists()) {
+        if (!snap.exists()) {
 
             inscricaoAtual = null;
 
-            minicursosSelecionados = [];
-
-            descontoAtual = 0;
-
-            cupomAtual = "";
-
-
-            if (categoria) {
-                categoria.value = "";
-            }
-
-
-            if (lote) {
-                lote.value = "";
-            }
-
-
-            if (cupom) {
-                cupom.value = "";
-            }
-
-
-            atualizarResumoMinicursos();
-
-            atualizarValores();
-
             atualizarResumoInscricao();
-
             atualizarPagamento();
 
-            atualizarCredencial();
+            if (credencialDigital) {
+
+                credencialDigital.style.display =
+                    "none";
+            }
 
             return;
-
         }
 
 
         inscricaoAtual =
-            snapshot.data();
+            snap.data();
 
 
-        // -------------------------------------------------
-        // CATEGORIA
-        // -------------------------------------------------
+        // ------------------------------------------------
+        // RESTAURAR FORMULÁRIO
+        // ------------------------------------------------
 
         if (categoria) {
 
             categoria.value =
-                inscricaoAtual.categoria ||
-                "";
-
+                inscricaoAtual.categoria || "";
         }
 
-
-        // -------------------------------------------------
-        // INSTITUIÇÃO
-        // -------------------------------------------------
 
         if (instituicaoInscricao) {
 
             instituicaoInscricao.value =
-                inscricaoAtual.instituicao ||
-                inscricaoAtual.instituicaoInscricao ||
-                "";
-
+                inscricaoAtual.instituicao || "";
         }
 
-
-        // -------------------------------------------------
-        // LOTE
-        // -------------------------------------------------
 
         if (lote) {
 
             lote.value =
-                inscricaoAtual.lote ||
-                "";
-
+                inscricaoAtual.lote || "";
         }
-
-
-        // -------------------------------------------------
-        // MINICURSOS
-        // -------------------------------------------------
-
-        minicursosSelecionados =
-            Array.isArray(
-                inscricaoAtual.minicursos
-            )
-            ? [
-                ...inscricaoAtual.minicursos
-            ]
-            : [];
-
-
-        // -------------------------------------------------
-        // CUPOM
-        // -------------------------------------------------
-
-        cupomAtual =
-            inscricaoAtual.cupom ||
-            inscricaoAtual.codigoCupom ||
-            inscricaoAtual.cupomCodigo ||
-            "";
 
 
         if (cupom) {
 
             cupom.value =
-                cupomAtual;
-
+                inscricaoAtual.cupom || "";
         }
 
 
-        // -------------------------------------------------
-        // DESCONTO
-        // -------------------------------------------------
+        cupomAplicado =
+            inscricaoAtual.cupom || "";
+
 
         descontoAtual =
             Number(
-                inscricaoAtual.desconto
-            ) || 0;
+                inscricaoAtual.desconto || 0
+            );
 
 
-        atualizarResumoMinicursos();
+        renderizarMinicursos();
 
-        atualizarValores();
 
         atualizarResumoInscricao();
 
         atualizarPagamento();
 
-        atualizarCredencial();
+        await atualizarCredencial();
+
 
     } catch (erro) {
 
@@ -1464,27 +1142,7 @@ async function carregarInscricao() {
             "Erro ao carregar inscrição:",
             erro
         );
-
     }
-
-}
-
-
-// =====================================================
-// GERAR CÓDIGO CREDENCIAL
-// =====================================================
-
-function gerarCodigoCredencial() {
-
-    const numero =
-        Math.floor(
-            1000 +
-            Math.random() * 9000
-        );
-
-
-    return `CRFE-2027-${numero}`;
-
 }
 
 
@@ -1499,140 +1157,73 @@ async function salvarInscricao() {
     }
 
 
-    const categoriaValor =
-        categoria?.value || "";
+    const selecionados =
+        obterMinicursosSelecionados();
 
 
-    const instituicaoValor =
-        instituicaoInscricao?.value || "";
+    const novosIds =
+        selecionados.map(
+            item => item.id
+        );
 
 
-    const loteValor =
-        lote?.value || "";
-
-
-    if (!categoriaValor) {
-
-        if (mensagemInscricao) {
-
-            mensagemInscricao.textContent =
-                "Selecione sua categoria.";
-
-        }
-
-        return;
-
-    }
-
-
-    if (!instituicaoValor) {
-
-        if (mensagemInscricao) {
-
-            mensagemInscricao.textContent =
-                "Informe sua instituição.";
-
-        }
-
-        return;
-
-    }
-
-
-    if (!loteValor) {
-
-        if (mensagemInscricao) {
-
-            mensagemInscricao.textContent =
-                "Selecione o lote.";
-
-        }
-
-        return;
-
-    }
+    const refInscricao =
+        doc(
+            db,
+            "inscricoes",
+            usuarioAtual.uid
+        );
 
 
     try {
 
-        if (mensagemInscricao) {
-
-            mensagemInscricao.textContent =
-                "Salvando inscrição...";
-
-        }
-
-
-        const referenciaInscricao =
-            doc(
-                db,
-                "inscricoes",
-                usuarioAtual.uid
-            );
-
-
         await runTransaction(
             db,
-            async (transaction) => {
+            async transaction => {
 
-                const snapshot =
+                const snapInscricao =
                     await transaction.get(
-                        referenciaInscricao
+                        refInscricao
                     );
 
 
-                const anterior =
-                    snapshot.exists()
-                    ? snapshot.data()
-                    : null;
+                const inscricaoAnterior =
+                    snapInscricao.exists()
+                        ? snapInscricao.data()
+                        : {};
 
 
                 const antigos =
-                    Array.isArray(
-                        anterior?.minicursos
-                    )
-                    ? anterior.minicursos
-                    : [];
+                    inscricaoAnterior.minicursos || [];
 
 
-                const novos =
-                    [
-                        ...minicursosSelecionados
-                    ];
+                const antigosIds =
+                    antigos.map(
+                        item => item.id
+                    );
 
 
                 const adicionados =
-                    novos.filter(
-                        (id) =>
-                            !antigos.includes(id)
+                    novosIds.filter(
+                        id =>
+                            !antigosIds.includes(id)
                     );
 
 
                 const removidos =
-                    antigos.filter(
-                        (id) =>
-                            !novos.includes(id)
+                    antigosIds.filter(
+                        id =>
+                            !novosIds.includes(id)
                     );
 
 
-                const idsAlterados =
-                    [
-                        ...new Set([
-                            ...adicionados,
-                            ...removidos
-                        ])
-                    ];
+                // -----------------------------------------
+                // ATUALIZAR VAGAS
+                // -----------------------------------------
 
+                for (const id of adicionados) {
 
-                const cursosSnapshot = [];
-
-
-                for (
-                    const id
-                    of idsAlterados
-                ) {
-
-                    const referenciaCurso =
+                    const refCurso =
                         doc(
                             db,
                             "minicursos",
@@ -1640,78 +1231,34 @@ async function salvarInscricao() {
                         );
 
 
-                    const snapshotCurso =
+                    const snapCurso =
                         await transaction.get(
-                            referenciaCurso
+                            refCurso
                         );
 
 
-                    if (
-                        !snapshotCurso.exists()
-                    ) {
+                    if (!snapCurso.exists()) {
 
                         throw new Error(
-                            "Um dos minicursos não existe mais."
+                            "Minicurso não encontrado."
                         );
-
-                    }
-
-
-                    cursosSnapshot.push({
-                        id,
-                        referenciaCurso,
-                        snapshotCurso
-                    });
-
-                }
-
-
-                // -----------------------------------------
-                // VERIFICAR VAGAS
-                // -----------------------------------------
-
-                for (
-                    const item
-                    of cursosSnapshot
-                ) {
-
-                    if (
-                        !adicionados.includes(
-                            item.id
-                        )
-                    ) {
-                        continue;
                     }
 
 
                     const dados =
-                        item.snapshotCurso.data();
+                        snapCurso.data();
 
 
                     const vagas =
                         Number(
-                            dados.vagas
-                        ) || 0;
+                            dados.vagas || 0
+                        );
 
 
                     const ocupadas =
                         Number(
-                            dados.vagasOcupadas
-                        ) || 0;
-
-
-                    if (
-                        dados.status ===
-                        "inativo" ||
-                        dados.status ===
-                        "encerrado"
-                    ) {
-
-                        throw new Error(
-                            `O minicurso "${dados.nome}" não está disponível.`
+                            dados.vagasOcupadas || 0
                         );
-
-                    }
 
 
                     if (
@@ -1719,70 +1266,68 @@ async function salvarInscricao() {
                     ) {
 
                         throw new Error(
-                            `O minicurso "${dados.nome}" está esgotado.`
+                            `O minicurso "${dados.nome}" está sem vagas.`
                         );
-
-                    }
-
-                }
-
-
-                // -----------------------------------------
-                // ATUALIZAR VAGAS
-                // -----------------------------------------
-
-                for (
-                    const item
-                    of cursosSnapshot
-                ) {
-
-                    const dados =
-                        item.snapshotCurso.data();
-
-
-                    let ocupadas =
-                        Number(
-                            dados.vagasOcupadas
-                        ) || 0;
-
-
-                    if (
-                        adicionados.includes(
-                            item.id
-                        )
-                    ) {
-
-                        ocupadas += 1;
-
-                    }
-
-
-                    if (
-                        removidos.includes(
-                            item.id
-                        )
-                    ) {
-
-                        ocupadas =
-                            Math.max(
-                                0,
-                                ocupadas - 1
-                            );
-
                     }
 
 
                     transaction.update(
-                        item.referenciaCurso,
+                        refCurso,
                         {
                             vagasOcupadas:
-                                ocupadas,
+                                ocupadas + 1,
 
                             atualizadoEm:
                                 serverTimestamp()
                         }
                     );
+                }
 
+
+                for (const id of removidos) {
+
+                    const refCurso =
+                        doc(
+                            db,
+                            "minicursos",
+                            id
+                        );
+
+
+                    const snapCurso =
+                        await transaction.get(
+                            refCurso
+                        );
+
+
+                    if (!snapCurso.exists()) {
+                        continue;
+                    }
+
+
+                    const dados =
+                        snapCurso.data();
+
+
+                    const ocupadas =
+                        Number(
+                            dados.vagasOcupadas || 0
+                        );
+
+
+                    transaction.update(
+                        refCurso,
+                        {
+                            vagasOcupadas:
+                                Math.max(
+                                    0,
+                                    ocupadas - 1
+                                ),
+
+                            atualizadoEm:
+                                serverTimestamp()
+                        }
+                    );
                 }
 
 
@@ -1790,64 +1335,44 @@ async function salvarInscricao() {
                 // VALORES
                 // -----------------------------------------
 
-                const valorOriginal =
-                    valorBaseCategoria(
-                        categoriaValor
+                const base =
+                    valorBaseCategoria();
+
+
+                const totalMinicursos =
+                    selecionados.reduce(
+                        (
+                            total,
+                            item
+                        ) =>
+                            total +
+                            Number(
+                                item.valor || 0
+                            ),
+                        0
                     );
 
 
-                const valorCursos =
-                    minicursos
-                        .filter(
-                            (curso) =>
-                                novos.includes(
-                                    curso.id
-                                )
-                        )
-                        .reduce(
-                            (
-                                total,
-                                curso
-                            ) =>
-                                total +
-                                (
-                                    Number(
-                                        curso.valor
-                                    ) || 0
-                                ),
-                            0
-                        );
+                let desconto =
+                    descontoAtual || 0;
 
 
-                const subtotal =
-                    valorOriginal +
-                    valorCursos;
+                if (
+                    cupomAplicado === "CRFE10"
+                ) {
+
+                    desconto =
+                        base * 0.10;
+                }
 
 
-                const desconto =
-                    Math.min(
-                        Number(
-                            descontoAtual
-                        ) || 0,
-                        subtotal
-                    );
-
-
-                const valorFinal =
+                const total =
                     Math.max(
                         0,
-                        subtotal -
+                        base +
+                        totalMinicursos -
                         desconto
                     );
-
-
-                // -----------------------------------------
-                // CÓDIGO CREDENCIAL
-                // -----------------------------------------
-
-                const codigoCredencial =
-                    anterior?.codigoCredencial ||
-                    gerarCodigoCredencial();
 
 
                 // -----------------------------------------
@@ -1855,67 +1380,69 @@ async function salvarInscricao() {
                 // -----------------------------------------
 
                 const pagamento =
-                    anterior?.pagamento ||
-                    "Pendente";
+                    inscricaoAnterior.pagamento ||
+                    "pendente";
 
 
                 const formaPagamento =
-                    anterior?.formaPagamento ||
+                    inscricaoAnterior.formaPagamento ||
                     "";
 
 
-                // -----------------------------------------
-                // DADOS
-                // -----------------------------------------
+                const codigoCredencial =
+                    inscricaoAnterior.codigoCredencial ||
+                    "";
 
-                const dadosSalvar = {
 
-                    ...(
-                        anterior || {}
-                    ),
+                const dadosInscricao = {
 
                     uid:
                         usuarioAtual.uid,
 
                     email:
-                        usuarioAtual.email,
+                        perfilAtual.email ||
+                        usuarioAtual.email ||
+                        "",
 
                     nome:
-                        perfilNome?.textContent ||
-                        anterior?.nome ||
+                        perfilAtual.nome ||
+                        perfilAtual.nomeCompleto ||
+                        usuarioAtual.displayName ||
                         "",
 
                     cpf:
-                        perfilCpf?.textContent ||
-                        anterior?.cpf ||
+                        perfilAtual.cpf ||
                         "",
 
                     categoria:
-                        categoriaValor,
+                        categoria?.value ||
+                        "",
 
                     instituicao:
-                        instituicaoValor,
+                        instituicaoInscricao?.value ||
+                        "",
 
                     lote:
-                        loteValor,
+                        lote?.value ||
+                        "",
 
                     minicursos:
-                        novos,
+                        selecionados,
 
                     cupom:
-                        cupomAtual,
+                        cupomAplicado || "",
 
                     desconto:
                         desconto,
 
                     valorOriginal:
-                        valorOriginal,
+                        base,
 
                     valorMinicursos:
-                        valorCursos,
+                        totalMinicursos,
 
                     valorFinal:
-                        valorFinal,
+                        total,
 
                     pagamento:
                         pagamento,
@@ -1927,35 +1454,39 @@ async function salvarInscricao() {
                         codigoCredencial,
 
                     criadoEm:
-                        anterior?.criadoEm ||
+                        inscricaoAnterior.criadoEm ||
                         serverTimestamp(),
 
                     atualizadoEm:
                         serverTimestamp()
-
                 };
 
 
                 transaction.set(
-                    referenciaInscricao,
-                    dadosSalvar
+                    refInscricao,
+                    dadosInscricao,
+                    {
+                        merge: true
+                    }
                 );
-
             }
         );
+
+
+        await carregarInscricao();
+
+        await carregarMinicursos();
+
+        atualizarValores();
 
 
         if (mensagemInscricao) {
 
             mensagemInscricao.textContent =
-                "Inscrição salva com sucesso!";
+                "Inscrição atualizada com sucesso.";
 
         }
 
-
-        await carregarMinicursos();
-
-        await carregarInscricao();
 
     } catch (erro) {
 
@@ -1972,9 +1503,45 @@ async function salvarInscricao() {
                 "Não foi possível salvar a inscrição.";
 
         }
-
     }
+}
 
+
+// =====================================================
+// FORMULÁRIO
+// =====================================================
+
+if (formInscricao) {
+
+    formInscricao.addEventListener(
+        "submit",
+        async evento => {
+
+            evento.preventDefault();
+
+            if (btnContinuarInscricao) {
+
+                btnContinuarInscricao.disabled =
+                    true;
+
+                btnContinuarInscricao.textContent =
+                    "Salvando...";
+            }
+
+
+            await salvarInscricao();
+
+
+            if (btnContinuarInscricao) {
+
+                btnContinuarInscricao.disabled =
+                    false;
+
+                btnContinuarInscricao.textContent =
+                    "Continuar";
+            }
+        }
+    );
 }
 
 
@@ -1984,138 +1551,130 @@ async function salvarInscricao() {
 
 function atualizarResumoInscricao() {
 
-    if (!inscricaoResumo) {
-        return;
-    }
-
-
     if (!inscricaoAtual) {
 
-        inscricaoResumo.style.display =
-            "none";
+        if (inscricaoResumo) {
+
+            inscricaoResumo.style.display =
+                "none";
+        }
 
         return;
-
     }
 
 
-    inscricaoResumo.style.display =
-        "";
+    if (inscricaoResumo) {
+
+        inscricaoResumo.style.display =
+            "block";
+    }
 
 
     if (statusInscricaoTexto) {
 
         statusInscricaoTexto.textContent =
-            inscricaoAtual.pagamento ||
-            "Pendente";
-
+            "Inscrição realizada";
     }
 
 
     if (resumoCategoria) {
 
         resumoCategoria.textContent =
-            texto(
+            textoSeguro(
                 inscricaoAtual.categoria
             );
-
     }
 
 
     if (resumoInstituicao) {
 
         resumoInstituicao.textContent =
-            texto(
+            textoSeguro(
                 inscricaoAtual.instituicao
             );
-
     }
 
 
     if (resumoLote) {
 
         resumoLote.textContent =
-            texto(
+            textoSeguro(
                 inscricaoAtual.lote
             );
-
     }
 
 
     if (resumoCupom) {
 
         resumoCupom.textContent =
-            inscricaoAtual.cupom ||
-            inscricaoAtual.codigoCupom ||
-            "Nenhum";
-
+            textoSeguro(
+                inscricaoAtual.cupom,
+                "Nenhum"
+            );
     }
 
 
     if (resumoPagamento) {
 
         resumoPagamento.textContent =
-            texto(
-                inscricaoAtual.pagamento
-            );
-
+            pagamentoFoiConfirmado()
+                ? "Pagamento confirmado"
+                : textoSeguro(
+                    inscricaoAtual.pagamento,
+                    "Pendente"
+                );
     }
 
 
     if (resumoFormaPagamento) {
 
         resumoFormaPagamento.textContent =
-            texto(
-                inscricaoAtual.formaPagamento
+            textoSeguro(
+                inscricaoAtual.formaPagamento,
+                "Não informada"
             );
-
     }
 
 
     if (resumoValorOriginal) {
 
         resumoValorOriginal.textContent =
-            dinheiro(
+            formatarMoeda(
                 inscricaoAtual.valorOriginal
             );
-
     }
 
 
     if (resumoValorMinicursos) {
 
         resumoValorMinicursos.textContent =
-            dinheiro(
+            formatarMoeda(
                 inscricaoAtual.valorMinicursos
             );
-
     }
 
 
     if (resumoValorDesconto) {
 
         resumoValorDesconto.textContent =
-            dinheiro(
+            formatarMoeda(
                 inscricaoAtual.desconto
             );
-
     }
 
 
     if (resumoValorFinal) {
 
         resumoValorFinal.textContent =
-            dinheiro(
+            formatarMoeda(
                 inscricaoAtual.valorFinal
             );
-
     }
-
 }
 
 
 // =====================================================
-// PAGAMENTO
+// VERIFICAR PAGAMENTO
 // =====================================================
 
 function pagamentoFoiConfirmado() {
@@ -2127,50 +1686,30 @@ function pagamentoFoiConfirmado() {
 
     const status =
         String(
-            inscricaoAtual.pagamento ||
-            ""
+            inscricaoAtual.pagamento || ""
         )
-            .trim()
-            .toLowerCase();
+        .trim()
+        .toLowerCase();
 
 
     return (
         status === "pago" ||
         status === "confirmado" ||
         status === "pagamento confirmado" ||
-        status.includes("pago") ||
-        status.includes("confirm")
+        status.includes("pagamento confirmado") ||
+        status.includes("confirmado")
     );
-
 }
 
 
 // =====================================================
-// ATUALIZAR PAGAMENTO
+// PAGAMENTO
 // =====================================================
 
 function atualizarPagamento() {
 
     if (!inscricaoAtual) {
-
-        if (pagamentoConfirmado) {
-
-            pagamentoConfirmado.style.display =
-                "none";
-
-        }
-
-
-        if (pagamentoOpcoes) {
-
-            pagamentoOpcoes.style.display =
-                "";
-
-        }
-
-
         return;
-
     }
 
 
@@ -2179,15 +1718,148 @@ function atualizarPagamento() {
 
 
     // -------------------------------------------------
-    // STATUS
+    // PAGAMENTO CONFIRMADO
     // -------------------------------------------------
+
+    if (pago) {
+
+        // Mostra o bloco de confirmação
+        if (pagamentoConfirmado) {
+
+            pagamentoConfirmado.style.display =
+                "block";
+
+            pagamentoConfirmado.hidden =
+                false;
+
+
+            pagamentoConfirmado.innerHTML = `
+
+                <div
+                    style="
+                        padding:20px;
+                        border-radius:12px;
+                        background:#e8f7ee;
+                        border:1px solid #b7e4c7;
+                        color:#146c43;
+                        margin-top:10px;
+                    "
+                >
+
+                    <div
+                        style="
+                            font-size:18px;
+                            font-weight:700;
+                            margin-bottom:8px;
+                        "
+                    >
+                        ✓ Pagamento confirmado
+                    </div>
+
+                    <div>
+                        Sua inscrição no CRFE 2027
+                        está confirmada.
+                    </div>
+
+                    <div
+                        style="
+                            margin-top:8px;
+                        "
+                    >
+                        Forma de pagamento:
+                        <strong>
+                            ${
+                                textoSeguro(
+                                    inscricaoAtual.formaPagamento,
+                                    "Não informada"
+                                )
+                            }
+                        </strong>
+                    </div>
+
+                </div>
+
+            `;
+        }
+
+
+        // Esconde opções de pagamento
+        if (pagamentoOpcoes) {
+
+            pagamentoOpcoes.style.display =
+                "none";
+
+            pagamentoOpcoes.hidden =
+                true;
+        }
+
+
+        if (statusPagamento) {
+
+            statusPagamento.textContent =
+                "Pagamento confirmado";
+
+        }
+
+
+        if (resumoPagamento) {
+
+            resumoPagamento.textContent =
+                "Pagamento confirmado";
+
+        }
+
+
+        // PIX e cartão não aparecem mais
+        if (valorPix) {
+            valorPix.style.display = "none";
+        }
+
+        if (chavePix) {
+            chavePix.style.display = "none";
+        }
+
+        if (btnCopiarPix) {
+            btnCopiarPix.style.display = "none";
+        }
+
+        if (btnPagamentoCartao) {
+            btnPagamentoCartao.style.display = "none";
+        }
+
+
+        return;
+    }
+
+
+    // -------------------------------------------------
+    // PAGAMENTO PENDENTE
+    // -------------------------------------------------
+
+    if (pagamentoConfirmado) {
+
+        pagamentoConfirmado.style.display =
+            "none";
+
+        pagamentoConfirmado.hidden =
+            true;
+    }
+
+
+    if (pagamentoOpcoes) {
+
+        pagamentoOpcoes.style.display =
+            "block";
+
+        pagamentoOpcoes.hidden =
+            false;
+    }
+
 
     if (statusPagamento) {
 
         statusPagamento.textContent =
-            inscricaoAtual.pagamento ||
-            "Pendente";
-
+            "Pagamento pendente";
     }
 
 
@@ -2198,10 +1870,9 @@ function atualizarPagamento() {
     if (valorPix) {
 
         valorPix.textContent =
-            dinheiro(
-                inscricaoAtual.valorFinal
+            formatarMoeda(
+                inscricaoAtual.valorFinal || 0
             );
-
     }
 
 
@@ -2212,51 +1883,75 @@ function atualizarPagamento() {
     if (chavePix) {
 
         chavePix.textContent =
-            PIX;
-
+            "ladrf.fampfaculdade@gmail.com";
     }
 
 
     // -------------------------------------------------
-    // PAGO
+    // CARTÃO
     // -------------------------------------------------
 
-    if (pago) {
+    if (btnPagamentoCartao) {
 
-        if (pagamentoConfirmado) {
+        btnPagamentoCartao.onclick =
+            () => {
 
-            pagamentoConfirmado.style.display =
-                "";
+                window.open(
+                    "https://mpago.la/2SHESXg",
+                    "_blank"
+                );
 
-        }
-
-
-        if (pagamentoOpcoes) {
-
-            pagamentoOpcoes.style.display =
-                "none";
-
-        }
-
-    } else {
-
-        if (pagamentoConfirmado) {
-
-            pagamentoConfirmado.style.display =
-                "none";
-
-        }
-
-
-        if (pagamentoOpcoes) {
-
-            pagamentoOpcoes.style.display =
-                "";
-
-        }
-
+            };
     }
+}
 
+
+// =====================================================
+// COPIAR PIX
+// =====================================================
+
+if (btnCopiarPix) {
+
+    btnCopiarPix.addEventListener(
+        "click",
+        async () => {
+
+            const chave =
+                "ladrf.fampfaculdade@gmail.com";
+
+
+            try {
+
+                await navigator.clipboard.writeText(
+                    chave
+                );
+
+
+                if (mensagemPix) {
+
+                    mensagemPix.textContent =
+                        "Chave PIX copiada.";
+
+                }
+
+
+            } catch (erro) {
+
+                console.error(
+                    "Erro ao copiar PIX:",
+                    erro
+                );
+
+
+                if (mensagemPix) {
+
+                    mensagemPix.textContent =
+                        "Não foi possível copiar automaticamente.";
+
+                }
+            }
+        }
+    );
 }
 
 
@@ -2266,32 +1961,18 @@ function atualizarPagamento() {
 
 async function atualizarCredencial() {
 
-    if (!inscricaoAtual) {
-
-        if (credencialDigital) {
-
-            credencialDigital.style.display =
-                "none";
-
-        }
-
-
-        if (mensagemCredencial) {
-
-            mensagemCredencial.textContent =
-                "Sua credencial será liberada após a confirmação do pagamento.";
-
-        }
-
-
+    if (!usuarioAtual || !inscricaoAtual) {
         return;
-
     }
 
 
     const pago =
         pagamentoFoiConfirmado();
 
+
+    // -------------------------------------------------
+    // SE NÃO PAGOU
+    // -------------------------------------------------
 
     if (!pago) {
 
@@ -2300,24 +1981,28 @@ async function atualizarCredencial() {
             credencialDigital.style.display =
                 "none";
 
+            credencialDigital.hidden =
+                true;
         }
 
 
         if (mensagemCredencial) {
 
+            mensagemCredencial.style.display =
+                "block";
+
             mensagemCredencial.textContent =
-                "Sua credencial será liberada após a confirmação do pagamento.";
+                "A credencial digital será liberada após a confirmação do pagamento.";
 
         }
 
 
         return;
-
     }
 
 
     // -------------------------------------------------
-    // GARANTIR CÓDIGO
+    // GERAR CÓDIGO DA CREDENCIAL
     // -------------------------------------------------
 
     let codigo =
@@ -2327,21 +2012,20 @@ async function atualizarCredencial() {
     if (!codigo) {
 
         codigo =
-            gerarCodigoCredencial();
+            "CRFE-2027-" +
+            usuarioAtual.uid
+                .substring(0, 8)
+                .toUpperCase();
 
 
         try {
 
-            const referencia =
+            await setDoc(
                 doc(
                     db,
                     "inscricoes",
                     usuarioAtual.uid
-                );
-
-
-            await setDoc(
-                referencia,
+                ),
                 {
                     codigoCredencial:
                         codigo,
@@ -2358,72 +2042,88 @@ async function atualizarCredencial() {
             inscricaoAtual.codigoCredencial =
                 codigo;
 
+
         } catch (erro) {
 
             console.error(
-                "Erro ao gerar credencial:",
+                "Erro ao salvar código da credencial:",
                 erro
             );
-
         }
-
     }
 
 
     // -------------------------------------------------
-    // MOSTRAR
+    // MOSTRAR CREDENCIAL
     // -------------------------------------------------
 
     if (mensagemCredencial) {
 
-        mensagemCredencial.textContent =
-            "";
-
+        mensagemCredencial.style.display =
+            "none";
     }
 
 
     if (credencialDigital) {
 
         credencialDigital.style.display =
-            "";
+            "block";
 
+        credencialDigital.hidden =
+            false;
     }
+
+
+    // -------------------------------------------------
+    // DADOS DA CREDENCIAL
+    // -------------------------------------------------
+
+    const nome =
+        inscricaoAtual.nome ||
+        perfilAtual.nome ||
+        perfilAtual.nomeCompleto ||
+        usuarioAtual.displayName ||
+        "Participante";
+
+
+    const categoriaCredencial =
+        inscricaoAtual.categoria ||
+        "-";
+
+
+    const instituicao =
+        inscricaoAtual.instituicao ||
+        perfilAtual.instituicao ||
+        perfilAtual.instituicaoEnsino ||
+        perfilAtual.faculdade ||
+        "-";
 
 
     if (credencialNome) {
 
         credencialNome.textContent =
-            inscricaoAtual.nome ||
-            perfilNome?.textContent ||
-            "-";
-
+            nome;
     }
 
 
     if (credencialCategoria) {
 
         credencialCategoria.textContent =
-            inscricaoAtual.categoria ||
-            "-";
-
+            categoriaCredencial;
     }
 
 
     if (credencialInstituicao) {
 
         credencialInstituicao.textContent =
-            inscricaoAtual.instituicao ||
-            "-";
-
+            instituicao;
     }
 
 
     if (credencialCodigo) {
 
         credencialCodigo.textContent =
-            codigo ||
-            "-";
-
+            codigo;
     }
 
 
@@ -2431,147 +2131,41 @@ async function atualizarCredencial() {
     // QR CODE
     // -------------------------------------------------
 
-    if (
-        qrcode &&
-        codigo
-    ) {
+    if (qrcode) {
 
         qrcode.innerHTML = "";
 
 
+        const urlValidacao =
+            "https://ladrffamp.github.io/crfe-connect/validar.html?codigo=" +
+            encodeURIComponent(codigo);
+
+
         if (
-            typeof QRCode !==
-            "undefined"
+            typeof QRCode !== "undefined"
         ) {
-
-            const url =
-                `https://ladrffamp.github.io/crfe-connect/validar.html?codigo=${encodeURIComponent(codigo)}`;
-
 
             new QRCode(
                 qrcode,
                 {
-                    text: url,
-                    width: 180,
-                    height: 180
+                    text:
+                        urlValidacao,
+
+                    width:
+                        150,
+
+                    height:
+                        150
                 }
             );
 
-        }
+        } else {
 
+            console.error(
+                "QRCode.js não foi carregado."
+            );
+        }
     }
-
-}
-
-
-// =====================================================
-// PIX
-// =====================================================
-
-if (btnCopiarPix) {
-
-    btnCopiarPix.addEventListener(
-        "click",
-        async () => {
-
-            try {
-
-                await navigator.clipboard.writeText(
-                    PIX
-                );
-
-
-                if (mensagemPix) {
-
-                    mensagemPix.textContent =
-                        "Chave PIX copiada!";
-
-                }
-
-            } catch (erro) {
-
-                console.error(
-                    erro
-                );
-
-            }
-
-        }
-    );
-
-}
-
-
-// =====================================================
-// CARTÃO
-// =====================================================
-
-if (btnPagamentoCartao) {
-
-    btnPagamentoCartao.addEventListener(
-        "click",
-        () => {
-
-            window.open(
-                LINK_CARTAO,
-                "_blank"
-            );
-
-        }
-    );
-
-}
-
-
-// =====================================================
-// CUPOM
-// =====================================================
-
-if (btnAplicarCupom) {
-
-    btnAplicarCupom.addEventListener(
-        "click",
-        aplicarCupom
-    );
-
-}
-
-
-// =====================================================
-// CATEGORIA
-// =====================================================
-
-if (categoria) {
-
-    categoria.addEventListener(
-        "change",
-        () => {
-
-            atualizarValores();
-
-        }
-    );
-
-}
-
-
-// =====================================================
-// FORMULÁRIO
-// =====================================================
-
-if (formInscricao) {
-
-    formInscricao.addEventListener(
-        "submit",
-        async (evento) => {
-
-            evento.preventDefault();
-
-            await salvarInscricao();
-
-        }
-    );
-
 }
 
 
@@ -2583,17 +2177,11 @@ if (btnSair) {
 
     btnSair.addEventListener(
         "click",
-        async (evento) => {
-
-            evento.preventDefault();
-
+        async () => {
 
             try {
 
-                await signOut(
-                    auth
-                );
-
+                await signOut(auth);
 
                 window.location.href =
                     "login.html";
@@ -2604,12 +2192,9 @@ if (btnSair) {
                     "Erro ao sair:",
                     erro
                 );
-
             }
-
         }
     );
-
 }
 
 
@@ -2619,7 +2204,7 @@ if (btnSair) {
 
 onAuthStateChanged(
     auth,
-    async (usuario) => {
+    async usuario => {
 
         if (!usuario) {
 
@@ -2627,7 +2212,6 @@ onAuthStateChanged(
                 "login.html";
 
             return;
-
         }
 
 
@@ -2635,30 +2219,14 @@ onAuthStateChanged(
             usuario;
 
 
-        if (perfilEmail) {
-
-            perfilEmail.textContent =
-                usuario.email ||
-                "-";
-
-        }
-
-
         try {
 
-            // PERFIL
             await carregarPerfil();
 
-
-            // MINICURSOS
             await carregarMinicursos();
 
-
-            // INSCRIÇÃO
             await carregarInscricao();
 
-
-            // RESUMOS
             atualizarResumoMinicursos();
 
             atualizarValores();
@@ -2669,14 +2237,13 @@ onAuthStateChanged(
 
             await atualizarCredencial();
 
+
         } catch (erro) {
 
             console.error(
-                "Erro ao iniciar área do participante:",
+                "Erro ao inicializar área do participante:",
                 erro
             );
-
         }
-
     }
 );
