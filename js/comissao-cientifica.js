@@ -32,6 +32,15 @@ const totalTrabalhos =
 const totalAvaliacao =
     document.getElementById("totalAvaliacao");
 
+const totalAprovados =
+    document.getElementById("totalAprovados");
+
+const totalCorrecoes =
+    document.getElementById("totalCorrecoes");
+
+const totalReprovados =
+    document.getElementById("totalReprovados");
+
 const btnSair =
     document.getElementById("btnSair");
 
