@@ -992,6 +992,550 @@ footer p {
     border-color: #096832;
 }
 
+/* =====================================================
+   CRFE CONNECT
+   ÁREA DO PARTICIPANTE
+===================================================== */
+
+main.container {
+    padding-top: 40px;
+    padding-bottom: 60px;
+}
+
+
+/* =====================================================
+   CABEÇALHO
+===================================================== */
+
+.page-header {
+    margin-bottom: 30px;
+}
+
+.page-header h1 {
+    margin-top: 8px;
+    margin-bottom: 8px;
+}
+
+.page-header p {
+    color: #6b7280;
+    max-width: 700px;
+}
+
+
+/* =====================================================
+   MENU
+===================================================== */
+
+.participant-menu {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    gap: 16px;
+    margin-bottom: 35px;
+}
+
+.participant-menu-item {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    padding: 20px;
+    background: #ffffff;
+    border: 1px solid #e5e7eb;
+    border-radius: 16px;
+    text-decoration: none;
+    color: inherit;
+    transition: 0.2s ease;
+}
+
+.participant-menu-item:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 10px 25px rgba(0,0,0,0.08);
+}
+
+.menu-icon {
+    font-size: 25px;
+    margin-bottom: 4px;
+}
+
+.participant-menu-item strong {
+    font-size: 15px;
+}
+
+.participant-menu-item small {
+    color: #6b7280;
+    line-height: 1.4;
+}
+
+
+/* =====================================================
+   SEÇÕES
+===================================================== */
+
+.content-section {
+    margin-bottom: 30px;
+}
+
+.content-section h2 {
+    margin-top: 8px;
+    margin-bottom: 10px;
+}
+
+
+/* =====================================================
+   PERFIL
+===================================================== */
+
+.profile-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 15px;
+    margin-top: 24px;
+}
+
+.profile-item {
+    padding: 18px;
+    background: #f8faf9;
+    border: 1px solid #e5e7eb;
+    border-radius: 14px;
+}
+
+.profile-item span {
+    display: block;
+    margin-bottom: 7px;
+    font-size: 12px;
+    color: #6b7280;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+}
+
+.profile-item strong {
+    display: block;
+    font-size: 15px;
+    line-height: 1.4;
+    word-break: break-word;
+}
+
+
+/* =====================================================
+   FORMULÁRIO
+===================================================== */
+
+#formInscricao {
+    margin-top: 25px;
+}
+
+.form-group {
+    margin-bottom: 22px;
+}
+
+.form-group label {
+    display: block;
+    margin-bottom: 8px;
+    font-weight: 600;
+}
+
+.input-button {
+    display: grid;
+    grid-template-columns: 1fr auto;
+    gap: 10px;
+}
+
+
+/* =====================================================
+   VALORES
+===================================================== */
+
+.price-box {
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+    margin: 25px 0;
+    padding: 22px;
+    background: #f8faf9;
+    border: 1px solid #e5e7eb;
+    border-radius: 16px;
+}
+
+.price-box > div {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 20px;
+}
+
+.price-box strong {
+    font-size: 17px;
+}
+
+
+/* =====================================================
+   PAGAMENTO
+===================================================== */
+
+.pagamento-inscricao {
+    margin-top: 28px;
+    padding: 28px;
+    background: #f8faf9;
+    border: 1px solid #dfe8e2;
+    border-radius: 20px;
+}
+
+.pagamento-inscricao h3 {
+    margin-top: 8px;
+    margin-bottom: 8px;
+    font-size: 24px;
+}
+
+.pagamento-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 20px;
+    margin-top: 25px;
+}
+
+.pagamento-box {
+    display: flex;
+    flex-direction: column;
+    padding: 24px;
+    background: #ffffff;
+    border: 1px solid #e5e7eb;
+    border-radius: 18px;
+}
+
+.pagamento-box h4 {
+    margin: 10px 0;
+    font-size: 19px;
+}
+
+.pagamento-box p {
+    line-height: 1.6;
+}
+
+.pagamento-icone {
+    display: inline-flex;
+    width: fit-content;
+    padding: 6px 10px;
+    border-radius: 8px;
+    background: #eaf6ef;
+    font-size: 11px;
+    font-weight: 800;
+    letter-spacing: 0.05em;
+}
+
+.pix-titulo {
+    margin-top: 15px;
+    margin-bottom: 7px;
+    font-size: 12px;
+    font-weight: 700;
+    color: #6b7280;
+    text-transform: uppercase;
+}
+
+.pix-chave {
+    margin-bottom: 15px;
+    padding: 14px;
+    background: #f8faf9;
+    border: 1px dashed #b8c8be;
+    border-radius: 10px;
+    overflow-wrap: anywhere;
+}
+
+.pix-chave strong {
+    font-size: 14px;
+}
+
+.pagamento-box .btn {
+    margin-top: 10px;
+    width: fit-content;
+}
+
+.pagamento-status {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 20px;
+    margin-top: 20px;
+    padding: 17px 20px;
+    background: #ffffff;
+    border: 1px solid #e5e7eb;
+    border-radius: 12px;
+}
+
+.pagamento-status span {
+    color: #6b7280;
+    font-size: 14px;
+}
+
+.pagamento-status strong {
+    font-size: 14px;
+}
+
+
+/* =====================================================
+   ESTADO VAZIO
+===================================================== */
+
+.empty-state {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    margin-top: 22px;
+    padding: 35px 25px;
+    background: #f8faf9;
+    border: 1px dashed #d1d5db;
+    border-radius: 16px;
+    text-align: center;
+}
+
+.empty-state span {
+    font-size: 32px;
+}
+
+.empty-state strong {
+    font-size: 16px;
+}
+
+.empty-state small {
+    max-width: 500px;
+    color: #6b7280;
+    line-height: 1.5;
+}
+
+
+/* =====================================================
+   CREDENCIAL
+===================================================== */
+
+.credencial-section {
+    text-align: left;
+}
+
+.credencial-digital {
+    width: min(100%, 620px);
+    margin: 25px auto 0;
+    overflow: hidden;
+    background: #ffffff;
+    border: 1px solid #dfe8e2;
+    border-radius: 22px;
+    box-shadow: 0 15px 40px rgba(0,0,0,0.08);
+}
+
+.credencial-topo {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 20px;
+    padding: 20px 24px;
+    background: #0B7A3B;
+    color: #ffffff;
+}
+
+.credencial-topo span {
+    font-size: 12px;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+}
+
+.credencial-topo strong {
+    font-size: 20px;
+}
+
+.credencial-conteudo {
+    display: grid;
+    grid-template-columns: 1fr 190px;
+    gap: 25px;
+    align-items: center;
+    padding: 28px;
+}
+
+.credencial-identificacao {
+    min-width: 0;
+}
+
+.credencial-label {
+    display: block;
+    margin-bottom: 8px;
+    color: #6b7280;
+    font-size: 11px;
+    font-weight: 800;
+    letter-spacing: 0.08em;
+}
+
+.credencial-identificacao h3 {
+    margin: 0 0 8px;
+    font-size: 22px;
+    line-height: 1.2;
+    word-break: break-word;
+}
+
+.credencial-identificacao p {
+    margin: 5px 0;
+    color: #4b5563;
+}
+
+.qrcode {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 5px;
+}
+
+.qrcode img {
+    display: block;
+    max-width: 100%;
+    height: auto;
+}
+
+.credencial-status {
+    grid-column: 1 / -1;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 15px;
+    padding: 13px 16px;
+    background: #edf8f1;
+    border-radius: 10px;
+}
+
+.credencial-status strong {
+    color: #0B7A3B;
+    font-size: 13px;
+}
+
+.credencial-status span {
+    color: #0B7A3B;
+    font-size: 20px;
+    font-weight: 800;
+}
+
+.credencial-codigo {
+    grid-column: 1 / -1;
+    padding-top: 4px;
+    text-align: center;
+}
+
+.credencial-codigo small {
+    display: block;
+    margin-bottom: 6px;
+    color: #6b7280;
+    font-size: 10px;
+    letter-spacing: 0.08em;
+}
+
+.credencial-codigo strong {
+    font-size: 15px;
+    letter-spacing: 0.08em;
+}
+
+.credencial-rodape {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 8px 20px;
+    padding: 15px 20px;
+    background: #f8faf9;
+    border-top: 1px solid #e5e7eb;
+    color: #6b7280;
+    font-size: 11px;
+    text-align: center;
+}
+
+
+/* =====================================================
+   RESPONSIVO
+===================================================== */
+
+@media (max-width: 1000px) {
+
+    .participant-menu {
+        grid-template-columns: repeat(3, 1fr);
+    }
+
+    .profile-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+
+}
+
+
+@media (max-width: 700px) {
+
+    main.container {
+        padding-top: 25px;
+    }
+
+    .participant-menu {
+        grid-template-columns: repeat(2, 1fr);
+    }
+
+    .profile-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .pagamento-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .pagamento-inscricao {
+        padding: 20px;
+    }
+
+    .pagamento-status {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    .credencial-conteudo {
+        grid-template-columns: 1fr;
+        text-align: center;
+    }
+
+    .credencial-identificacao {
+        text-align: center;
+    }
+
+    .qrcode {
+        margin: 0 auto;
+    }
+
+}
+
+
+@media (max-width: 480px) {
+
+    .participant-menu {
+        grid-template-columns: 1fr;
+    }
+
+    .participant-menu-item {
+        padding: 16px;
+    }
+
+    .input-button {
+        grid-template-columns: 1fr;
+    }
+
+    .price-box > div {
+        align-items: flex-start;
+        flex-direction: column;
+        gap: 4px;
+    }
+
+    .credencial-topo {
+        padding: 17px;
+    }
+
+    .credencial-topo strong {
+        font-size: 17px;
+    }
+
+    .credencial-conteudo {
+        padding: 22px 18px;
+    }
+
+}
+
 #btnAplicarCupom:active {
     transform: scale(0.98);
 }
