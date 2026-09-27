@@ -1039,17 +1039,38 @@ async function carregarTrabalhos() {
 
 
         totalTrabalhos.textContent =
-            todosTrabalhos.length;
+    todosTrabalhos.length;
 
 
-        totalAvaliacao.textContent =
-            todosTrabalhos.filter(
-                trabalho =>
-                    (
-                        trabalho.status ||
-                        "em_avaliacao"
-                    ) === "em_avaliacao"
-            ).length;
+totalAvaliacao.textContent =
+    todosTrabalhos.filter(
+        trabalho =>
+            (
+                trabalho.status ||
+                "em_avaliacao"
+            ) === "em_avaliacao"
+    ).length;
+
+
+totalAprovados.textContent =
+    todosTrabalhos.filter(
+        trabalho =>
+            trabalho.status === "aprovado"
+    ).length;
+
+
+totalCorrecoes.textContent =
+    todosTrabalhos.filter(
+        trabalho =>
+            trabalho.status === "aprovado_com_correcoes"
+    ).length;
+
+
+totalReprovados.textContent =
+    todosTrabalhos.filter(
+        trabalho =>
+            trabalho.status === "reprovado"
+    ).length;
 
 
         renderizarTrabalhos();
