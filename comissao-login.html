@@ -1,0 +1,441 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <title>
+        CRFE 2027 | Comissão Científica
+    </title>
+
+    <link
+        rel="stylesheet"
+        href="css/styles.css"
+    >
+
+    <style>
+
+        body {
+            min-height: 100vh;
+            margin: 0;
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            background:
+                linear-gradient(
+                    135deg,
+                    #f4f8f5 0%,
+                    #e8f5ee 100%
+                );
+        }
+
+
+        .login-comissao-container {
+
+            width: 100%;
+            max-width: 440px;
+
+            padding: 20px;
+
+            box-sizing: border-box;
+
+        }
+
+
+        .login-comissao-card {
+
+            background: #ffffff;
+
+            padding: 40px;
+
+            border-radius: 20px;
+
+            box-shadow:
+                0 15px 45px
+                rgba(0, 0, 0, 0.10);
+
+        }
+
+
+        .login-comissao-topo {
+
+            text-align: center;
+
+            margin-bottom: 30px;
+
+        }
+
+
+        .login-comissao-logo {
+
+            display: inline-flex;
+
+            align-items: center;
+            justify-content: center;
+
+            width: 64px;
+            height: 64px;
+
+            margin-bottom: 18px;
+
+            border-radius: 16px;
+
+            background: #0b7a3b;
+
+            color: #ffffff;
+
+            font-size: 22px;
+
+            font-weight: 900;
+
+        }
+
+
+        .login-comissao-topo span {
+
+            display: block;
+
+            margin-bottom: 8px;
+
+            color: #0b7a3b;
+
+            font-size: 12px;
+
+            font-weight: 800;
+
+            letter-spacing: 0.08em;
+
+        }
+
+
+        .login-comissao-topo h1 {
+
+            margin: 0;
+
+            color: #111827;
+
+            font-size: 28px;
+
+        }
+
+
+        .login-comissao-topo p {
+
+            margin: 10px 0 0;
+
+            color: #64748b;
+
+            font-size: 14px;
+
+            line-height: 1.5;
+
+        }
+
+
+        .campo-login {
+
+            margin-bottom: 18px;
+
+        }
+
+
+        .campo-login label {
+
+            display: block;
+
+            margin-bottom: 7px;
+
+            color: #374151;
+
+            font-size: 13px;
+
+            font-weight: 700;
+
+        }
+
+
+        .campo-login input {
+
+            width: 100%;
+
+            box-sizing: border-box;
+
+            padding: 13px 14px;
+
+            border: 1px solid #d8e0db;
+
+            border-radius: 10px;
+
+            outline: none;
+
+            font-size: 14px;
+
+            transition:
+                border-color 0.2s ease,
+                box-shadow 0.2s ease;
+
+        }
+
+
+        .campo-login input:focus {
+
+            border-color: #0b7a3b;
+
+            box-shadow:
+                0 0 0 3px
+                rgba(11, 122, 59, 0.10);
+
+        }
+
+
+        .btn-comissao-login {
+
+            width: 100%;
+
+            min-height: 48px;
+
+            margin-top: 5px;
+
+            border: none;
+
+            border-radius: 10px;
+
+            background: #0b7a3b;
+
+            color: #ffffff;
+
+            cursor: pointer;
+
+            font-size: 13px;
+
+            font-weight: 800;
+
+            transition:
+                background 0.2s ease,
+                transform 0.2s ease;
+
+        }
+
+
+        .btn-comissao-login:hover {
+
+            background: #086330;
+
+            transform: translateY(-1px);
+
+        }
+
+
+        .btn-comissao-login:disabled {
+
+            opacity: 0.65;
+
+            cursor: not-allowed;
+
+            transform: none;
+
+        }
+
+
+        .mensagem-login {
+
+            margin-top: 16px;
+
+            padding: 12px;
+
+            border-radius: 10px;
+
+            font-size: 13px;
+
+            line-height: 1.4;
+
+            display: none;
+
+        }
+
+
+        .mensagem-login.erro {
+
+            display: block;
+
+            background: #fef2f2;
+
+            color: #b91c1c;
+
+        }
+
+
+        .mensagem-login.sucesso {
+
+            display: block;
+
+            background: #ecfdf5;
+
+            color: #047857;
+
+        }
+
+
+        .voltar-inicio {
+
+            display: block;
+
+            margin-top: 22px;
+
+            text-align: center;
+
+            color: #64748b;
+
+            font-size: 13px;
+
+            text-decoration: none;
+
+        }
+
+
+        .voltar-inicio:hover {
+
+            color: #0b7a3b;
+
+        }
+
+
+        @media (max-width: 500px) {
+
+            .login-comissao-card {
+
+                padding: 28px 22px;
+
+            }
+
+
+            .login-comissao-topo h1 {
+
+                font-size: 24px;
+
+            }
+
+        }
+
+    </style>
+
+</head>
+
+
+<body>
+
+
+<div class="login-comissao-container">
+
+    <div class="login-comissao-card">
+
+
+        <div class="login-comissao-topo">
+
+            <div class="login-comissao-logo">
+                CRFE
+            </div>
+
+            <span>
+                ÁREA RESTRITA
+            </span>
+
+            <h1>
+                Comissão Científica
+            </h1>
+
+            <p>
+                Acesse com seu e-mail e senha
+                para avaliar os trabalhos científicos
+                submetidos ao CRFE 2027.
+            </p>
+
+        </div>
+
+
+        <form id="formLoginComissao">
+
+
+            <div class="campo-login">
+
+                <label for="emailComissao">
+                    E-mail
+                </label>
+
+                <input
+                    type="email"
+                    id="emailComissao"
+                    placeholder="Digite seu e-mail"
+                    autocomplete="username"
+                    required
+                >
+
+            </div>
+
+
+            <div class="campo-login">
+
+                <label for="senhaComissao">
+                    Senha
+                </label>
+
+                <input
+                    type="password"
+                    id="senhaComissao"
+                    placeholder="Digite sua senha"
+                    autocomplete="current-password"
+                    required
+                >
+
+            </div>
+
+
+            <button
+                type="submit"
+                id="btnLoginComissao"
+                class="btn-comissao-login"
+            >
+                ENTRAR NA COMISSÃO
+            </button>
+
+
+            <div
+                id="mensagemLogin"
+                class="mensagem-login"
+            ></div>
+
+
+        </form>
+
+
+        <a
+            href="index.html"
+            class="voltar-inicio"
+        >
+            ← Voltar para o CRFE 2027
+        </a>
+
+
+    </div>
+
+</div>
+
+
+
+<script
+    type="module"
+    src="js/comissao-login.js"
+></script>
+
+
+</body>
+
+</html>
