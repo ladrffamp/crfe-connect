@@ -740,7 +740,6 @@ function ativarBotoesAvaliacao() {
             ".btn-salvar-avaliacao"
         );
 
-
     botoes.forEach(botao => {
 
         botao.addEventListener(
@@ -751,6 +750,27 @@ function ativarBotoesAvaliacao() {
                     botao.dataset.id;
 
                 salvarAvaliacao(id);
+            }
+        );
+
+    });
+
+
+    const botoesFinalizar =
+        document.querySelectorAll(
+            ".btn-finalizar-avaliacao"
+        );
+
+    botoesFinalizar.forEach(botao => {
+
+        botao.addEventListener(
+            "click",
+            () => {
+
+                const id =
+                    botao.dataset.id;
+
+                finalizarAvaliacao(id);
             }
         );
 
