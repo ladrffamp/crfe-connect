@@ -794,7 +794,117 @@
             }
 
         }
+/* =====================================================
+   CORREÇÃO DO CABEÇALHO
+===================================================== */
 
+.site-header {
+    width: 100%;
+    background: #ffffff;
+    border-bottom: 1px solid #e3e9e5;
+    box-shadow: 0 2px 12px rgba(20, 60, 40, 0.04);
+}
+
+.site-header .container {
+    width: min(1180px, 92%);
+    min-height: 76px;
+    margin: 0 auto;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 30px;
+}
+
+.site-header .logo {
+    display: inline-flex;
+    align-items: baseline;
+    gap: 5px;
+    color: #0b7a3b;
+    text-decoration: none;
+    font-size: 27px;
+    font-weight: 900;
+    line-height: 1;
+    letter-spacing: -0.5px;
+}
+
+.site-header .logo span {
+    color: #173d2c;
+    font-size: 15px;
+    font-weight: 800;
+}
+
+.site-header nav {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    gap: 24px;
+}
+
+.site-header nav a {
+    display: inline-flex;
+    align-items: center;
+    min-height: 42px;
+    color: #294538;
+    text-decoration: none;
+    font-size: 14px;
+    font-weight: 700;
+    white-space: nowrap;
+    transition: 0.2s ease;
+}
+
+.site-header nav a:hover {
+    color: #0b7a3b;
+}
+
+.site-header nav a:last-child {
+    padding: 0 17px;
+    border-radius: 9px;
+    background: #0b7a3b;
+    color: #ffffff;
+}
+
+.site-header nav a:last-child:hover {
+    background: #086330;
+    color: #ffffff;
+}
+
+
+/* =====================================================
+   CABEÇALHO NO CELULAR
+===================================================== */
+
+@media (max-width: 700px) {
+
+    .site-header .container {
+        min-height: 68px;
+        gap: 15px;
+    }
+
+    .site-header .logo {
+        font-size: 23px;
+    }
+
+    .site-header .logo span {
+        font-size: 13px;
+    }
+
+    .site-header nav {
+        gap: 8px;
+    }
+
+    .site-header nav a {
+        font-size: 11px;
+        min-height: 38px;
+    }
+
+    .site-header nav a:first-child {
+        display: none;
+    }
+
+    .site-header nav a:last-child {
+        padding: 0 12px;
+    }
+} 
     </style>
 
 </head>
