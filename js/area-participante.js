@@ -1573,6 +1573,9 @@ async function carregarInscricao() {
 
         bloquearInscricaoConfirmada();
 
+        atualizarAreaTrabalhos();
+await crfeCarregarMeusTrabalhos();
+
     } catch (erro) {
 
         console.error(
