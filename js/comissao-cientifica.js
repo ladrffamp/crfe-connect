@@ -661,13 +661,34 @@ async function salvarAvaliacao(id) {
 
 
         totalAvaliacao.textContent =
-            todosTrabalhos.filter(
-                item =>
-                    (
-                        item.status ||
-                        "em_avaliacao"
-                    ) === "em_avaliacao"
-            ).length;
+    todosTrabalhos.filter(
+        item =>
+            (
+                item.status ||
+                "em_avaliacao"
+            ) === "em_avaliacao"
+    ).length;
+
+
+totalAprovados.textContent =
+    todosTrabalhos.filter(
+        item =>
+            item.status === "aprovado"
+    ).length;
+
+
+totalCorrecoes.textContent =
+    todosTrabalhos.filter(
+        item =>
+            item.status === "aprovado_com_correcoes"
+    ).length;
+
+
+totalReprovados.textContent =
+    todosTrabalhos.filter(
+        item =>
+            item.status === "reprovado"
+    ).length;
 
 
         mensagem.innerHTML = `
