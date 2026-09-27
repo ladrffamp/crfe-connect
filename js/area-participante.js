@@ -1,4 +1,7 @@
-import { auth, db } from "./firebase.js";
+import {
+    auth,
+    db
+} from "./firebase.js";
 
 import {
     onAuthStateChanged,
@@ -15,17 +18,73 @@ import {
 
 
 // =====================================================
+// CONFIGURAÇÕES
+// =====================================================
+
+const CHAVE_PIX =
+    "ladrf.fampfaculdade@gmail.com";
+
+const LINK_CARTAO =
+    "https://mpago.la/2SHESXg";
+
+
+// =====================================================
+// LOTES
+// =====================================================
+
+const LOTES = {
+
+    1: {
+        nome: "1º Lote",
+        vagas: 50,
+
+        precos: {
+            estudante_fisioterapia: 80,
+            fisioterapeuta: 150,
+            profissional_saude: 130,
+            profissional_esporte: 130,
+            atleta: 100,
+            outro: 120
+        }
+    },
+
+    2: {
+        nome: "2º Lote",
+        vagas: 75,
+
+        precos: {
+            estudante_fisioterapia: 100,
+            fisioterapeuta: 180,
+            profissional_saude: 160,
+            profissional_esporte: 160,
+            atleta: 120,
+            outro: 150
+        }
+    },
+
+    3: {
+        nome: "3º Lote",
+        vagas: 100,
+
+        precos: {
+            estudante_fisioterapia: 120,
+            fisioterapeuta: 210,
+            profissional_saude: 190,
+            profissional_esporte: 190,
+            atleta: 140,
+            outro: 180
+        }
+    }
+
+};
+
+
+// =====================================================
 // ELEMENTOS
 // =====================================================
 
 const saudacao =
     document.getElementById("saudacao");
-
-const btnSair =
-    document.getElementById("btnSair");
-
-
-// PERFIL
 
 const perfilNome =
     document.getElementById("perfilNome");
@@ -54,17 +113,11 @@ const perfilInstituicao =
 const perfilCurso =
     document.getElementById("perfilCurso");
 
-
-// INSCRIÇÃO
-
-const formInscricao =
-    document.getElementById("formInscricao");
+const instituicaoInscricao =
+    document.getElementById("instituicaoInscricao");
 
 const categoria =
     document.getElementById("categoria");
-
-const instituicaoInscricao =
-    document.getElementById("instituicaoInscricao");
 
 const lote =
     document.getElementById("lote");
@@ -99,9 +152,6 @@ const btnContinuarInscricao =
 const mensagemInscricao =
     document.getElementById("mensagemInscricao");
 
-
-// PAGAMENTO
-
 const pagamentoInscricao =
     document.getElementById("pagamentoInscricao");
 
@@ -125,112 +175,20 @@ const statusPagamento =
 
 
 // =====================================================
-// CONFIGURAÇÕES
-// =====================================================
-
-const CHAVE_PIX =
-    "ladrf.fampfaculdade@gmail.com";
-
-const LINK_CARTAO =
-    "https://mpago.la/2SHESXg";
-
-
-// =====================================================
-// LOTES
-// =====================================================
-
-const LOTES = {
-
-    1: {
-
-        nome: "1º Lote",
-
-        vagas: 50,
-
-        precos: {
-
-            estudante_fisioterapia: 80,
-
-            fisioterapeuta: 150,
-
-            profissional_saude: 130,
-
-            profissional_esporte: 130,
-
-            atleta: 100,
-
-            outro: 120
-
-        }
-
-    },
-
-
-    2: {
-
-        nome: "2º Lote",
-
-        vagas: 75,
-
-        precos: {
-
-            estudante_fisioterapia: 100,
-
-            fisioterapeuta: 180,
-
-            profissional_saude: 160,
-
-            profissional_esporte: 160,
-
-            atleta: 120,
-
-            outro: 150
-
-        }
-
-    },
-
-
-    3: {
-
-        nome: "3º Lote",
-
-        vagas: 100,
-
-        precos: {
-
-            estudante_fisioterapia: 120,
-
-            fisioterapeuta: 210,
-
-            profissional_saude: 190,
-
-            profissional_esporte: 190,
-
-            atleta: 140,
-
-            outro: 180
-
-        }
-
-    }
-
-};
-
-
-// =====================================================
-// VARIÁVEIS
+// USUÁRIO ATUAL
 // =====================================================
 
 let usuarioAtual = null;
 
-let cupomAplicado = null;
+let dadosUsuario = null;
 
-let inscricaoExistente = null;
+let inscricaoAtual = null;
+
+let cupomAtual = null;
 
 
 // =====================================================
-// FORMATAÇÃO
+// FORMATAR MOEDA
 // =====================================================
 
 function formatarMoeda(valor) {
@@ -247,6 +205,98 @@ function formatarMoeda(valor) {
 
 
 // =====================================================
+// FORMATAR DATA
+// =====================================================
+
+function formatarData(data) {
+
+    if (!data) {
+        return "Não informado";
+    }
+
+    // Caso seja uma data ISO:
+    // 2001-09-28
+    if (
+        typeof data === "string" &&
+        /^\d{4}-\d{2}-\d{2}$/.test(data)
+    ) {
+
+        const partes =
+            data.split("-");
+
+        return (
+            partes[2] +
+            "/" +
+            partes[1] +
+            "/" +
+            partes[0]
+        );
+
+    }
+
+    return data;
+
+}
+
+
+// =====================================================
+// PREENCHER PERFIL
+// =====================================================
+
+function preencherPerfil(dados) {
+
+    const nome =
+        dados.nome || "";
+
+    saudacao.textContent =
+        `Olá, ${nome}! Seja bem-vindo(a) ao CRFE 2027.`;
+
+    perfilNome.textContent =
+        nome || "Não informado";
+
+    perfilEmail.textContent =
+        dados.email ||
+        usuarioAtual?.email ||
+        "Não informado";
+
+    perfilCpf.textContent =
+        dados.cpf ||
+        "Não informado";
+
+    perfilNascimento.textContent =
+        formatarData(
+            dados.nascimento
+        );
+
+    perfilTelefone.textContent =
+        dados.telefone ||
+        "Não informado";
+
+    perfilCidade.textContent =
+        dados.cidade ||
+        "Não informado";
+
+    perfilEstado.textContent =
+        dados.estado ||
+        "Não informado";
+
+    perfilInstituicao.textContent =
+        dados.instituicao ||
+        "Não informado";
+
+    // IMPORTANTE:
+    // No cadastro o campo se chama cursoProfissao
+    perfilCurso.textContent =
+        dados.cursoProfissao ||
+        "Não informado";
+
+    instituicaoInscricao.value =
+        dados.instituicao || "";
+
+}
+
+
+// =====================================================
 // MOSTRAR PAGAMENTO
 // =====================================================
 
@@ -256,21 +306,17 @@ function mostrarPagamento(inscricao) {
         return;
     }
 
-
-    pagamentoInscricao.style.display = "block";
-
-
-    const valorFinal =
-        Number(inscricao.valorFinal || 0);
-
+    pagamentoInscricao.style.display =
+        "block";
 
     if (valorPix) {
 
         valorPix.textContent =
-            formatarMoeda(valorFinal);
+            formatarMoeda(
+                inscricao.valorFinal
+            );
 
     }
-
 
     if (chavePix) {
 
@@ -279,7 +325,6 @@ function mostrarPagamento(inscricao) {
 
     }
 
-
     if (btnPagamentoCartao) {
 
         btnPagamentoCartao.href =
@@ -287,13 +332,22 @@ function mostrarPagamento(inscricao) {
 
     }
 
-
     if (statusPagamento) {
 
-        statusPagamento.textContent =
-            inscricao.pagamento === "pago"
-                ? "Pagamento confirmado"
-                : "Aguardando pagamento";
+        if (
+            inscricao.pagamento ===
+            "pago"
+        ) {
+
+            statusPagamento.textContent =
+                "Pagamento confirmado";
+
+        } else {
+
+            statusPagamento.textContent =
+                "Aguardando pagamento";
+
+        }
 
     }
 
@@ -317,585 +371,26 @@ function esconderPagamento() {
 
 
 // =====================================================
-// COPIAR PIX
-// =====================================================
-
-if (btnCopiarPix) {
-
-    btnCopiarPix.addEventListener(
-        "click",
-        async () => {
-
-            try {
-
-                await navigator.clipboard.writeText(
-                    CHAVE_PIX
-                );
-
-                if (mensagemPix) {
-
-                    mensagemPix.textContent =
-                        "Chave Pix copiada com sucesso!";
-
-                }
-
-            } catch (erro) {
-
-                if (mensagemPix) {
-
-                    mensagemPix.textContent =
-                        "Não foi possível copiar automaticamente. Copie a chave manualmente.";
-
-                }
-
-            }
-
-        }
-    );
-
-}
-
-
-// =====================================================
-// SAIR
-// =====================================================
-
-if (btnSair) {
-
-    btnSair.addEventListener(
-        "click",
-        async (evento) => {
-
-            evento.preventDefault();
-
-            await signOut(auth);
-
-            window.location.href =
-                "index.html";
-
-        }
-    );
-
-}
-
-
-// =====================================================
-// ATUALIZAR VALOR
-// =====================================================
-
-function atualizarValor() {
-
-    const loteSelecionado =
-        Number(lote.value);
-
-    const categoriaSelecionada =
-        categoria.value;
-
-
-    if (
-        !loteSelecionado ||
-        !categoriaSelecionada ||
-        !LOTES[loteSelecionado]
-    ) {
-
-        valorOriginal.textContent =
-            "R$ 0,00";
-
-        valorInscricao.textContent =
-            "R$ 0,00";
-
-        linhaDesconto.style.display =
-            "none";
-
-        btnContinuarInscricao.disabled =
-            true;
-
-        return;
-
-    }
-
-
-    const preco =
-        LOTES[loteSelecionado]
-            .precos[categoriaSelecionada];
-
-
-    const desconto =
-        cupomAplicado
-            ? cupomAplicado.desconto
-            : 0;
-
-
-    const total =
-        Math.max(
-            0,
-            preco - desconto
-        );
-
-
-    valorOriginal.textContent =
-        formatarMoeda(preco);
-
-
-    valorInscricao.textContent =
-        formatarMoeda(total);
-
-
-    if (desconto > 0) {
-
-        linhaDesconto.style.display =
-            "flex";
-
-        valorDesconto.textContent =
-            "- " + formatarMoeda(desconto);
-
-    } else {
-
-        linhaDesconto.style.display =
-            "none";
-
-    }
-
-
-    btnContinuarInscricao.disabled =
-        false;
-
-}
-
-
-// =====================================================
-// CARREGAR LOTES
-// =====================================================
-
-async function carregarLotes() {
-
-    if (!categoria.value) {
-
-        lote.innerHTML = `
-            <option value="">
-                Selecione primeiro sua categoria
-            </option>
-        `;
-
-        lote.disabled = true;
-
-        informacaoLote.textContent =
-            "Selecione sua categoria para visualizar os lotes disponíveis.";
-
-        atualizarValor();
-
-        return;
-
-    }
-
-
-    try {
-
-        const snapshot =
-            await getDocs(
-                collection(db, "lotes")
-            );
-
-
-        lote.innerHTML = `
-            <option value="">
-                Selecione o lote
-            </option>
-        `;
-
-
-        let lotesDisponiveis = 0;
-
-
-        snapshot.forEach(
-            (documento) => {
-
-                const dados =
-                    documento.data();
-
-                const numero =
-                    Number(documento.id);
-
-
-                if (!LOTES[numero]) {
-                    return;
-                }
-
-
-                const inscritos =
-                    Number(dados.inscritos || 0);
-
-                const limite =
-                    Number(
-                        dados.limite ||
-                        LOTES[numero].vagas
-                    );
-
-
-                const ativo =
-                    dados.ativo !== false;
-
-
-                if (
-                    ativo &&
-                    inscritos < limite
-                ) {
-
-                    const option =
-                        document.createElement("option");
-
-                    option.value =
-                        numero;
-
-                    option.textContent =
-                        `${LOTES[numero].nome} - ${formatarMoeda(
-                            LOTES[numero].precos[categoria.value]
-                        )}`;
-
-
-                    lote.appendChild(option);
-
-                    lotesDisponiveis++;
-
-                }
-
-            }
-        );
-
-
-        lote.disabled =
-            lotesDisponiveis === 0;
-
-
-        if (lotesDisponiveis === 0) {
-
-            informacaoLote.textContent =
-                "No momento não há lotes disponíveis.";
-
-        } else {
-
-            informacaoLote.textContent =
-                "Selecione o lote disponível.";
-
-        }
-
-
-        atualizarValor();
-
-    } catch (erro) {
-
-        console.error(
-            "Erro ao carregar lotes:",
-            erro
-        );
-
-        informacaoLote.textContent =
-            "Não foi possível carregar os lotes.";
-
-    }
-
-}
-
-
-// =====================================================
-// CATEGORIA
-// =====================================================
-
-if (categoria) {
-
-    categoria.addEventListener(
-        "change",
-        async () => {
-
-            cupomAplicado = null;
-
-            cupom.value = "";
-
-            mensagemCupom.textContent =
-                "Se você possui um cupom, digite-o acima.";
-
-            await carregarLotes();
-
-        }
-    );
-
-}
-
-
-// =====================================================
-// LOTE
-// =====================================================
-
-if (lote) {
-
-    lote.addEventListener(
-        "change",
-        () => {
-
-            cupomAplicado = null;
-
-            cupom.value = "";
-
-            mensagemCupom.textContent =
-                "Se você possui um cupom, digite-o acima.";
-
-            atualizarValor();
-
-        }
-    );
-
-}
-
-
-// =====================================================
-// CUPOM
-// =====================================================
-
-if (btnAplicarCupom) {
-
-    btnAplicarCupom.addEventListener(
-        "click",
-        async () => {
-
-            const codigo =
-                cupom.value
-                    .trim()
-                    .toUpperCase();
-
-
-            if (!codigo) {
-
-                mensagemCupom.textContent =
-                    "Digite um cupom.";
-
-                return;
-
-            }
-
-
-            try {
-
-                const cupomRef =
-                    doc(
-                        db,
-                        "cupons",
-                        codigo
-                    );
-
-
-                const cupomSnap =
-                    await getDoc(cupomRef);
-
-
-                if (!cupomSnap.exists()) {
-
-                    cupomAplicado = null;
-
-                    mensagemCupom.textContent =
-                        "Cupom inválido.";
-
-                    atualizarValor();
-
-                    return;
-
-                }
-
-
-                const dados =
-                    cupomSnap.data();
-
-
-                if (dados.ativo !== true) {
-
-                    cupomAplicado = null;
-
-                    mensagemCupom.textContent =
-                        "Este cupom está inativo.";
-
-                    atualizarValor();
-
-                    return;
-
-                }
-
-
-                const usados =
-                    Number(
-                        dados.usados || 0
-                    );
-
-                const limite =
-                    Number(
-                        dados.limite || 0
-                    );
-
-
-                if (
-                    limite > 0 &&
-                    usados >= limite
-                ) {
-
-                    cupomAplicado = null;
-
-                    mensagemCupom.textContent =
-                        "Este cupom atingiu o limite de utilizações.";
-
-                    atualizarValor();
-
-                    return;
-
-                }
-
-
-                const preco =
-                    LOTES[Number(lote.value)]
-                        ?.precos[categoria.value];
-
-
-                if (!preco) {
-
-                    mensagemCupom.textContent =
-                        "Selecione a categoria e o lote antes de aplicar o cupom.";
-
-                    return;
-
-                }
-
-
-                let desconto = 0;
-
-
-                if (
-                    dados.tipo === "percentual"
-                ) {
-
-                    desconto =
-                        preco *
-                        (
-                            Number(dados.valor) /
-                            100
-                        );
-
-                } else {
-
-                    desconto =
-                        Number(
-                            dados.valor || 0
-                        );
-
-                }
-
-
-                desconto =
-                    Math.min(
-                        desconto,
-                        preco
-                    );
-
-
-                cupomAplicado = {
-
-                    codigo: codigo,
-
-                    desconto: desconto
-
-                };
-
-
-                mensagemCupom.textContent =
-                    "Cupom aplicado com sucesso!";
-
-
-                atualizarValor();
-
-            } catch (erro) {
-
-                console.error(
-                    "Erro ao aplicar cupom:",
-                    erro
-                );
-
-                mensagemCupom.textContent =
-                    "Erro ao verificar o cupom.";
-
-            }
-
-        }
-    );
-
-}
-
-
-// =====================================================
-// PREENCHER PERFIL
-// =====================================================
-
-function preencherPerfil(dados) {
-
-    const nome =
-        dados.nome || "";
-
-    saudacao.textContent =
-        `Olá, ${nome}! Seja bem-vindo(a) ao CRFE 2027.`;
-
-
-    perfilNome.textContent =
-        nome || "Não informado";
-
-    perfilEmail.textContent =
-        dados.email || usuarioAtual?.email || "Não informado";
-
-    perfilCpf.textContent =
-        dados.cpf || "Não informado";
-
-    perfilNascimento.textContent =
-        dados.nascimento || "Não informado";
-
-    perfilTelefone.textContent =
-        dados.telefone || "Não informado";
-
-    perfilCidade.textContent =
-        dados.cidade || "Não informado";
-
-    perfilEstado.textContent =
-        dados.estado || "Não informado";
-
-    perfilInstituicao.textContent =
-        dados.instituicao || "Não informado";
-
-    perfilCurso.textContent =
-        dados.curso || "Não informado";
-
-
-    instituicaoInscricao.value =
-        dados.instituicao || "";
-
-}
-
-
-// =====================================================
 // CARREGAR INSCRIÇÃO EXISTENTE
 // =====================================================
 
-async function carregarInscricaoExistente(uid) {
+async function carregarInscricao() {
 
     try {
 
-        const inscricaoRef =
+        const referencia =
             doc(
                 db,
                 "inscricoes",
-                uid
+                usuarioAtual.uid
             );
 
+        const resultado =
+            await getDoc(referencia);
 
-        const inscricaoSnap =
-            await getDoc(inscricaoRef);
+        if (!resultado.exists()) {
 
-
-        if (!inscricaoSnap.exists()) {
-
-            inscricaoExistente = null;
+            inscricaoAtual = null;
 
             esconderPagamento();
 
@@ -903,171 +398,42 @@ async function carregarInscricaoExistente(uid) {
 
         }
 
+        inscricaoAtual =
+            resultado.data();
 
-        inscricaoExistente =
-            inscricaoSnap.data();
-
-
-        // ---------------------------------------------
-        // PREENCHER FORMULÁRIO
-        // ---------------------------------------------
-
-        if (categoria) {
-
-            categoria.value =
-                inscricaoExistente.categoria || "";
-
-            categoria.disabled =
-                true;
-
-        }
-
-
-        if (instituicaoInscricao) {
-
-            instituicaoInscricao.value =
-                inscricaoExistente.instituicao || "";
-
-        }
-
-
-        if (lote) {
-
-            lote.innerHTML = "";
-
-            const option =
-                document.createElement("option");
-
-            option.value =
-                inscricaoExistente.lote;
-
-            option.textContent =
-                `${inscricaoExistente.loteNome || "Lote"} - ${formatarMoeda(
-                    inscricaoExistente.valorOriginal
-                )}`;
-
-            option.selected = true;
-
-            lote.appendChild(option);
-
-            lote.disabled = true;
-
-        }
-
-
-        if (
-            inscricaoExistente.cupom
-        ) {
-
-            cupom.value =
-                inscricaoExistente.cupom;
-
-        }
-
-
-        // ---------------------------------------------
-        // VALORES
-        // ---------------------------------------------
-
-        valorOriginal.textContent =
-            formatarMoeda(
-                inscricaoExistente.valorOriginal
-            );
-
-
-        if (
-            Number(
-                inscricaoExistente.desconto || 0
-            ) > 0
-        ) {
-
-            linhaDesconto.style.display =
-                "flex";
-
-            valorDesconto.textContent =
-                "- " +
-                formatarMoeda(
-                    inscricaoExistente.desconto
-                );
-
-        } else {
-
-            linhaDesconto.style.display =
-                "none";
-
-        }
-
-
-        valorInscricao.textContent =
-            formatarMoeda(
-                inscricaoExistente.valorFinal
-            );
-
-
-        // ---------------------------------------------
-        // DESABILITAR NOVA INSCRIÇÃO
-        // ---------------------------------------------
-
-        if (btnContinuarInscricao) {
-
-            btnContinuarInscricao.disabled =
-                true;
-
-        }
-
-
-        if (btnAplicarCupom) {
-
-            btnAplicarCupom.disabled =
-                true;
-
-        }
-
-
-        if (cupom) {
-
-            cupom.disabled =
-                true;
-
-        }
-
-
-        document
-            .querySelectorAll(
-                'input[name="minicurso"]'
-            )
-            .forEach(
-                (checkbox) => {
-
-                    checkbox.disabled =
-                        true;
-
-                    const selecionados =
-                        inscricaoExistente.minicursos || [];
-
-                    checkbox.checked =
-                        selecionados.includes(
-                            checkbox.value
-                        );
-
-                }
-            );
-
+        mostrarPagamento(
+            inscricaoAtual
+        );
 
         mensagemInscricao.textContent =
             "Você já possui uma inscrição no CRFE 2027.";
 
+        btnContinuarInscricao.disabled =
+            true;
 
-        // ---------------------------------------------
-        // MOSTRAR PAGAMENTO
-        // ---------------------------------------------
+        categoria.value =
+            inscricaoAtual.categoria ||
+            "";
 
-        mostrarPagamento(
-            inscricaoExistente
-        );
+        instituicaoInscricao.value =
+            inscricaoAtual.instituicao ||
+            dadosUsuario?.instituicao ||
+            "";
 
+        lote.value =
+            String(
+                inscricaoAtual.lote || ""
+            );
 
-    } catch (erro) {
+        cupom.value =
+            inscricaoAtual.cupom ||
+            "";
+
+        atualizarValores();
+
+    }
+
+    catch (erro) {
 
         console.error(
             "Erro ao carregar inscrição:",
@@ -1080,83 +446,542 @@ async function carregarInscricaoExistente(uid) {
 
 
 // =====================================================
-// REGISTRAR INSCRIÇÃO
+// CARREGAR LOTES
 // =====================================================
 
-if (formInscricao) {
+async function carregarLotes() {
 
-    formInscricao.addEventListener(
+    if (!lote) {
+        return;
+    }
+
+    lote.innerHTML =
+        '<option value="">Selecione o lote</option>';
+
+    try {
+
+        const snapshot =
+            await getDocs(
+                collection(
+                    db,
+                    "lotes"
+                )
+            );
+
+        snapshot.forEach(
+            (documento) => {
+
+                const dados =
+                    documento.data();
+
+                const id =
+                    Number(
+                        documento.id
+                    );
+
+                const configuracao =
+                    LOTES[id];
+
+                if (!configuracao) {
+                    return;
+                }
+
+                const inscritos =
+                    Number(
+                        dados.inscritos || 0
+                    );
+
+                const limite =
+                    Number(
+                        dados.limite ||
+                        configuracao.vagas
+                    );
+
+                const ativo =
+                    dados.ativo !== false;
+
+                if (
+                    !ativo ||
+                    inscritos >= limite
+                ) {
+
+                    return;
+
+                }
+
+                const option =
+                    document.createElement(
+                        "option"
+                    );
+
+                option.value =
+                    String(id);
+
+                option.textContent =
+                    `${configuracao.nome} - vagas disponíveis`;
+
+                lote.appendChild(
+                    option
+                );
+
+            }
+        );
+
+    }
+
+    catch (erro) {
+
+        console.error(
+            "Erro ao carregar lotes:",
+            erro
+        );
+
+    }
+
+}
+
+
+// =====================================================
+// CALCULAR VALOR
+// =====================================================
+
+function obterValorBase() {
+
+    const loteSelecionado =
+        Number(
+            lote?.value
+        );
+
+    const categoriaSelecionada =
+        categoria?.value;
+
+    if (
+        !loteSelecionado ||
+        !categoriaSelecionada
+    ) {
+
+        return 0;
+
+    }
+
+    const configuracao =
+        LOTES[loteSelecionado];
+
+    if (!configuracao) {
+        return 0;
+    }
+
+    return Number(
+        configuracao.precos[
+            categoriaSelecionada
+        ] || 0
+    );
+
+}
+
+
+// =====================================================
+// ATUALIZAR VALORES
+// =====================================================
+
+function atualizarValores() {
+
+    const valorBase =
+        obterValorBase();
+
+    let desconto = 0;
+
+    if (
+        cupomAtual &&
+        cupomAtual.ativo === true
+    ) {
+
+        if (
+            cupomAtual.tipo ===
+            "percentual"
+        ) {
+
+            desconto =
+                valorBase *
+                (
+                    Number(
+                        cupomAtual.valor
+                    ) / 100
+                );
+
+        }
+
+        else if (
+            cupomAtual.tipo ===
+            "fixo"
+        ) {
+
+            desconto =
+                Number(
+                    cupomAtual.valor
+                );
+
+        }
+
+    }
+
+    if (desconto > valorBase) {
+        desconto = valorBase;
+    }
+
+    const valorFinal =
+        valorBase -
+        desconto;
+
+    valorOriginal.textContent =
+        formatarMoeda(
+            valorBase
+        );
+
+    valorDesconto.textContent =
+        "- " +
+        formatarMoeda(
+            desconto
+        );
+
+    valorInscricao.textContent =
+        formatarMoeda(
+            valorFinal
+        );
+
+    linhaDesconto.style.display =
+        desconto > 0
+            ? "flex"
+            : "none";
+
+    if (
+        loteSelecionadoValido()
+    ) {
+
+        const configuracao =
+            LOTES[
+                Number(
+                    lote.value
+                )
+            ];
+
+        informacaoLote.textContent =
+            `${configuracao.nome} selecionado.`;
+
+    }
+
+}
+
+
+// =====================================================
+// VALIDAR LOTE
+// =====================================================
+
+function loteSelecionadoValido() {
+
+    return Boolean(
+        lote?.value &&
+        LOTES[
+            Number(
+                lote.value
+            )
+        ]
+    );
+
+}
+
+
+// =====================================================
+// APLICAR CUPOM
+// =====================================================
+
+btnAplicarCupom?.addEventListener(
+    "click",
+    async () => {
+
+        const codigo =
+            cupom.value
+                .trim()
+                .toUpperCase();
+
+        cupomAtual = null;
+
+        mensagemCupom.textContent = "";
+
+        if (!codigo) {
+
+            atualizarValores();
+
+            return;
+
+        }
+
+        try {
+
+            const referencia =
+                doc(
+                    db,
+                    "cupons",
+                    codigo
+                );
+
+            const resultado =
+                await getDoc(
+                    referencia
+                );
+
+            if (!resultado.exists()) {
+
+                mensagemCupom.textContent =
+                    "Cupom não encontrado.";
+
+                atualizarValores();
+
+                return;
+
+            }
+
+            const dados =
+                resultado.data();
+
+            const ativo =
+                dados.ativo === true;
+
+            const usados =
+                Number(
+                    dados.usados || 0
+                );
+
+            const limite =
+                Number(
+                    dados.limite || 0
+                );
+
+            if (!ativo) {
+
+                mensagemCupom.textContent =
+                    "Este cupom está inativo.";
+
+                atualizarValores();
+
+                return;
+
+            }
+
+            if (
+                limite > 0 &&
+                usados >= limite
+            ) {
+
+                mensagemCupom.textContent =
+                    "Este cupom atingiu o limite de uso.";
+
+                atualizarValores();
+
+                return;
+
+            }
+
+            cupomAtual =
+                dados;
+
+            mensagemCupom.textContent =
+                "Cupom aplicado com sucesso.";
+
+            atualizarValores();
+
+        }
+
+        catch (erro) {
+
+            console.error(
+                "Erro ao verificar cupom:",
+                erro
+            );
+
+            mensagemCupom.textContent =
+                "Não foi possível verificar o cupom.";
+
+        }
+
+    }
+);
+
+
+// =====================================================
+// EVENTOS DE ALTERAÇÃO
+// =====================================================
+
+categoria?.addEventListener(
+    "change",
+    () => {
+
+        cupomAtual = null;
+
+        mensagemCupom.textContent = "";
+
+        atualizarValores();
+
+    }
+);
+
+
+lote?.addEventListener(
+    "change",
+    () => {
+
+        atualizarValores();
+
+    }
+);
+
+
+// =====================================================
+// COPIAR PIX
+// =====================================================
+
+btnCopiarPix?.addEventListener(
+    "click",
+    async () => {
+
+        try {
+
+            await navigator.clipboard.writeText(
+                CHAVE_PIX
+            );
+
+            mensagemPix.textContent =
+                "Chave Pix copiada.";
+
+        }
+
+        catch (erro) {
+
+            console.error(erro);
+
+            mensagemPix.textContent =
+                "Não foi possível copiar automaticamente.";
+
+        }
+
+    }
+);
+
+
+// =====================================================
+// FINALIZAR INSCRIÇÃO
+// =====================================================
+
+document
+    .getElementById("formInscricao")
+    ?.addEventListener(
         "submit",
-        async (evento) => {
+        async (event) => {
 
-            evento.preventDefault();
-
+            event.preventDefault();
 
             if (!usuarioAtual) {
 
                 mensagemInscricao.textContent =
-                    "Usuário não autenticado.";
+                    "Faça login para continuar.";
 
                 return;
 
             }
 
-
-            if (inscricaoExistente) {
+            if (inscricaoAtual) {
 
                 mensagemInscricao.textContent =
                     "Você já possui uma inscrição no CRFE 2027.";
 
-                mostrarPagamento(
-                    inscricaoExistente
-                );
-
                 return;
 
             }
-
 
             const categoriaSelecionada =
                 categoria.value;
 
             const loteSelecionado =
-                Number(lote.value);
+                Number(
+                    lote.value
+                );
 
+            const instituicao =
+                instituicaoInscricao.value.trim();
 
             if (
                 !categoriaSelecionada ||
-                !loteSelecionado
+                !loteSelecionado ||
+                !instituicao
             ) {
 
                 mensagemInscricao.textContent =
-                    "Selecione a categoria e o lote.";
+                    "Preencha todos os campos obrigatórios.";
 
                 return;
 
             }
 
+            const configuracao =
+                LOTES[
+                    loteSelecionado
+                ];
 
-            const loteConfig =
-                LOTES[loteSelecionado];
+            if (!configuracao) {
 
+                mensagemInscricao.textContent =
+                    "Lote inválido.";
 
-            const preco =
-                loteConfig
-                    .precos[categoriaSelecionada];
+                return;
 
+            }
 
-            const desconto =
-                cupomAplicado
-                    ? cupomAplicado.desconto
-                    : 0;
+            const valorBase =
+                obterValorBase();
 
+            let desconto = 0;
+
+            if (
+                cupomAtual &&
+                cupomAtual.ativo === true
+            ) {
+
+                if (
+                    cupomAtual.tipo ===
+                    "percentual"
+                ) {
+
+                    desconto =
+                        valorBase *
+                        (
+                            Number(
+                                cupomAtual.valor
+                            ) / 100
+                        );
+
+                }
+
+                else if (
+                    cupomAtual.tipo ===
+                    "fixo"
+                ) {
+
+                    desconto =
+                        Number(
+                            cupomAtual.valor
+                        );
+
+                }
+
+            }
+
+            if (desconto > valorBase) {
+                desconto = valorBase;
+            }
 
             const valorFinal =
-                Math.max(
-                    0,
-                    preco - desconto
-                );
-
+                valorBase -
+                desconto;
 
             const minicursos =
                 Array.from(
@@ -1164,89 +989,76 @@ if (formInscricao) {
                         'input[name="minicurso"]:checked'
                     )
                 ).map(
-                    checkbox =>
-                        checkbox.value
+                    (campo) =>
+                        campo.value
                 );
 
+            const inscricaoRef =
+                doc(
+                    db,
+                    "inscricoes",
+                    usuarioAtual.uid
+                );
 
-            btnContinuarInscricao.disabled =
-                true;
+            const loteRef =
+                doc(
+                    db,
+                    "lotes",
+                    String(
+                        loteSelecionado
+                    )
+                );
 
-
-            mensagemInscricao.textContent =
-                "Registrando sua inscrição...";
-
+            const cupomRef =
+                cupomAtual
+                    ? doc(
+                        db,
+                        "cupons",
+                        cupom.value
+                            .trim()
+                            .toUpperCase()
+                    )
+                    : null;
 
             try {
 
-                const inscricaoRef =
-                    doc(
-                        db,
-                        "inscricoes",
-                        usuarioAtual.uid
-                    );
-
-
-                const loteRef =
-                    doc(
-                        db,
-                        "lotes",
-                        String(loteSelecionado)
-                    );
-
-
-                const cupomRef =
-                    cupomAplicado
-                        ? doc(
-                            db,
-                            "cupons",
-                            cupomAplicado.codigo
-                        )
-                        : null;
-
+                mensagemInscricao.textContent =
+                    "Registrando sua inscrição...";
 
                 await runTransaction(
                     db,
                     async (transaction) => {
 
-                        // ---------------------------------
-                        // LOTE
-                        // ---------------------------------
-
-                        const loteSnap =
+                        const loteSnapshot =
                             await transaction.get(
                                 loteRef
                             );
 
-
-                        if (!loteSnap.exists()) {
+                        if (
+                            !loteSnapshot.exists()
+                        ) {
 
                             throw new Error(
-                                "LOTE_INEXISTENTE"
+                                "LOTE_NAO_EXISTE"
                             );
 
                         }
 
-
-                        const loteData =
-                            loteSnap.data();
-
+                        const loteDados =
+                            loteSnapshot.data();
 
                         const inscritos =
                             Number(
-                                loteData.inscritos || 0
+                                loteDados.inscritos || 0
                             );
-
 
                         const limite =
                             Number(
-                                loteData.limite ||
-                                loteConfig.vagas
+                                loteDados.limite ||
+                                configuracao.vagas
                             );
 
-
                         if (
-                            loteData.ativo === false ||
                             inscritos >= limite
                         ) {
 
@@ -1256,42 +1068,15 @@ if (formInscricao) {
 
                         }
 
-
-                        // ---------------------------------
-                        // INSCRIÇÃO EXISTENTE
-                        // ---------------------------------
-
-                        const inscricaoSnap =
-                            await transaction.get(
-                                inscricaoRef
-                            );
-
-
-                        if (
-                            inscricaoSnap.exists()
-                        ) {
-
-                            throw new Error(
-                                "INSCRICAO_EXISTENTE"
-                            );
-
-                        }
-
-
-                        // ---------------------------------
-                        // CUPOM
-                        // ---------------------------------
-
                         if (cupomRef) {
 
-                            const cupomSnap =
+                            const cupomSnapshot =
                                 await transaction.get(
                                     cupomRef
                                 );
 
-
                             if (
-                                !cupomSnap.exists()
+                                !cupomSnapshot.exists()
                             ) {
 
                                 throw new Error(
@@ -1300,25 +1085,21 @@ if (formInscricao) {
 
                             }
 
-
-                            const cupomData =
-                                cupomSnap.data();
-
+                            const cupomDados =
+                                cupomSnapshot.data();
 
                             const usados =
                                 Number(
-                                    cupomData.usados || 0
+                                    cupomDados.usados || 0
                                 );
-
 
                             const limiteCupom =
                                 Number(
-                                    cupomData.limite || 0
+                                    cupomDados.limite || 0
                                 );
 
-
                             if (
-                                cupomData.ativo !== true ||
+                                cupomDados.ativo !== true ||
                                 (
                                     limiteCupom > 0 &&
                                     usados >= limiteCupom
@@ -1331,23 +1112,23 @@ if (formInscricao) {
 
                             }
 
-
                             transaction.update(
                                 cupomRef,
                                 {
-
                                     usados:
                                         usados + 1
-
                                 }
                             );
 
                         }
 
-
-                        // ---------------------------------
-                        // CRIAR INSCRIÇÃO
-                        // ---------------------------------
+                        transaction.update(
+                            loteRef,
+                            {
+                                inscritos:
+                                    inscritos + 1
+                            }
+                        );
 
                         transaction.set(
                             inscricaoRef,
@@ -1357,28 +1138,32 @@ if (formInscricao) {
                                     usuarioAtual.uid,
 
                                 nome:
-                                    perfilNome.textContent,
+                                    dadosUsuario?.nome ||
+                                    "",
 
                                 email:
-                                    usuarioAtual.email,
+                                    dadosUsuario?.email ||
+                                    usuarioAtual.email ||
+                                    "",
 
                                 cpf:
-                                    perfilCpf.textContent,
+                                    dadosUsuario?.cpf ||
+                                    "",
 
                                 categoria:
                                     categoriaSelecionada,
 
                                 instituicao:
-                                    instituicaoInscricao.value,
+                                    instituicao,
 
                                 lote:
                                     loteSelecionado,
 
                                 loteNome:
-                                    loteConfig.nome,
+                                    configuracao.nome,
 
                                 valorOriginal:
-                                    preco,
+                                    valorBase,
 
                                 desconto:
                                     desconto,
@@ -1387,9 +1172,11 @@ if (formInscricao) {
                                     valorFinal,
 
                                 cupom:
-                                    cupomAplicado
-                                        ? cupomAplicado.codigo
-                                        : null,
+                                    cupomAtual
+                                        ? cupom.value
+                                            .trim()
+                                            .toUpperCase()
+                                        : "",
 
                                 minicursos:
                                     minicursos,
@@ -1404,127 +1191,37 @@ if (formInscricao) {
                                     new Date()
 
                             }
-
-                        );
-
-
-                        // ---------------------------------
-                        // INCREMENTAR LOTE
-                        // ---------------------------------
-
-                        transaction.update(
-                            loteRef,
-                            {
-
-                                inscritos:
-                                    inscritos + 1
-
-                            }
                         );
 
                     }
                 );
 
+                const resultado =
+                    await getDoc(
+                        inscricaoRef
+                    );
 
-                inscricaoExistente = {
-
-                    uid:
-                        usuarioAtual.uid,
-
-                    nome:
-                        perfilNome.textContent,
-
-                    email:
-                        usuarioAtual.email,
-
-                    cpf:
-                        perfilCpf.textContent,
-
-                    categoria:
-                        categoriaSelecionada,
-
-                    instituicao:
-                        instituicaoInscricao.value,
-
-                    lote:
-                        loteSelecionado,
-
-                    loteNome:
-                        loteConfig.nome,
-
-                    valorOriginal:
-                        preco,
-
-                    desconto:
-                        desconto,
-
-                    valorFinal:
-                        valorFinal,
-
-                    cupom:
-                        cupomAplicado
-                            ? cupomAplicado.codigo
-                            : null,
-
-                    minicursos:
-                        minicursos,
-
-                    status:
-                        "aguardando_pagamento",
-
-                    pagamento:
-                        "pendente"
-
-                };
-
+                inscricaoAtual =
+                    resultado.data();
 
                 mensagemInscricao.textContent =
                     "Inscrição registrada com sucesso!";
 
+                btnContinuarInscricao.disabled =
+                    true;
 
                 mostrarPagamento(
-                    inscricaoExistente
+                    inscricaoAtual
                 );
 
+            }
 
-                // ---------------------------------
-                // DESABILITAR FORMULÁRIO
-                // ---------------------------------
-
-                categoria.disabled =
-                    true;
-
-                lote.disabled =
-                    true;
-
-                cupom.disabled =
-                    true;
-
-                btnAplicarCupom.disabled =
-                    true;
-
-
-                document
-                    .querySelectorAll(
-                        'input[name="minicurso"]'
-                    )
-                    .forEach(
-                        checkbox => {
-
-                            checkbox.disabled =
-                                true;
-
-                        }
-                    );
-
-
-            } catch (erro) {
+            catch (erro) {
 
                 console.error(
                     "Erro ao registrar inscrição:",
                     erro
                 );
-
 
                 if (
                     erro.message ===
@@ -1532,21 +1229,11 @@ if (formInscricao) {
                 ) {
 
                     mensagemInscricao.textContent =
-                        "Este lote acabou. Atualize a página e selecione outro lote.";
+                        "Este lote acabou de esgotar. Selecione outro lote.";
 
-                } else if (
-                    erro.message ===
-                    "INSCRICAO_EXISTENTE"
-                ) {
+                }
 
-                    mensagemInscricao.textContent =
-                        "Você já possui uma inscrição no CRFE 2027.";
-
-                    await carregarInscricaoExistente(
-                        usuarioAtual.uid
-                    );
-
-                } else if (
+                else if (
                     erro.message ===
                     "CUPOM_ESGOTADO"
                 ) {
@@ -1554,23 +1241,48 @@ if (formInscricao) {
                     mensagemInscricao.textContent =
                         "O cupom não está mais disponível.";
 
-                } else {
+                }
+
+                else if (
+                    erro.message ===
+                    "CUPOM_INVALIDO"
+                ) {
 
                     mensagemInscricao.textContent =
-                        "Não foi possível realizar a inscrição. Tente novamente.";
+                        "O cupom não é mais válido.";
 
                 }
 
+                else {
 
-                btnContinuarInscricao.disabled =
-                    false;
+                    mensagemInscricao.textContent =
+                        "Não foi possível registrar sua inscrição.";
+
+                }
 
             }
 
         }
     );
 
-}
+
+// =====================================================
+// SAIR
+// =====================================================
+
+document
+    .getElementById("btnSair")
+    ?.addEventListener(
+        "click",
+        async () => {
+
+            await signOut(auth);
+
+            window.location.href =
+                "login.html";
+
+        }
+    );
 
 
 // =====================================================
@@ -1590,76 +1302,48 @@ onAuthStateChanged(
 
         }
 
-
         usuarioAtual =
             usuario;
 
-
         try {
 
-            // -------------------------------------------
-            // CARREGAR PERFIL
-            // -------------------------------------------
-
-            const usuarioRef =
+            const referencia =
                 doc(
                     db,
                     "usuarios",
                     usuario.uid
                 );
 
-
-            const usuarioSnap =
+            const resultado =
                 await getDoc(
-                    usuarioRef
+                    referencia
                 );
-
 
             if (
-                usuarioSnap.exists()
+                resultado.exists()
             ) {
 
+                dadosUsuario =
+                    resultado.data();
+
                 preencherPerfil(
-                    usuarioSnap.data()
+                    dadosUsuario
                 );
 
-            } else {
-
-                saudacao.textContent =
-                    `Olá! Seja bem-vindo(a) ao CRFE 2027.`;
-
             }
 
+            await carregarLotes();
 
-            // -------------------------------------------
-            // CARREGAR INSCRIÇÃO
-            // -------------------------------------------
+            await carregarInscricao();
 
-            await carregarInscricaoExistente(
-                usuario.uid
-            );
+        }
 
-
-            // -------------------------------------------
-            // SE NÃO TEM INSCRIÇÃO
-            // -------------------------------------------
-
-            if (!inscricaoExistente) {
-
-                await carregarLotes();
-
-            }
-
-
-        } catch (erro) {
+        catch (erro) {
 
             console.error(
                 "Erro ao carregar área do participante:",
                 erro
             );
-
-            saudacao.textContent =
-                "Não foi possível carregar seus dados.";
 
         }
 
