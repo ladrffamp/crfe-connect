@@ -2,7 +2,8 @@ import {
     collection,
     getDocs,
     doc,
-    updateDoc
+    updateDoc,
+    setDoc
 } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
 
 import {
@@ -425,12 +426,14 @@ function renderizarInscricoes() {
 
                         <p>
                             <strong>Minicursos</strong>
+
                             ${
                                 inscricao.minicursos &&
                                 inscricao.minicursos.length
                                     ? inscricao.minicursos.join(", ")
                                     : "Nenhum"
                             }
+
                         </p>
 
 
@@ -446,6 +449,7 @@ function renderizarInscricoes() {
                                     ${formaPagamento}
                                 </p>
 
+
                                 ${
                                     inscricao.pagamentoConfirmadoEm
                                     ? `
@@ -457,6 +461,21 @@ function renderizarInscricoes() {
                                             ${formatarData(
                                                 inscricao.pagamentoConfirmadoEm
                                             )}
+                                        </p>
+                                    `
+                                    : ""
+                                }
+
+
+                                ${
+                                    inscricao.codigoCredencial
+                                    ? `
+                                        <p>
+                                            <strong>
+                                                Código da credencial
+                                            </strong>
+
+                                            ${inscricao.codigoCredencial}
                                         </p>
                                     `
                                     : ""
@@ -588,6 +607,28 @@ window.confirmarPagamento =
 
         try {
 
+            // =================================================
+            // GERAR / RECUPERAR CÓDIGO DA CREDENCIAL
+            // =================================================
+
+            const codigoCredencial =
+                inscricao.codigoCredencial ||
+                (
+                    "CRFE-2027-" +
+                    inscricao.id
+                        .substring(0, 8)
+                        .toUpperCase()
+                );
+
+
+            const dataConfirmacao =
+                new Date();
+
+
+            // =================================================
+            // ATUALIZAR INSCRIÇÃO
+            // =================================================
+
             await updateDoc(
 
                 doc(
@@ -608,7 +649,73 @@ window.confirmarPagamento =
                         forma,
 
                     pagamentoConfirmadoEm:
-                        new Date()
+                        dataConfirmacao,
+
+                    codigoCredencial:
+                        codigoCredencial
+
+                }
+
+            );
+
+
+            // =================================================
+            // CRIAR VALIDAÇÃO PÚBLICA
+            // =================================================
+
+            await setDoc(
+
+                doc(
+                    db,
+                    "validacoes",
+                    codigoCredencial
+                ),
+
+                {
+
+                    codigoCredencial:
+                        codigoCredencial,
+
+                    nome:
+                        inscricao.nome ||
+                        "Não informado",
+
+                    categoria:
+                        inscricao.categoria ||
+                        "Não informado",
+
+                    instituicao:
+                        inscricao.instituicao ||
+                        inscricao.instituicaoInscricao ||
+                        "Não informado",
+
+                    lote:
+                        inscricao.loteNome ||
+                        inscricao.lote ||
+                        "Não informado",
+
+                    status:
+                        "pago",
+
+                    pagamento:
+                        "pago",
+
+                    formaPagamento:
+                        forma,
+
+                    valor:
+                        Number(
+                            inscricao.valorFinal || 0
+                        ),
+
+                    evento:
+                        "CRFE 2027",
+
+                    criadoEm:
+                        dataConfirmacao,
+
+                    pagamentoConfirmadoEm:
+                        dataConfirmacao
 
                 }
 
@@ -616,7 +723,9 @@ window.confirmarPagamento =
 
 
             alert(
-                "Pagamento confirmado com sucesso!"
+                "Pagamento confirmado com sucesso!\n\n" +
+                "Credencial criada:\n" +
+                codigoCredencial
             );
 
 
@@ -632,7 +741,8 @@ window.confirmarPagamento =
 
 
             alert(
-                "Não foi possível confirmar o pagamento."
+                "O pagamento não pôde ser confirmado.\n\n" +
+                "Verifique as permissões do Firestore."
             );
 
         }
