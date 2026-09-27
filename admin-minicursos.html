@@ -1,0 +1,1009 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <title>
+        Minicursos | Administração | CRFE 2027
+    </title>
+
+    <link
+        rel="stylesheet"
+        href="css/styles.css"
+    >
+
+    <style>
+
+        /* =====================================================
+           BASE
+        ===================================================== */
+
+        body {
+            margin: 0;
+            background: #f6f9f7;
+            color: #173d2c;
+        }
+
+
+        /* =====================================================
+           CABEÇALHO
+        ===================================================== */
+
+        .site-header {
+            width: 100%;
+            background: #ffffff;
+            border-bottom: 1px solid #e3e9e5;
+            box-shadow: 0 2px 12px rgba(20, 60, 40, 0.04);
+        }
+
+
+        .site-header .container {
+            width: min(1180px, 92%);
+            min-height: 76px;
+            margin: 0 auto;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 30px;
+        }
+
+
+        .site-header .logo {
+            display: inline-flex;
+            align-items: baseline;
+            gap: 5px;
+            color: #0b7a3b;
+            text-decoration: none;
+            font-size: 27px;
+            font-weight: 900;
+            line-height: 1;
+            flex-shrink: 0;
+        }
+
+
+        .site-header .logo span {
+            color: #173d2c;
+            font-size: 15px;
+            font-weight: 800;
+        }
+
+
+        .site-header nav {
+            display: flex;
+            align-items: center;
+            justify-content: flex-end;
+            gap: 20px;
+            flex-wrap: wrap;
+        }
+
+
+        .site-header nav a {
+            display: inline-flex;
+            align-items: center;
+            min-height: 42px;
+            color: #294538;
+            text-decoration: none;
+            font-size: 14px;
+            font-weight: 700;
+            white-space: nowrap;
+            transition: 0.2s ease;
+        }
+
+
+        .site-header nav a:hover {
+            color: #0b7a3b;
+        }
+
+
+        .site-header nav a:last-child {
+            padding: 0 17px;
+            border-radius: 9px;
+            background: #0b7a3b;
+            color: #ffffff;
+        }
+
+
+        .site-header nav a:last-child:hover {
+            background: #086330;
+            color: #ffffff;
+        }
+
+
+        /* =====================================================
+           CONTEÚDO
+        ===================================================== */
+
+        .admin-container {
+            width: min(1180px, 92%);
+            margin: 0 auto;
+            padding: 55px 0 70px;
+        }
+
+
+        .admin-header {
+            margin-bottom: 35px;
+        }
+
+
+        .section-label {
+            display: inline-block;
+            margin-bottom: 10px;
+            color: #0b7a3b;
+            font-size: 11px;
+            font-weight: 800;
+            letter-spacing: 0.08em;
+        }
+
+
+        .admin-header h1 {
+            margin: 0 0 12px;
+            color: #173d2c;
+            font-size: clamp(30px, 4vw, 42px);
+            line-height: 1.1;
+        }
+
+
+        .admin-header p {
+            max-width: 700px;
+            margin: 0;
+            color: #64756c;
+            line-height: 1.7;
+        }
+
+
+        /* =====================================================
+           LAYOUT
+        ===================================================== */
+
+        .admin-layout {
+            display: grid;
+            grid-template-columns: 390px 1fr;
+            gap: 25px;
+            align-items: start;
+        }
+
+
+        .card {
+            background: #ffffff;
+            border: 1px solid #e2e9e4;
+            border-radius: 14px;
+            box-shadow: 0 5px 18px rgba(20, 60, 40, 0.05);
+        }
+
+
+        /* =====================================================
+           FORMULÁRIO
+        ===================================================== */
+
+        .form-card {
+            padding: 28px;
+        }
+
+
+        .form-card h2,
+        .lista-card h2 {
+            margin: 0 0 22px;
+            color: #173d2c;
+            font-size: 23px;
+        }
+
+
+        .form-group {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+            margin-bottom: 17px;
+        }
+
+
+        .form-group label {
+            color: #294538;
+            font-size: 13px;
+            font-weight: 700;
+        }
+
+
+        .form-group input,
+        .form-group select,
+        .form-group textarea {
+            width: 100%;
+            box-sizing: border-box;
+            border: 1px solid #d7e1db;
+            border-radius: 9px;
+            background: #ffffff;
+            color: #243b30;
+            font-family: inherit;
+            font-size: 14px;
+            outline: none;
+        }
+
+
+        .form-group input,
+        .form-group select {
+            min-height: 46px;
+            padding: 0 14px;
+        }
+
+
+        .form-group textarea {
+            min-height: 105px;
+            padding: 13px 14px;
+            resize: vertical;
+            line-height: 1.5;
+        }
+
+
+        .form-group input:focus,
+        .form-group select:focus,
+        .form-group textarea:focus {
+            border-color: #0b7a3b;
+            box-shadow:
+                0 0 0 3px
+                rgba(11, 122, 59, 0.08);
+        }
+
+
+        .form-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 14px;
+        }
+
+
+        .btn {
+            width: 100%;
+            min-height: 46px;
+            padding: 0 18px;
+            border: 0;
+            border-radius: 9px;
+            font-family: inherit;
+            font-size: 13px;
+            font-weight: 800;
+            cursor: pointer;
+            transition: 0.2s ease;
+        }
+
+
+        .btn-primary {
+            background: #0b7a3b;
+            color: #ffffff;
+        }
+
+
+        .btn-primary:hover {
+            background: #086330;
+        }
+
+
+        .btn-secondary {
+            background: #edf3ef;
+            color: #294538;
+        }
+
+
+        .btn-secondary:hover {
+            background: #dfeae3;
+        }
+
+
+        .btn-danger {
+            background: #fff0ef;
+            color: #b42318;
+        }
+
+
+        .btn-danger:hover {
+            background: #ffe1de;
+        }
+
+
+        .btn-editar {
+            background: #eef6f1;
+            color: #0b7a3b;
+        }
+
+
+        .mensagem {
+            min-height: 20px;
+            margin: 15px 0 0;
+            color: #52665a;
+            font-size: 14px;
+        }
+
+
+        .mensagem.erro {
+            color: #b42318;
+        }
+
+
+        .mensagem.sucesso {
+            color: #0b7a3b;
+        }
+
+
+        /* =====================================================
+           LISTA
+        ===================================================== */
+
+        .lista-card {
+            padding: 28px;
+        }
+
+
+        .lista-minicursos {
+            display: grid;
+            gap: 18px;
+        }
+
+
+        .minicurso-item {
+            padding: 22px;
+            border: 1px solid #e2e9e4;
+            border-radius: 12px;
+            background: #fbfdfc;
+        }
+
+
+        .minicurso-topo {
+            display: flex;
+            align-items: flex-start;
+            justify-content: space-between;
+            gap: 15px;
+        }
+
+
+        .minicurso-item h3 {
+            margin: 0 0 8px;
+            color: #173d2c;
+            font-size: 20px;
+        }
+
+
+        .minicurso-ministrante {
+            margin: 0 0 12px;
+            color: #0b7a3b;
+            font-weight: 700;
+        }
+
+
+        .status {
+            display: inline-flex;
+            align-items: center;
+            padding: 5px 9px;
+            border-radius: 20px;
+            font-size: 10px;
+            font-weight: 800;
+            letter-spacing: 0.05em;
+            text-transform: uppercase;
+        }
+
+
+        .status-ativo {
+            background: #e7f5ed;
+            color: #0b7a3b;
+        }
+
+
+        .status-inativo {
+            background: #f1f3f2;
+            color: #68766f;
+        }
+
+
+        .minicurso-info {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 8px 18px;
+            margin: 15px 0;
+        }
+
+
+        .minicurso-info p {
+            margin: 0;
+            color: #596b61;
+            font-size: 13px;
+            line-height: 1.5;
+        }
+
+
+        .minicurso-info strong {
+            color: #294538;
+        }
+
+
+        .minicurso-descricao {
+            margin: 15px 0 0;
+            padding-top: 15px;
+            border-top: 1px solid #e2e9e4;
+            color: #596b61;
+            font-size: 14px;
+            line-height: 1.6;
+        }
+
+
+        .minicurso-acoes {
+            display: flex;
+            gap: 8px;
+            margin-top: 18px;
+        }
+
+
+        .minicurso-acoes .btn {
+            width: auto;
+            min-height: 38px;
+            padding: 0 13px;
+            font-size: 11px;
+        }
+
+
+        .lista-vazia {
+            padding: 35px 20px;
+            border: 1px dashed #d7e1db;
+            border-radius: 12px;
+            color: #64756c;
+            text-align: center;
+        }
+
+
+        /* =====================================================
+           RODAPÉ
+        ===================================================== */
+
+        .footer {
+            padding: 35px 0;
+            background: #173d2c;
+            color: #ffffff;
+        }
+
+
+        .footer p {
+            margin: 5px 0;
+            color: rgba(255, 255, 255, 0.82);
+        }
+
+
+        /* =====================================================
+           RESPONSIVO
+        ===================================================== */
+
+        @media (max-width: 1000px) {
+
+            .site-header .container {
+                flex-direction: column;
+                justify-content: center;
+                padding: 18px 0;
+            }
+
+
+            .site-header nav {
+                justify-content: center;
+            }
+
+
+            .admin-layout {
+                grid-template-columns: 1fr;
+            }
+
+        }
+
+
+        @media (max-width: 700px) {
+
+            .admin-container {
+                padding: 35px 0 50px;
+            }
+
+
+            .site-header nav {
+                gap: 7px;
+            }
+
+
+            .site-header nav a {
+                font-size: 11px;
+                min-height: 38px;
+            }
+
+
+            .site-header nav a:last-child {
+                padding: 0 12px;
+            }
+
+
+            .form-row {
+                grid-template-columns: 1fr;
+            }
+
+
+            .minicurso-info {
+                grid-template-columns: 1fr;
+            }
+
+
+            .form-card,
+            .lista-card {
+                padding: 20px;
+            }
+
+        }
+
+
+        @media (max-width: 500px) {
+
+            .site-header nav {
+                width: 100%;
+                display: grid;
+                grid-template-columns: repeat(2, 1fr);
+                gap: 6px;
+            }
+
+
+            .site-header nav a {
+                justify-content: center;
+            }
+
+
+            .minicurso-topo {
+                flex-direction: column;
+            }
+
+
+            .minicurso-acoes {
+                flex-direction: column;
+            }
+
+
+            .minicurso-acoes .btn {
+                width: 100%;
+            }
+
+        }
+
+    </style>
+
+</head>
+
+
+<body>
+
+
+<!-- =====================================================
+     CABEÇALHO
+====================================================== -->
+
+<header class="site-header">
+
+    <div class="container">
+
+
+        <a
+            href="index.html"
+            class="logo"
+        >
+
+            CRFE
+
+            <span>
+                2027
+            </span>
+
+        </a>
+
+
+        <nav>
+
+            <a href="admin.html">
+                Inscrições
+            </a>
+
+
+            <a href="admin-palestrantes.html">
+                Palestrantes
+            </a>
+
+
+            <a href="admin-minicursos.html">
+                Minicursos
+            </a>
+
+
+            <a href="#">
+                Programação
+            </a>
+
+
+            <a href="index.html">
+                Site
+            </a>
+
+
+            <a
+                href="#"
+                id="btnSair"
+            >
+                Sair
+            </a>
+
+        </nav>
+
+    </div>
+
+</header>
+
+
+
+<!-- =====================================================
+     CONTEÚDO
+====================================================== -->
+
+<main class="admin-container">
+
+
+    <section class="admin-header">
+
+        <span class="section-label">
+            ADMINISTRAÇÃO
+        </span>
+
+
+        <h1>
+            Minicursos
+        </h1>
+
+
+        <p>
+            Cadastre e gerencie os minicursos
+            que serão oferecidos no CRFE 2027.
+        </p>
+
+    </section>
+
+
+
+    <div class="admin-layout">
+
+
+        <!-- =================================================
+             FORMULÁRIO
+        ================================================== -->
+
+        <section class="card form-card">
+
+
+            <h2>
+                Cadastrar minicurso
+            </h2>
+
+
+            <form id="formMinicurso">
+
+
+                <div class="form-group">
+
+                    <label for="nome">
+                        Nome do minicurso
+                    </label>
+
+                    <input
+                        type="text"
+                        id="nome"
+                        required
+                        placeholder="Ex.: Avaliação funcional do atleta"
+                    >
+
+                </div>
+
+
+
+                <div class="form-group">
+
+                    <label for="ministrante">
+                        Ministrante
+                    </label>
+
+                    <input
+                        type="text"
+                        id="ministrante"
+                        required
+                        placeholder="Nome do profissional"
+                    >
+
+                </div>
+
+
+
+                <div class="form-group">
+
+                    <label for="instituicao">
+                        Instituição
+                    </label>
+
+                    <input
+                        type="text"
+                        id="instituicao"
+                        placeholder="Instituição ou empresa"
+                    >
+
+                </div>
+
+
+
+                <div class="form-group">
+
+                    <label for="descricao">
+                        Descrição
+                    </label>
+
+                    <textarea
+                        id="descricao"
+                        placeholder="Descreva brevemente o minicurso..."
+                    ></textarea>
+
+                </div>
+
+
+
+                <div class="form-row">
+
+
+                    <div class="form-group">
+
+                        <label for="data">
+                            Data
+                        </label>
+
+                        <input
+                            type="date"
+                            id="data"
+                            required
+                        >
+
+                    </div>
+
+
+
+                    <div class="form-group">
+
+                        <label for="cargaHoraria">
+                            Carga horária
+                        </label>
+
+                        <input
+                            type="text"
+                            id="cargaHoraria"
+                            placeholder="Ex.: 4 horas"
+                        >
+
+                    </div>
+
+
+                </div>
+
+
+
+                <div class="form-row">
+
+
+                    <div class="form-group">
+
+                        <label for="inicio">
+                            Horário de início
+                        </label>
+
+                        <input
+                            type="time"
+                            id="inicio"
+                            required
+                        >
+
+                    </div>
+
+
+
+                    <div class="form-group">
+
+                        <label for="fim">
+                            Horário de término
+                        </label>
+
+                        <input
+                            type="time"
+                            id="fim"
+                            required
+                        >
+
+                    </div>
+
+
+                </div>
+
+
+
+                <div class="form-row">
+
+
+                    <div class="form-group">
+
+                        <label for="vagas">
+                            Vagas
+                        </label>
+
+                        <input
+                            type="number"
+                            id="vagas"
+                            min="1"
+                            placeholder="Ex.: 30"
+                        >
+
+                    </div>
+
+
+
+                    <div class="form-group">
+
+                        <label for="valor">
+                            Valor adicional
+                        </label>
+
+                        <input
+                            type="number"
+                            id="valor"
+                            min="0"
+                            step="0.01"
+                            value="0"
+                            placeholder="0,00"
+                        >
+
+                    </div>
+
+
+                </div>
+
+
+
+                <div class="form-group">
+
+                    <label for="local">
+                        Local
+                    </label>
+
+                    <input
+                        type="text"
+                        id="local"
+                        placeholder="Ex.: Auditório FAMP"
+                    >
+
+                </div>
+
+
+
+                <div class="form-group">
+
+                    <label for="status">
+                        Status
+                    </label>
+
+                    <select id="status">
+
+                        <option value="ativo">
+                            Ativo
+                        </option>
+
+                        <option value="inativo">
+                            Inativo
+                        </option>
+
+                    </select>
+
+                </div>
+
+
+
+                <button
+                    type="submit"
+                    class="btn btn-primary"
+                    id="btnSalvar"
+                >
+                    CADASTRAR MINICURSO
+                </button>
+
+
+                <button
+                    type="button"
+                    class="btn btn-secondary"
+                    id="btnCancelar"
+                    style="display:none; margin-top:8px;"
+                >
+                    CANCELAR EDIÇÃO
+                </button>
+
+
+                <p
+                    id="mensagemMinicurso"
+                    class="mensagem"
+                ></p>
+
+
+            </form>
+
+
+        </section>
+
+
+
+        <!-- =================================================
+             LISTA
+        ================================================== -->
+
+        <section class="card lista-card">
+
+
+            <h2>
+                Minicursos cadastrados
+            </h2>
+
+
+            <div
+                id="listaMinicursos"
+                class="lista-minicursos"
+            >
+
+                <div class="lista-vazia">
+                    Carregando minicursos...
+                </div>
+
+            </div>
+
+
+        </section>
+
+
+    </div>
+
+
+</main>
+
+
+
+<!-- =====================================================
+     RODAPÉ
+====================================================== -->
+
+<footer class="footer">
+
+    <div class="container">
+
+        <p>
+            CRFE 2027
+        </p>
+
+        <p>
+            Congresso Regional de Fisioterapia Esportiva
+        </p>
+
+        <p>
+            LADRF | Mineiros – Goiás
+        </p>
+
+    </div>
+
+</footer>
+
+
+
+<script
+    type="module"
+    src="js/admin-minicursos.js?v=1"
+></script>
+
+
+</body>
+
+</html>
