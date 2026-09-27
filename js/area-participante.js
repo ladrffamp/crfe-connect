@@ -22,17 +22,27 @@ const LINK_CARTAO = "https://mpago.la/2SHESXg";
 
 
 // =====================================================
+// VALORES DOS LOTES
+// =====================================================
+
+const VALORES_LOTES = {
+    "1": 80,
+    "2": 100,
+    "3": 120
+};
+
+
+// =====================================================
 // ELEMENTOS
 // =====================================================
 
-const btnSair =
-    document.getElementById("btnSair");
-
-const formInscricao =
-    document.getElementById("formInscricao");
+const btnSair = document.getElementById("btnSair");
 
 const formularioInscricao =
     document.getElementById("formularioInscricao");
+
+const formInscricao =
+    document.getElementById("formInscricao");
 
 const inscricaoResumo =
     document.getElementById("inscricaoResumo");
@@ -49,60 +59,20 @@ const pagamentoConfirmado =
 const statusPagamento =
     document.getElementById("statusPagamento");
 
-const mensagemInscricao =
-    document.getElementById("mensagemInscricao");
-
-const mensagemCupom =
-    document.getElementById("mensagemCupom");
-
-const mensagemPix =
-    document.getElementById("mensagemPix");
-
-const btnAplicarCupom =
-    document.getElementById("btnAplicarCupom");
-
 const btnCopiarPix =
     document.getElementById("btnCopiarPix");
 
 const btnPagamentoCartao =
     document.getElementById("btnPagamentoCartao");
 
+const mensagemPix =
+    document.getElementById("mensagemPix");
 
-// =====================================================
-// PERFIL
-// =====================================================
+const valorPix =
+    document.getElementById("valorPix");
 
-const perfilNome =
-    document.getElementById("perfilNome");
-
-const perfilEmail =
-    document.getElementById("perfilEmail");
-
-const perfilCpf =
-    document.getElementById("perfilCpf");
-
-const perfilNascimento =
-    document.getElementById("perfilNascimento");
-
-const perfilTelefone =
-    document.getElementById("perfilTelefone");
-
-const perfilCidade =
-    document.getElementById("perfilCidade");
-
-const perfilEstado =
-    document.getElementById("perfilEstado");
-
-const perfilInstituicao =
-    document.getElementById("perfilInstituicao");
-
-const perfilCurso =
-    document.getElementById("perfilCurso");
-
-
-// =====================================================
-// FORMULÁRIO
-// =====================================================
+const chavePix =
+    document.getElementById("chavePix");
 
 const categoria =
     document.getElementById("categoria");
@@ -116,13 +86,17 @@ const lote =
 const cupom =
     document.getElementById("cupom");
 
+const btnAplicarCupom =
+    document.getElementById("btnAplicarCupom");
 
-// =====================================================
-// VALORES
-// =====================================================
+const mensagemCupom =
+    document.getElementById("mensagemCupom");
 
 const valorOriginal =
     document.getElementById("valorOriginal");
+
+const linhaDesconto =
+    document.getElementById("linhaDesconto");
 
 const valorDesconto =
     document.getElementById("valorDesconto");
@@ -130,115 +104,48 @@ const valorDesconto =
 const valorInscricao =
     document.getElementById("valorInscricao");
 
-const valorPix =
-    document.getElementById("valorPix");
+const btnContinuarInscricao =
+    document.getElementById("btnContinuarInscricao");
 
-
-// =====================================================
-// RESUMO
-// =====================================================
-
-const resumoCategoria =
-    document.getElementById("resumoCategoria");
-
-const resumoInstituicao =
-    document.getElementById("resumoInstituicao");
-
-const resumoLote =
-    document.getElementById("resumoLote");
-
-const resumoCupom =
-    document.getElementById("resumoCupom");
-
-const resumoPagamento =
-    document.getElementById("resumoPagamento");
-
-const resumoFormaPagamento =
-    document.getElementById("resumoFormaPagamento");
-
-const resumoValorOriginal =
-    document.getElementById("resumoValorOriginal");
-
-const resumoValorDesconto =
-    document.getElementById("resumoValorDesconto");
-
-const resumoValorFinal =
-    document.getElementById("resumoValorFinal");
-
-const statusInscricaoTexto =
-    document.getElementById("statusInscricaoTexto");
-
-
-// =====================================================
-// CREDENCIAL
-// =====================================================
-
-const mensagemCredencial =
-    document.getElementById("mensagemCredencial");
-
-const credencialDigital =
-    document.getElementById("credencialDigital");
-
-const credencialNome =
-    document.getElementById("credencialNome");
-
-const credencialCategoria =
-    document.getElementById("credencialCategoria");
-
-const credencialInstituicao =
-    document.getElementById("credencialInstituicao");
-
-const credencialCodigo =
-    document.getElementById("credencialCodigo");
+const mensagemInscricao =
+    document.getElementById("mensagemInscricao");
 
 const qrcode =
     document.getElementById("qrcode");
 
 
 // =====================================================
-// VARIÁVEIS
+// USUÁRIO ATUAL
 // =====================================================
 
 let usuarioAtual = null;
 
-let inscricaoAtual = null;
-
 let descontoAtual = 0;
 
-let valorOriginalAtual = 0;
-
-let valorFinalAtual = 0;
+let cupomAtual = "";
 
 
 // =====================================================
-// LOTES
+// FORMATAÇÃO
 // =====================================================
 
-const LOTES = {
+function formatarMoeda(valor) {
 
-    "1": {
-        nome: "1º Lote",
-        valor: 80
-    },
-
-    "2": {
-        nome: "2º Lote",
-        valor: 100
-    },
-
-    "3": {
-        nome: "3º Lote",
-        valor: 120
-    }
-
-};
+    return Number(valor || 0).toLocaleString(
+        "pt-BR",
+        {
+            style: "currency",
+            currency: "BRL"
+        }
+    );
+}
 
 
 // =====================================================
 // CATEGORIAS
 // =====================================================
 
-const CATEGORIAS = {
+const nomesCategorias = {
 
     estudante_fisioterapia:
         "Estudante de Fisioterapia",
@@ -257,150 +164,20 @@ const CATEGORIAS = {
 
     outro:
         "Outro"
-
 };
 
 
 // =====================================================
-// FORMATAÇÃO
+// LOTE
 // =====================================================
 
-function formatarMoeda(valor) {
+function obterValorLote() {
 
-    return Number(valor || 0).toLocaleString(
-        "pt-BR",
-        {
-            style: "currency",
-            currency: "BRL"
-        }
-    );
-
-}
-
-
-// =====================================================
-// DATA
-// =====================================================
-
-function formatarData(valor) {
-
-    if (!valor) {
-        return "-";
+    if (!lote) {
+        return 0;
     }
 
-    try {
-
-        if (
-            typeof valor.toDate === "function"
-        ) {
-
-            return valor
-                .toDate()
-                .toLocaleDateString("pt-BR");
-
-        }
-
-        if (
-            valor instanceof Date
-        ) {
-
-            return valor.toLocaleDateString(
-                "pt-BR"
-            );
-
-        }
-
-        return new Date(valor)
-            .toLocaleDateString("pt-BR");
-
-    } catch {
-
-        return "-";
-
-    }
-
-}
-
-
-// =====================================================
-// MENSAGEM
-// =====================================================
-
-function mostrarMensagem(
-    elemento,
-    texto,
-    sucesso = false
-) {
-
-    if (!elemento) {
-        return;
-    }
-
-    elemento.textContent = texto;
-
-    elemento.style.color =
-        sucesso
-            ? "#168344"
-            : "#b42318";
-
-}
-
-
-// =====================================================
-// PREENCHER PERFIL
-// =====================================================
-
-function preencherPerfil(dados) {
-
-    if (!dados) {
-        return;
-    }
-
-    if (perfilNome)
-        perfilNome.textContent =
-            dados.nome || "-";
-
-    if (perfilEmail)
-        perfilEmail.textContent =
-            dados.email ||
-            usuarioAtual?.email ||
-            "-";
-
-    if (perfilCpf)
-        perfilCpf.textContent =
-            dados.cpf || "-";
-
-    if (perfilNascimento)
-        perfilNascimento.textContent =
-            dados.nascimento || "-";
-
-    if (perfilTelefone)
-        perfilTelefone.textContent =
-            dados.telefone || "-";
-
-    if (perfilCidade)
-        perfilCidade.textContent =
-            dados.cidade || "-";
-
-    if (perfilEstado)
-        perfilEstado.textContent =
-            dados.estado || "-";
-
-    if (perfilInstituicao)
-        perfilInstituicao.textContent =
-            dados.instituicao || "-";
-
-    if (perfilCurso)
-        perfilCurso.textContent =
-            dados.cursoProfissao || "-";
-
-    if (instituicaoInscricao) {
-
-        instituicaoInscricao.value =
-            dados.instituicao || "";
-
-    }
-
+    return VALORES_LOTES[lote.value] || 0;
 }
 
 
@@ -410,67 +187,51 @@ function preencherPerfil(dados) {
 
 function atualizarValores() {
 
-    const loteSelecionado =
-        lote?.value;
+    const valor =
+        obterValorLote();
 
-    const loteDados =
-        LOTES[loteSelecionado];
+    const desconto =
+        descontoAtual || 0;
 
-    if (!loteDados) {
+    const valorFinal =
+        Math.max(0, valor - desconto);
 
-        valorOriginalAtual = 0;
+    if (valorOriginal) {
 
-        valorFinalAtual = 0;
-
-        if (valorOriginal)
-            valorOriginal.textContent =
-                "R$ 0,00";
-
-        if (valorDesconto)
-            valorDesconto.textContent =
-                "R$ 0,00";
-
-        if (valorInscricao)
-            valorInscricao.textContent =
-                "R$ 0,00";
-
-        return;
-
+        valorOriginal.textContent =
+            formatarMoeda(valor);
     }
 
-    valorOriginalAtual =
-        loteDados.valor;
+    if (valorDesconto) {
 
-    valorFinalAtual =
-        Math.max(
-            0,
-            valorOriginalAtual -
-            descontoAtual
-        );
-
-    if (valorOriginal)
-        valorOriginal.textContent =
-            formatarMoeda(
-                valorOriginalAtual
-            );
-
-    if (valorDesconto)
         valorDesconto.textContent =
-            formatarMoeda(
-                descontoAtual
-            );
+            formatarMoeda(desconto);
+    }
 
-    if (valorInscricao)
+    if (valorInscricao) {
+
         valorInscricao.textContent =
-            formatarMoeda(
-                valorFinalAtual
-            );
+            formatarMoeda(valorFinal);
+    }
 
+    if (valorPix) {
+
+        valorPix.textContent =
+            formatarMoeda(valorFinal);
+    }
+
+    if (linhaDesconto) {
+
+        linhaDesconto.style.display =
+            desconto > 0
+                ? "flex"
+                : "none";
+    }
 }
 
 
 // =====================================================
-// SELEÇÃO DO LOTE
+// ALTERAÇÃO DO LOTE
 // =====================================================
 
 if (lote) {
@@ -480,16 +241,19 @@ if (lote) {
         () => {
 
             descontoAtual = 0;
+            cupomAtual = "";
+
+            if (cupom) {
+                cupom.value = "";
+            }
 
             if (mensagemCupom) {
                 mensagemCupom.textContent = "";
             }
 
             atualizarValores();
-
         }
     );
-
 }
 
 
@@ -504,25 +268,22 @@ if (btnAplicarCupom) {
         async () => {
 
             const codigo =
-                cupom?.value
-                    ?.trim()
+                cupom.value
+                    .trim()
                     .toUpperCase();
 
             if (!codigo) {
 
                 descontoAtual = 0;
+                cupomAtual = "";
+
+                mensagemCupom.textContent =
+                    "Digite um cupom.";
 
                 atualizarValores();
 
-                mostrarMensagem(
-                    mensagemCupom,
-                    "Digite um cupom de desconto."
-                );
-
                 return;
-
             }
-
 
             try {
 
@@ -536,83 +297,64 @@ if (btnAplicarCupom) {
                 const cupomSnap =
                     await getDoc(cupomRef);
 
-
                 if (!cupomSnap.exists()) {
 
                     descontoAtual = 0;
+                    cupomAtual = "";
+
+                    mensagemCupom.textContent =
+                        "Cupom inválido.";
 
                     atualizarValores();
 
-                    mostrarMensagem(
-                        mensagemCupom,
-                        "Cupom inválido."
-                    );
-
                     return;
-
                 }
-
 
                 const dados =
                     cupomSnap.data();
-
 
                 if (
                     dados.ativo === false
                 ) {
 
                     descontoAtual = 0;
+                    cupomAtual = "";
+
+                    mensagemCupom.textContent =
+                        "Este cupom está inativo.";
 
                     atualizarValores();
 
-                    mostrarMensagem(
-                        mensagemCupom,
-                        "Este cupom não está disponível."
-                    );
-
                     return;
-
                 }
-
 
                 descontoAtual =
                     Number(
                         dados.desconto || 0
                     );
 
+                cupomAtual =
+                    codigo;
+
+                mensagemCupom.textContent =
+                    "Cupom aplicado com sucesso.";
 
                 atualizarValores();
 
-
-                mostrarMensagem(
-                    mensagemCupom,
-                    `Cupom ${codigo} aplicado com sucesso.`,
-                    true
-                );
-
-
             } catch (erro) {
 
-                console.error(
-                    "Erro ao validar cupom:",
-                    erro
-                );
+                console.error(erro);
 
-                mostrarMensagem(
-                    mensagemCupom,
-                    "Não foi possível validar o cupom."
-                );
-
+                mensagemCupom.textContent =
+                    "Não foi possível validar o cupom.";
             }
-
         }
     );
-
 }
 
 
 // =====================================================
-// SALVAR INSCRIÇÃO
+// CADASTRAR INSCRIÇÃO
 // =====================================================
 
 if (formInscricao) {
@@ -623,144 +365,110 @@ if (formInscricao) {
 
             evento.preventDefault();
 
-
             if (!usuarioAtual) {
 
-                mostrarMensagem(
-                    mensagemInscricao,
-                    "Faça login para realizar sua inscrição."
-                );
+                mensagemInscricao.textContent =
+                    "Usuário não autenticado.";
 
                 return;
-
             }
 
+            const valorOriginalNumerico =
+                obterValorLote();
 
-            if (!categoria?.value) {
-
-                mostrarMensagem(
-                    mensagemInscricao,
-                    "Selecione sua categoria."
+            const valorFinal =
+                Math.max(
+                    0,
+                    valorOriginalNumerico -
+                    descontoAtual
                 );
 
-                return;
-
-            }
-
-
-            if (!lote?.value) {
-
-                mostrarMensagem(
-                    mensagemInscricao,
-                    "Selecione o lote de inscrição."
-                );
-
-                return;
-
-            }
-
-
-            atualizarValores();
-
+            const codigoCredencial =
+                "CRFE-2027-" +
+                usuarioAtual.uid
+                    .substring(0, 8)
+                    .toUpperCase();
 
             const dadosInscricao = {
 
-                uid: usuarioAtual.uid,
+                uid:
+                    usuarioAtual.uid,
 
                 categoria:
                     categoria.value,
 
-                categoriaNome:
-                    CATEGORIAS[
-                        categoria.value
-                    ] || categoria.value,
-
                 instituicao:
-                    instituicaoInscricao
-                        ?.value
-                        ?.trim() || "",
+                    instituicaoInscricao.value.trim(),
 
                 lote:
                     lote.value,
 
-                loteNome:
-                    LOTES[lote.value]?.nome ||
-                    "",
-
                 cupom:
-                    cupom?.value
-                        ?.trim()
-                        .toUpperCase() || "",
+                    cupomAtual,
 
                 valorOriginal:
-                    valorOriginalAtual,
+                    valorOriginalNumerico,
 
                 desconto:
                     descontoAtual,
 
                 valorFinal:
-                    valorFinalAtual,
+                    valorFinal,
 
-                pagamento:
-                    "pendente",
+                codigoCredencial:
+                    codigoCredencial,
 
                 status:
                     "aguardando_pagamento",
 
+                pagamento:
+                    "pendente",
+
+                formaPagamento:
+                    null,
+
                 criadoEm:
                     new Date()
-
             };
-
 
             try {
 
-                const inscricaoRef =
+                mensagemInscricao.textContent =
+                    "Salvando sua inscrição...";
+
+                await setDoc(
                     doc(
                         db,
                         "inscricoes",
                         usuarioAtual.uid
-                    );
-
-
-                await setDoc(
-                    inscricaoRef,
+                    ),
                     dadosInscricao
                 );
 
+                mensagemInscricao.textContent =
+                    "Inscrição realizada com sucesso!";
 
-                inscricaoAtual =
-                    dadosInscricao;
-
-
-                mostrarMensagem(
-                    mensagemInscricao,
-                    "Inscrição realizada com sucesso!",
-                    true
+                mostrarResumo(
+                    dadosInscricao
                 );
 
+                mostrarPagamento(
+                    dadosInscricao
+                );
 
-                await carregarInscricao();
-
+                mostrarCredencial(
+                    dadosInscricao
+                );
 
             } catch (erro) {
 
-                console.error(
-                    "Erro ao salvar inscrição:",
-                    erro
-                );
+                console.error(erro);
 
-
-                mostrarMensagem(
-                    mensagemInscricao,
-                    "Não foi possível realizar sua inscrição."
-                );
-
+                mensagemInscricao.textContent =
+                    "Não foi possível realizar a inscrição.";
             }
-
         }
     );
-
 }
 
 
@@ -774,54 +482,52 @@ async function carregarInscricao() {
         return;
     }
 
-
     try {
 
-        const inscricaoRef =
+        const referencia =
             doc(
                 db,
                 "inscricoes",
                 usuarioAtual.uid
             );
 
+        const resultado =
+            await getDoc(referencia);
 
-        const inscricaoSnap =
-            await getDoc(
-                inscricaoRef
-            );
+        if (!resultado.exists()) {
 
+            if (formularioInscricao) {
+                formularioInscricao.style.display =
+                    "block";
+            }
 
-        if (!inscricaoSnap.exists()) {
+            if (inscricaoResumo) {
+                inscricaoResumo.style.display =
+                    "none";
+            }
 
-            mostrarFormulario();
-
-            mostrarPagamento(null);
-
-            mostrarCredencial(null);
+            if (pagamentoInscricao) {
+                pagamentoInscricao.style.display =
+                    "none";
+            }
 
             return;
-
         }
 
-
-        inscricaoAtual =
-            inscricaoSnap.data();
-
+        const inscricao =
+            resultado.data();
 
         mostrarResumo(
-            inscricaoAtual
+            inscricao
         );
-
 
         mostrarPagamento(
-            inscricaoAtual
+            inscricao
         );
-
 
         mostrarCredencial(
-            inscricaoAtual
+            inscricao
         );
-
 
     } catch (erro) {
 
@@ -829,32 +535,7 @@ async function carregarInscricao() {
             "Erro ao carregar inscrição:",
             erro
         );
-
     }
-
-}
-
-
-// =====================================================
-// MOSTRAR FORMULÁRIO
-// =====================================================
-
-function mostrarFormulario() {
-
-    if (formularioInscricao) {
-
-        formularioInscricao.style.display =
-            "block";
-
-    }
-
-    if (inscricaoResumo) {
-
-        inscricaoResumo.style.display =
-            "none";
-
-    }
-
 }
 
 
@@ -864,162 +545,175 @@ function mostrarFormulario() {
 
 function mostrarResumo(inscricao) {
 
-    if (!inscricao) {
-
-        mostrarFormulario();
-
-        return;
-
-    }
-
-
     if (formularioInscricao) {
 
         formularioInscricao.style.display =
             "none";
-
     }
-
 
     if (inscricaoResumo) {
 
         inscricaoResumo.style.display =
             "block";
+    }
 
+    const resumoCategoria =
+        document.getElementById(
+            "resumoCategoria"
+        );
+
+    const resumoInstituicao =
+        document.getElementById(
+            "resumoInstituicao"
+        );
+
+    const resumoLote =
+        document.getElementById(
+            "resumoLote"
+        );
+
+    const resumoCupom =
+        document.getElementById(
+            "resumoCupom"
+        );
+
+    const resumoPagamento =
+        document.getElementById(
+            "resumoPagamento"
+        );
+
+    const resumoFormaPagamento =
+        document.getElementById(
+            "resumoFormaPagamento"
+        );
+
+    const resumoValorOriginal =
+        document.getElementById(
+            "resumoValorOriginal"
+        );
+
+    const resumoValorDesconto =
+        document.getElementById(
+            "resumoValorDesconto"
+        );
+
+    const resumoValorFinal =
+        document.getElementById(
+            "resumoValorFinal"
+        );
+
+    const statusInscricaoTexto =
+        document.getElementById(
+            "statusInscricaoTexto"
+        );
+
+
+    if (resumoCategoria) {
+
+        resumoCategoria.textContent =
+            nomesCategorias[
+                inscricao.categoria
+            ] ||
+            inscricao.categoria ||
+            "-";
     }
 
 
-    const categoriaTexto =
-        inscricao.categoriaNome ||
-        CATEGORIAS[
-            inscricao.categoria
-        ] ||
-        "-";
+    if (resumoInstituicao) {
 
-
-    const loteTexto =
-        inscricao.loteNome ||
-        LOTES[
-            inscricao.lote
-        ]?.nome ||
-        "-";
-
-
-    if (resumoCategoria)
-        resumoCategoria.textContent =
-            categoriaTexto;
-
-
-    if (resumoInstituicao)
         resumoInstituicao.textContent =
-            inscricao.instituicao || "-";
+            inscricao.instituicao ||
+            "-";
+    }
 
 
-    if (resumoLote)
+    if (resumoLote) {
+
         resumoLote.textContent =
-            loteTexto;
+            inscricao.lote
+                ? `${inscricao.lote}º Lote`
+                : "-";
+    }
 
 
-    if (resumoCupom)
+    if (resumoCupom) {
+
         resumoCupom.textContent =
-            inscricao.cupom || "Nenhum";
+            inscricao.cupom ||
+            "Nenhum";
+    }
 
 
-    if (resumoValorOriginal)
+    if (resumoPagamento) {
+
+        resumoPagamento.textContent =
+            inscricao.pagamento === "pago"
+                ? "Pagamento confirmado"
+                : "Aguardando pagamento";
+    }
+
+
+    if (resumoFormaPagamento) {
+
+        resumoFormaPagamento.textContent =
+            inscricao.formaPagamento ||
+            "Ainda não confirmado";
+    }
+
+
+    if (resumoValorOriginal) {
+
         resumoValorOriginal.textContent =
             formatarMoeda(
                 inscricao.valorOriginal
             );
+    }
 
 
-    if (resumoValorDesconto)
+    if (resumoValorDesconto) {
+
         resumoValorDesconto.textContent =
             formatarMoeda(
                 inscricao.desconto
             );
+    }
 
 
-    if (resumoValorFinal)
+    if (resumoValorFinal) {
+
         resumoValorFinal.textContent =
             formatarMoeda(
                 inscricao.valorFinal
             );
-
-
-    if (
-        inscricao.pagamento === "pago"
-    ) {
-
-        if (resumoPagamento)
-            resumoPagamento.textContent =
-                "Pagamento confirmado";
-
-
-        if (resumoFormaPagamento)
-            resumoFormaPagamento.textContent =
-                formatarFormaPagamento(
-                    inscricao.formaPagamento
-                );
-
-
-        if (statusInscricaoTexto)
-            statusInscricaoTexto.textContent =
-                "Sua inscrição está confirmada para o CRFE 2027.";
-
-    } else {
-
-        if (resumoPagamento)
-            resumoPagamento.textContent =
-                "Aguardando pagamento";
-
-
-        if (resumoFormaPagamento)
-            resumoFormaPagamento.textContent =
-                "Ainda não informado";
-
-
-        if (statusInscricaoTexto)
-            statusInscricaoTexto.textContent =
-                "Sua inscrição foi registrada. Realize o pagamento para confirmar sua participação.";
-
     }
 
+
+    if (statusInscricaoTexto) {
+
+        if (
+            inscricao.pagamento === "pago"
+        ) {
+
+            statusInscricaoTexto.textContent =
+                "INSCRIÇÃO CONFIRMADA";
+
+            statusInscricaoTexto.style.color =
+                "#15803d";
+
+        } else {
+
+            statusInscricaoTexto.textContent =
+                "AGUARDANDO PAGAMENTO";
+
+            statusInscricaoTexto.style.color =
+                "#b45309";
+        }
+    }
 }
 
 
 // =====================================================
-// FORMA DE PAGAMENTO
-// =====================================================
-
-function formatarFormaPagamento(
-    forma
-) {
-
-    const formas = {
-
-        pix: "PIX",
-
-        cartao: "Cartão de crédito",
-
-        dinheiro: "Dinheiro",
-
-        transferencia:
-            "Transferência bancária",
-
-        outro: "Outro"
-
-    };
-
-
-    return formas[
-        forma
-    ] || forma || "-";
-
-}
-
-
-// =====================================================
-// MOSTRAR PAGAMENTO
+// PAGAMENTO
 // =====================================================
 
 function mostrarPagamento(inscricao) {
@@ -1028,118 +722,70 @@ function mostrarPagamento(inscricao) {
         return;
     }
 
-
     pagamentoInscricao.style.display =
         "block";
 
 
-    if (
-        inscricao &&
-        inscricao.pagamento === "pago"
-    ) {
+    if (inscricao.pagamento === "pago") {
 
         if (pagamentoOpcoes) {
 
             pagamentoOpcoes.style.display =
                 "none";
-
         }
-
 
         if (pagamentoConfirmado) {
 
             pagamentoConfirmado.style.display =
-                "flex";
-
+                "block";
         }
-
 
         if (statusPagamento) {
 
             statusPagamento.textContent =
-                "Pagamento confirmado";
-
-            statusPagamento.style.background =
-                "#eef8f1";
-
-            statusPagamento.style.borderColor =
-                "#cce5d4";
+                "Pagamento confirmado.";
 
             statusPagamento.style.color =
-                "#155d32";
-
+                "#15803d";
         }
 
+    } else {
 
-        return;
+        if (pagamentoOpcoes) {
 
+            pagamentoOpcoes.style.display =
+                "grid";
+        }
+
+        if (pagamentoConfirmado) {
+
+            pagamentoConfirmado.style.display =
+                "none";
+        }
+
+        if (statusPagamento) {
+
+            statusPagamento.textContent =
+                "Aguardando confirmação do pagamento.";
+
+            statusPagamento.style.color =
+                "#b45309";
+        }
+
+        if (chavePix) {
+
+            chavePix.textContent =
+                CHAVE_PIX;
+        }
+
+        if (valorPix) {
+
+            valorPix.textContent =
+                formatarMoeda(
+                    inscricao.valorFinal
+                );
+        }
     }
-
-
-    if (pagamentoOpcoes) {
-
-        pagamentoOpcoes.style.display =
-            "grid";
-
-    }
-
-
-    if (pagamentoConfirmado) {
-
-        pagamentoConfirmado.style.display =
-            "none";
-
-    }
-
-
-    if (valorPix) {
-
-        valorPix.textContent =
-            formatarMoeda(
-                inscricao?.valorFinal || 0
-            );
-
-    }
-
-
-    const chave =
-        document.getElementById(
-            "chavePix"
-        );
-
-
-    if (chave) {
-
-        chave.textContent =
-            CHAVE_PIX;
-
-    }
-
-
-    if (btnPagamentoCartao) {
-
-        btnPagamentoCartao.href =
-            LINK_CARTAO;
-
-    }
-
-
-    if (statusPagamento) {
-
-        statusPagamento.textContent =
-            "Aguardando pagamento";
-
-        statusPagamento.style.background =
-            "#fff8e8";
-
-        statusPagamento.style.borderColor =
-            "#f0dfad";
-
-        statusPagamento.style.color =
-            "#725817";
-
-    }
-
 }
 
 
@@ -1159,122 +805,166 @@ if (btnCopiarPix) {
                     CHAVE_PIX
                 );
 
+                if (mensagemPix) {
 
-                mostrarMensagem(
-                    mensagemPix,
-                    "Chave PIX copiada!",
-                    true
-                );
-
+                    mensagemPix.textContent =
+                        "Chave PIX copiada!";
+                }
 
             } catch (erro) {
 
-                console.error(
-                    erro
-                );
+                console.error(erro);
 
+                if (mensagemPix) {
 
-                mostrarMensagem(
-                    mensagemPix,
-                    "Não foi possível copiar automaticamente."
-                );
-
+                    mensagemPix.textContent =
+                        "Não foi possível copiar automaticamente.";
+                }
             }
-
         }
     );
-
 }
 
 
 // =====================================================
-// MOSTRAR CREDENCIAL
+// PAGAMENTO CARTÃO
+// =====================================================
+
+if (btnPagamentoCartao) {
+
+    btnPagamentoCartao.addEventListener(
+        "click",
+        () => {
+
+            window.open(
+                LINK_CARTAO,
+                "_blank"
+            );
+        }
+    );
+}
+
+
+// =====================================================
+// CREDENCIAL
 // =====================================================
 
 function mostrarCredencial(inscricao) {
 
-    if (!credencialDigital) {
-        return;
-    }
+    const mensagemCredencial =
+        document.getElementById(
+            "mensagemCredencial"
+        );
+
+    const credencialDigital =
+        document.getElementById(
+            "credencialDigital"
+        );
+
+    const credencialNome =
+        document.getElementById(
+            "credencialNome"
+        );
+
+    const credencialCategoria =
+        document.getElementById(
+            "credencialCategoria"
+        );
+
+    const credencialInstituicao =
+        document.getElementById(
+            "credencialInstituicao"
+        );
+
+    const credencialCodigo =
+        document.getElementById(
+            "credencialCodigo"
+        );
 
 
     if (
-        !inscricao ||
         inscricao.pagamento !== "pago"
     ) {
-
-        credencialDigital.style.display =
-            "none";
-
 
         if (mensagemCredencial) {
 
             mensagemCredencial.textContent =
-                "A credencial digital ficará disponível após a confirmação do pagamento.";
-
+                "A credencial será liberada após a confirmação do pagamento.";
         }
 
+        if (credencialDigital) {
+
+            credencialDigital.style.display =
+                "none";
+        }
 
         return;
-
     }
-
-
-    credencialDigital.style.display =
-        "block";
 
 
     if (mensagemCredencial) {
 
         mensagemCredencial.textContent =
-            "Sua credencial digital está disponível.";
-
+            "Sua credencial está liberada.";
     }
 
 
-    const nome =
-        perfilNome?.textContent ||
-        inscricao.nome ||
-        "-";
+    if (credencialDigital) {
+
+        credencialDigital.style.display =
+            "block";
+    }
 
 
-    const categoriaTexto =
-        inscricao.categoriaNome ||
-        CATEGORIAS[
-            inscricao.categoria
-        ] ||
-        "-";
+    if (credencialNome) {
 
-
-    if (credencialNome)
         credencialNome.textContent =
-            nome;
+            document.getElementById(
+                "perfilNome"
+            )?.textContent ||
+            "Participante";
+    }
 
 
-    if (credencialCategoria)
+    if (credencialCategoria) {
+
         credencialCategoria.textContent =
-            categoriaTexto;
+            nomesCategorias[
+                inscricao.categoria
+            ] ||
+            inscricao.categoria ||
+            "-";
+    }
 
 
-    if (credencialInstituicao)
+    if (credencialInstituicao) {
+
         credencialInstituicao.textContent =
-            inscricao.instituicao || "-";
+            inscricao.instituicao ||
+            "-";
+    }
 
 
     const codigo =
-        "CRFE-2027-" +
-        usuarioAtual.uid
-            .substring(0, 8)
-            .toUpperCase();
+        inscricao.codigoCredencial ||
+        (
+            "CRFE-2027-" +
+            usuarioAtual.uid
+                .substring(0, 8)
+                .toUpperCase()
+        );
 
 
-    if (credencialCodigo)
+    if (credencialCodigo) {
+
         credencialCodigo.textContent =
             codigo;
+    }
 
 
-    gerarQRCode(codigo);
-
+    gerarQRCode(
+        codigo
+    );
 }
 
 
@@ -1288,13 +978,11 @@ function gerarQRCode(codigo) {
         return;
     }
 
-
     qrcode.innerHTML = "";
 
 
     if (
-        typeof QRCode ===
-        "undefined"
+        typeof QRCode === "undefined"
     ) {
 
         console.error(
@@ -1302,21 +990,131 @@ function gerarQRCode(codigo) {
         );
 
         return;
-
     }
+
+
+    // =================================================
+    // LINK QUE SERÁ ABERTO PELO QR CODE
+    // =================================================
+
+    const urlValidacao =
+        "https://ladrffamp.github.io/crfe-connect/validar.html?codigo=" +
+        encodeURIComponent(codigo);
+
+
+    console.log(
+        "QR Code:",
+        urlValidacao
+    );
 
 
     new QRCode(
         qrcode,
         {
-            text: codigo,
-            width: 150,
-            height: 150,
+            text:
+                urlValidacao,
+
+            width:
+                150,
+
+            height:
+                150,
+
             correctLevel:
                 QRCode.CorrectLevel.H
         }
     );
+}
 
+
+// =====================================================
+// CARREGAR PERFIL
+// =====================================================
+
+async function carregarPerfil() {
+
+    if (!usuarioAtual) {
+        return;
+    }
+
+    try {
+
+        const referencia =
+            doc(
+                db,
+                "usuarios",
+                usuarioAtual.uid
+            );
+
+        const resultado =
+            await getDoc(referencia);
+
+        if (!resultado.exists()) {
+            return;
+        }
+
+        const dados =
+            resultado.data();
+
+
+        const campos = {
+
+            perfilNome:
+                dados.nome,
+
+            perfilEmail:
+                dados.email ||
+                usuarioAtual.email,
+
+            perfilCpf:
+                dados.cpf,
+
+            perfilNascimento:
+                dados.nascimento,
+
+            perfilTelefone:
+                dados.telefone,
+
+            perfilCidade:
+                dados.cidade,
+
+            perfilEstado:
+                dados.estado,
+
+            perfilInstituicao:
+                dados.instituicao,
+
+            perfilCurso:
+                dados.curso
+        };
+
+
+        Object.entries(
+            campos
+        ).forEach(
+            ([id, valor]) => {
+
+                const elemento =
+                    document.getElementById(
+                        id
+                    );
+
+                if (elemento) {
+
+                    elemento.textContent =
+                        valor ||
+                        "-";
+                }
+            }
+        );
+
+    } catch (erro) {
+
+        console.error(
+            "Erro ao carregar perfil:",
+            erro
+        );
+    }
 }
 
 
@@ -1328,30 +1126,14 @@ if (btnSair) {
 
     btnSair.addEventListener(
         "click",
-        async (evento) => {
+        async () => {
 
-            evento.preventDefault();
+            await signOut(auth);
 
-
-            try {
-
-                await signOut(auth);
-
-                window.location.href =
-                    "login.html";
-
-            } catch (erro) {
-
-                console.error(
-                    "Erro ao sair:",
-                    erro
-                );
-
-            }
-
+            window.location.href =
+                "index.html";
         }
     );
-
 }
 
 
@@ -1369,7 +1151,6 @@ onAuthStateChanged(
                 "login.html";
 
             return;
-
         }
 
 
@@ -1377,53 +1158,8 @@ onAuthStateChanged(
             usuario;
 
 
-        try {
+        await carregarPerfil();
 
-            const usuarioRef =
-                doc(
-                    db,
-                    "usuarios",
-                    usuario.uid
-                );
-
-
-            const usuarioSnap =
-                await getDoc(
-                    usuarioRef
-                );
-
-
-            if (
-                usuarioSnap.exists()
-            ) {
-
-                preencherPerfil(
-                    usuarioSnap.data()
-                );
-
-            } else {
-
-                if (perfilEmail) {
-
-                    perfilEmail.textContent =
-                        usuario.email || "-";
-
-                }
-
-            }
-
-
-            await carregarInscricao();
-
-
-        } catch (erro) {
-
-            console.error(
-                "Erro ao carregar área do participante:",
-                erro
-            );
-
-        }
-
+        await carregarInscricao();
     }
 );
