@@ -147,7 +147,10 @@ function gerarCardTrabalho(trabalho) {
         trabalho.instituicao || "Não informada";
 
     const tipo =
-        trabalho.tipo || "Não informado";
+    trabalho.tipo
+        ? trabalho.tipo.charAt(0).toUpperCase() +
+          trabalho.tipo.slice(1)
+        : "Não informado";
 
     const area =
         formatarArea(trabalho.area);
