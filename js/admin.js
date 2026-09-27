@@ -1,7 +1,9 @@
 import {
-    auth,
-    db
-} from "./firebase.js";
+    collection,
+    getDocs,
+    doc,
+    updateDoc
+} from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
 
 import {
     onAuthStateChanged,
@@ -9,19 +11,16 @@ import {
 } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
 
 import {
-    collection,
-    getDocs,
-    doc,
-    updateDoc
-} from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+    auth,
+    db
+} from "./firebase.js";
 
 
 // =====================================================
-// CONFIGURAÇÃO DO ADMINISTRADOR
+// CONFIGURAÇÃO
 // =====================================================
 
-const EMAIL_ADMIN =
-    "admin@ladrf.com";
+const EMAIL_ADMIN = "admin@ladrf.com";
 
 
 // =====================================================
@@ -31,29 +30,14 @@ const EMAIL_ADMIN =
 const listaInscricoes =
     document.getElementById("listaInscricoes");
 
-const mensagemAdmin =
-    document.getElementById("mensagemAdmin");
-
-const totalInscricoes =
-    document.getElementById("totalInscricoes");
-
-const pagamentosPendentes =
-    document.getElementById("pagamentosPendentes");
-
-const pagamentosConfirmados =
-    document.getElementById("pagamentosConfirmados");
-
-const valorArrecadado =
-    document.getElementById("valorArrecadado");
-
 const filtroPagamento =
     document.getElementById("filtroPagamento");
 
 const filtroBusca =
     document.getElementById("filtroBusca");
 
-const btnSair =
-    document.getElementById("btnSair");
+const mensagemAdmin =
+    document.getElementById("mensagemAdmin");
 
 
 // =====================================================
@@ -64,7 +48,7 @@ let inscricoes = [];
 
 
 // =====================================================
-// MOEDA
+// FORMATAÇÃO
 // =====================================================
 
 function formatarMoeda(valor) {
@@ -76,13 +60,8 @@ function formatarMoeda(valor) {
             currency: "BRL"
         }
     );
-
 }
 
-
-// =====================================================
-// DATA
-// =====================================================
 
 function formatarData(data) {
 
@@ -91,36 +70,37 @@ function formatarData(data) {
     }
 
     if (
-        typeof data === "string" &&
-        /^\d{4}-\d{2}-\d{2}$/.test(data)
+        data &&
+        typeof data.toDate === "function"
     ) {
 
-        const partes =
-            data.split("-");
-
-        return (
-            partes[2] +
-            "/" +
-            partes[1] +
-            "/" +
-            partes[0]
-        );
+        data = data.toDate();
 
     }
 
-    return data;
+    const dataObj =
+        new Date(data);
 
+    if (
+        Number.isNaN(
+            dataObj.getTime()
+        )
+    ) {
+
+        return "Não informado";
+
+    }
+
+    return dataObj.toLocaleDateString(
+        "pt-BR"
+    );
 }
 
 
-// =====================================================
-// STATUS
-// =====================================================
-
-function textoStatus(pagamento) {
+function textoStatus(status) {
 
     if (
-        pagamento === "pago"
+        status === "pago"
     ) {
 
         return "Pagamento confirmado";
@@ -128,7 +108,6 @@ function textoStatus(pagamento) {
     }
 
     return "Aguardando pagamento";
-
 }
 
 
@@ -143,6 +122,7 @@ async function carregarInscricoes() {
         mensagemAdmin.textContent =
             "Carregando inscrições...";
 
+
         const snapshot =
             await getDocs(
                 collection(
@@ -151,37 +131,41 @@ async function carregarInscricoes() {
                 )
             );
 
-        inscricoes = [];
 
-        snapshot.forEach(
-            (documento) => {
+        inscricoes =
+            snapshot.docs.map(
+                documento => ({
 
-                inscricoes.push({
                     id: documento.id,
                     ...documento.data()
-                });
 
-            }
-        );
+                })
+            );
+
 
         atualizarResumo();
 
         renderizarInscricoes();
 
+
         mensagemAdmin.textContent =
             "";
 
-    }
 
-    catch (erro) {
+    } catch (erro) {
 
         console.error(
             "Erro ao carregar inscrições:",
             erro
         );
 
+
         mensagemAdmin.textContent =
             "Não foi possível carregar as inscrições.";
+
+        mensagemAdmin.classList.add(
+            "error"
+        );
 
     }
 
@@ -197,26 +181,32 @@ function atualizarResumo() {
     const total =
         inscricoes.length;
 
+
     const pendentes =
         inscricoes.filter(
-            (inscricao) =>
+            inscricao =>
                 inscricao.pagamento !== "pago"
         ).length;
 
+
     const confirmados =
         inscricoes.filter(
-            (inscricao) =>
+            inscricao =>
                 inscricao.pagamento === "pago"
         ).length;
+
 
     const arrecadado =
         inscricoes
             .filter(
-                (inscricao) =>
+                inscricao =>
                     inscricao.pagamento === "pago"
             )
             .reduce(
-                (total, inscricao) =>
+                (
+                    total,
+                    inscricao
+                ) =>
                     total +
                     Number(
                         inscricao.valorFinal || 0
@@ -224,16 +214,28 @@ function atualizarResumo() {
                 0
             );
 
-    totalInscricoes.textContent =
+
+    document.getElementById(
+        "totalInscricoes"
+    ).textContent =
         total;
 
-    pagamentosPendentes.textContent =
+
+    document.getElementById(
+        "pagamentosPendentes"
+    ).textContent =
         pendentes;
 
-    pagamentosConfirmados.textContent =
+
+    document.getElementById(
+        "pagamentosConfirmados"
+    ).textContent =
         confirmados;
 
-    valorArrecadado.textContent =
+
+    document.getElementById(
+        "valorArrecadado"
+    ).textContent =
         formatarMoeda(
             arrecadado
         );
@@ -242,7 +244,7 @@ function atualizarResumo() {
 
 
 // =====================================================
-// RENDERIZAR LISTA
+// RENDERIZAR INSCRIÇÕES
 // =====================================================
 
 function renderizarInscricoes() {
@@ -250,18 +252,18 @@ function renderizarInscricoes() {
     const filtro =
         filtroPagamento.value;
 
+
     const busca =
         filtroBusca.value
             .trim()
             .toLowerCase();
 
+
     let lista =
         [...inscricoes];
 
 
-    // ==========================================
     // FILTRO PAGAMENTO
-    // ==========================================
 
     if (
         filtro === "pendente"
@@ -269,9 +271,8 @@ function renderizarInscricoes() {
 
         lista =
             lista.filter(
-                (inscricao) =>
-                    inscricao.pagamento !==
-                    "pago"
+                inscricao =>
+                    inscricao.pagamento !== "pago"
             );
 
     }
@@ -283,37 +284,43 @@ function renderizarInscricoes() {
 
         lista =
             lista.filter(
-                (inscricao) =>
-                    inscricao.pagamento ===
-                    "pago"
+                inscricao =>
+                    inscricao.pagamento === "pago"
             );
 
     }
 
 
-    // ==========================================
-    // BUSCA
-    // ==========================================
+    // FILTRO BUSCA
 
     if (busca) {
 
         lista =
             lista.filter(
-                (inscricao) => {
+                inscricao => {
 
                     const nome =
-                        String(
+                        (
                             inscricao.nome || ""
                         ).toLowerCase();
 
+
                     const email =
-                        String(
+                        (
                             inscricao.email || ""
                         ).toLowerCase();
 
+
+                    const cpf =
+                        (
+                            inscricao.cpf || ""
+                        ).toLowerCase();
+
+
                     return (
                         nome.includes(busca) ||
-                        email.includes(busca)
+                        email.includes(busca) ||
+                        cpf.includes(busca)
                     );
 
                 }
@@ -322,16 +329,13 @@ function renderizarInscricoes() {
     }
 
 
-    // ==========================================
-    // NENHUM RESULTADO
-    // ==========================================
+    // SEM RESULTADOS
 
     if (
         lista.length === 0
     ) {
 
         listaInscricoes.innerHTML = `
-
             <div class="card">
 
                 <p>
@@ -339,7 +343,6 @@ function renderizarInscricoes() {
                 </p>
 
             </div>
-
         `;
 
         return;
@@ -347,207 +350,138 @@ function renderizarInscricoes() {
     }
 
 
-    // ==========================================
-    // LISTA
-    // ==========================================
+    // RENDERIZA
 
     listaInscricoes.innerHTML =
         lista.map(
-            (inscricao) => {
+            inscricao => {
 
                 const pago =
-                    inscricao.pagamento ===
-                    "pago";
+                    inscricao.pagamento === "pago";
+
+
+                const formaPagamento =
+                    inscricao.formaPagamento ||
+                    "Não informado";
+
 
                 return `
 
-                    <article
-                        class="card admin-inscricao"
-                    >
+                    <div class="card inscricao-admin">
 
-                        <div class="admin-inscricao-header">
-
-                            <div>
-
-                                <span class="section-label">
-                                    INSCRIÇÃO
-                                </span>
-
-                                <h3>
-                                    ${inscricao.nome || "Não informado"}
-                                </h3>
-
-                                <p>
-                                    ${inscricao.email || "Não informado"}
-                                </p>
-
-                            </div>
-
-                            <span
-                                class="status-pagamento ${
-                                    pago
-                                        ? "status-pago"
-                                        : "status-pendente"
-                                }"
-                            >
-                                ${textoStatus(
-                                    inscricao.pagamento
-                                )}
-                            </span>
-
-                        </div>
+                        <span class="section-label">
+                            INSCRIÇÃO
+                        </span>
 
 
-                        <div class="admin-dados">
-
-                            <div>
-
-                                <strong>
-                                    CPF
-                                </strong>
-
-                                <span>
-                                    ${inscricao.cpf || "Não informado"}
-                                </span>
-
-                            </div>
+                        <h3>
+                            ${inscricao.nome || "Nome não informado"}
+                        </h3>
 
 
-                            <div>
-
-                                <strong>
-                                    Categoria
-                                </strong>
-
-                                <span>
-                                    ${inscricao.categoria || "Não informado"}
-                                </span>
-
-                            </div>
+                        <p>
+                            ${inscricao.email || "E-mail não informado"}
+                        </p>
 
 
-                            <div>
+                        <p>
 
-                                <strong>
-                                    Lote
-                                </strong>
+                            <strong>
+                                ${textoStatus(inscricao.status)}
+                            </strong>
 
-                                <span>
-                                    ${inscricao.loteNome || "Não informado"}
-                                </span>
-
-                            </div>
+                        </p>
 
 
-                            <div>
-
-                                <strong>
-                                    Valor
-                                </strong>
-
-                                <span>
-                                    ${formatarMoeda(
-                                        inscricao.valorFinal
-                                    )}
-                                </span>
-
-                            </div>
+                        <p>
+                            <strong>CPF</strong>
+                            ${inscricao.cpf || "Não informado"}
+                        </p>
 
 
-                            <div>
-
-                                <strong>
-                                    Cupom
-                                </strong>
-
-                                <span>
-                                    ${inscricao.cupom || "Nenhum"}
-                                </span>
-
-                            </div>
+                        <p>
+                            <strong>Categoria</strong>
+                            ${inscricao.categoria || "Não informado"}
+                        </p>
 
 
-                            <div>
+                        <p>
+                            <strong>Lote</strong>
+                            ${inscricao.loteNome || inscricao.lote || "Não informado"}
+                        </p>
 
-                                <strong>
-                                    Minicursos
-                                </strong>
 
-                                <span>
-                                    ${
-                                        inscricao.minicursos?.length
-                                            ? inscricao.minicursos.join(", ")
-                                            : "Nenhum"
-                                    }
-                                </span>
+                        <p>
+                            <strong>Valor</strong>
+                            ${formatarMoeda(inscricao.valorFinal)}
+                        </p>
 
-                            </div>
 
-                        </div>
+                        <p>
+                            <strong>Cupom</strong>
+                            ${inscricao.cupom || "Nenhum"}
+                        </p>
+
+
+                        <p>
+                            <strong>Minicursos</strong>
+                            ${
+                                inscricao.minicursos &&
+                                inscricao.minicursos.length
+                                    ? inscricao.minicursos.join(", ")
+                                    : "Nenhum"
+                            }
+                        </p>
 
 
                         ${
-                            !pago
-                                ? `
+                            pago
+                            ? `
 
-                                    <div class="admin-acoes">
+                                <p>
+                                    <strong>
+                                        Forma de pagamento
+                                    </strong>
 
-                                        <button
-                                            type="button"
-                                            class="btn btn-primary btn-confirmar-pagamento"
-                                            data-id="${inscricao.id}"
-                                        >
-                                            CONFIRMAR PAGAMENTO
-                                        </button>
+                                    ${formaPagamento}
+                                </p>
 
-                                    </div>
+                                ${
+                                    inscricao.pagamentoConfirmadoEm
+                                    ? `
+                                        <p>
+                                            <strong>
+                                                Pagamento confirmado em
+                                            </strong>
 
-                                `
-                                : `
+                                            ${formatarData(
+                                                inscricao.pagamentoConfirmadoEm
+                                            )}
+                                        </p>
+                                    `
+                                    : ""
+                                }
 
-                                    <div class="admin-acoes">
+                            `
+                            : `
 
-                                        <span class="pagamento-confirmado">
-                                            ✓ Pagamento confirmado
-                                        </span>
+                                <button
+                                    type="button"
+                                    class="btn btn-primary"
+                                    onclick="confirmarPagamento('${inscricao.id}')"
+                                >
+                                    CONFIRMAR PAGAMENTO
+                                </button>
 
-                                    </div>
-
-                                `
+                            `
                         }
 
-                    </article>
+                    </div>
 
                 `;
 
             }
         ).join("");
-
-
-    // ==========================================
-    // BOTÕES
-    // ==========================================
-
-    document
-        .querySelectorAll(
-            ".btn-confirmar-pagamento"
-        )
-        .forEach(
-            (botao) => {
-
-                botao.addEventListener(
-                    "click",
-                    () => {
-
-                        confirmarPagamento(
-                            botao.dataset.id
-                        );
-
-                    }
-                );
-
-            }
-        );
 
 }
 
@@ -556,84 +490,167 @@ function renderizarInscricoes() {
 // CONFIRMAR PAGAMENTO
 // =====================================================
 
-async function confirmarPagamento(
-    inscricaoId
-) {
+window.confirmarPagamento =
+    async function (id) {
 
-    const confirmar =
-        window.confirm(
-            "Confirma que o pagamento desta inscrição foi realizado?"
-        );
-
-    if (!confirmar) {
-        return;
-    }
-
-
-    try {
-
-        mensagemAdmin.textContent =
-            "Confirmando pagamento...";
-
-
-        const referencia =
-            doc(
-                db,
-                "inscricoes",
-                inscricaoId
+        const inscricao =
+            inscricoes.find(
+                item =>
+                    item.id === id
             );
 
 
-        await updateDoc(
-            referencia,
-            {
+        if (!inscricao) {
 
-                pagamento:
-                    "pago",
+            alert(
+                "Inscrição não encontrada."
+            );
 
-                status:
-                    "pago",
+            return;
 
-                pagamentoConfirmadoEm:
-                    new Date()
-
-            }
-        );
+        }
 
 
-        mensagemAdmin.textContent =
-            "Pagamento confirmado com sucesso.";
+        const valor =
+            formatarMoeda(
+                inscricao.valorFinal
+            );
 
 
-        await carregarInscricoes();
+        const formaPagamento =
+            prompt(
+                `Confirmar pagamento de ${valor}.\n\n` +
+                `Digite uma das opções:\n\n` +
+                `1 - PIX\n` +
+                `2 - Cartão de crédito\n` +
+                `3 - Dinheiro\n` +
+                `4 - Transferência bancária\n` +
+                `5 - Outro`
+            );
 
-    }
 
-    catch (erro) {
+        if (
+            formaPagamento === null
+        ) {
 
-        console.error(
-            "Erro ao confirmar pagamento:",
-            erro
-        );
+            return;
 
-        mensagemAdmin.textContent =
-            "Não foi possível confirmar o pagamento.";
+        }
 
-    }
 
-}
+        const opcoes = {
+
+            "1": "PIX",
+
+            "2": "Cartão de crédito",
+
+            "3": "Dinheiro",
+
+            "4": "Transferência bancária",
+
+            "5": "Outro"
+
+        };
+
+
+        const forma =
+            opcoes[
+                formaPagamento.trim()
+            ];
+
+
+        if (!forma) {
+
+            alert(
+                "Opção inválida. Escolha uma opção de 1 a 5."
+            );
+
+            return;
+
+        }
+
+
+        const confirmar =
+            confirm(
+                `Confirmar pagamento?\n\n` +
+                `Participante: ${inscricao.nome}\n` +
+                `Valor: ${valor}\n` +
+                `Forma: ${forma}`
+            );
+
+
+        if (!confirmar) {
+
+            return;
+
+        }
+
+
+        try {
+
+            await updateDoc(
+
+                doc(
+                    db,
+                    "inscricoes",
+                    id
+                ),
+
+                {
+
+                    pagamento:
+                        "pago",
+
+                    status:
+                        "pago",
+
+                    formaPagamento:
+                        forma,
+
+                    pagamentoConfirmadoEm:
+                        new Date()
+
+                }
+
+            );
+
+
+            alert(
+                "Pagamento confirmado com sucesso!"
+            );
+
+
+            await carregarInscricoes();
+
+
+        } catch (erro) {
+
+            console.error(
+                "Erro ao confirmar pagamento:",
+                erro
+            );
+
+
+            alert(
+                "Não foi possível confirmar o pagamento."
+            );
+
+        }
+
+    };
 
 
 // =====================================================
 // FILTROS
 // =====================================================
 
-filtroPagamento?.addEventListener(
+filtroPagamento.addEventListener(
     "change",
     renderizarInscricoes
 );
 
-filtroBusca?.addEventListener(
+
+filtroBusca.addEventListener(
     "input",
     renderizarInscricoes
 );
@@ -643,30 +660,34 @@ filtroBusca?.addEventListener(
 // SAIR
 // =====================================================
 
-btnSair?.addEventListener(
-    "click",
-    async () => {
+const btnSair =
+    document.getElementById("btnSair");
 
-        await signOut(auth);
 
-        window.location.href =
-            "login.html";
+if (btnSair) {
 
-    }
-);
+    btnSair.addEventListener(
+        "click",
+        async () => {
+
+            await signOut(auth);
+
+            window.location.href =
+                "login.html";
+
+        }
+    );
+
+}
 
 
 // =====================================================
-// AUTENTICAÇÃO E PROTEÇÃO DO PAINEL
+// VERIFICAÇÃO DE ADMINISTRADOR
 // =====================================================
 
 onAuthStateChanged(
     auth,
     async (usuario) => {
-
-        // ==========================================
-        // NÃO ESTÁ LOGADO
-        // ==========================================
 
         if (!usuario) {
 
@@ -677,10 +698,6 @@ onAuthStateChanged(
 
         }
 
-
-        // ==========================================
-        // NÃO É ADMINISTRADOR
-        // ==========================================
 
         if (
             usuario.email !== EMAIL_ADMIN
@@ -697,10 +714,6 @@ onAuthStateChanged(
 
         }
 
-
-        // ==========================================
-        // ADMINISTRADOR AUTORIZADO
-        // ==========================================
 
         await carregarInscricoes();
 
