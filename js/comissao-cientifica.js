@@ -772,18 +772,61 @@ onAuthStateChanged(
         if (!usuario) {
 
             window.location.href =
-                "index.html";
+                "comissao-login.html";
 
             return;
         }
 
 
-        console.log(
-            "Comissão Científica:",
-            usuario.email
-        );
+        try {
+
+            const referencia =
+                doc(
+                    db,
+                    "comissao_cientifica",
+                    usuario.uid
+                );
 
 
-        await carregarTrabalhos();
+            const documento =
+                await getDoc(referencia);
+
+
+            if (
+                !documento.exists() ||
+                documento.data().ativo !== true
+            ) {
+
+                await signOut(auth);
+
+                window.location.href =
+                    "comissao-login.html";
+
+                return;
+            }
+
+
+            console.log(
+                "Comissão Científica autorizada:",
+                usuario.email
+            );
+
+
+            await carregarTrabalhos();
+
+
+        } catch (erro) {
+
+            console.error(
+                "Erro ao verificar acesso da Comissão:",
+                erro
+            );
+
+
+            await signOut(auth);
+
+            window.location.href =
+                "comissao-login.html";
+        }
     }
 );
