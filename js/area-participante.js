@@ -4129,8 +4129,8 @@ const areaTexto =
                 <div>
                     <strong>Área:</strong>
                     ${textoSeguro(
-                        trabalho.area
-                    )}
+    areaTexto
+)}
                 </div>
 
                 <div>
