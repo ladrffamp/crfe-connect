@@ -17,12 +17,24 @@ import {
 } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
 
 
-const listaTrabalhos = document.getElementById("listaTrabalhos");
-const campoBusca = document.getElementById("campoBusca");
-const filtroStatus = document.getElementById("filtroStatus");
-const totalTrabalhos = document.getElementById("totalTrabalhos");
-const totalAvaliacao = document.getElementById("totalAvaliacao");
-const btnSair = document.getElementById("btnSair");
+const listaTrabalhos =
+    document.getElementById("listaTrabalhos");
+
+const campoBusca =
+    document.getElementById("campoBusca");
+
+const filtroStatus =
+    document.getElementById("filtroStatus");
+
+const totalTrabalhos =
+    document.getElementById("totalTrabalhos");
+
+const totalAvaliacao =
+    document.getElementById("totalAvaliacao");
+
+const btnSair =
+    document.getElementById("btnSair");
+
 
 let todosTrabalhos = [];
 
@@ -68,11 +80,14 @@ function formatarData(timestamp) {
                 ? timestamp.toDate()
                 : new Date(timestamp);
 
-        return data.toLocaleDateString("pt-BR", {
-            day: "2-digit",
-            month: "2-digit",
-            year: "numeric"
-        });
+        return data.toLocaleDateString(
+            "pt-BR",
+            {
+                day: "2-digit",
+                month: "2-digit",
+                year: "numeric"
+            }
+        );
 
     } catch (erro) {
 
@@ -108,7 +123,11 @@ function formatarArea(area) {
             "Outras"
     };
 
-    return areas[area] || area || "Não informada";
+    return (
+        areas[area] ||
+        area ||
+        "Não informada"
+    );
 }
 
 
@@ -119,7 +138,6 @@ function formatarArea(area) {
 function escaparHTML(valor) {
 
     return String(valor)
-
         .replaceAll("&", "&amp;")
         .replaceAll("<", "&lt;")
         .replaceAll(">", "&gt;")
@@ -135,44 +153,53 @@ function escaparHTML(valor) {
 function gerarCardTrabalho(trabalho) {
 
     const titulo =
-        trabalho.titulo || "Sem título";
+        trabalho.titulo ||
+        "Sem título";
 
     const autores =
-        trabalho.autores || "Não informado";
+        trabalho.autores ||
+        "Não informado";
 
     const orientador =
-        trabalho.orientador || "Não informado";
+        trabalho.orientador ||
+        "Não informado";
 
     const instituicao =
-        trabalho.instituicao || "Não informada";
+        trabalho.instituicao ||
+        "Não informada";
 
     const tipo =
-    trabalho.tipo
-        ? trabalho.tipo.charAt(0).toUpperCase() +
-          trabalho.tipo.slice(1)
-        : "Não informado";
+        trabalho.tipo
+            ? trabalho.tipo.charAt(0).toUpperCase() +
+              trabalho.tipo.slice(1)
+            : "Não informado";
 
     const area =
         formatarArea(trabalho.area);
 
     const status =
-        trabalho.status || "em_avaliacao";
+        trabalho.status ||
+        "em_avaliacao";
 
     const avaliacaoFinalizada =
-    trabalho.avaliacaoFinalizada === true;
+        trabalho.avaliacaoFinalizada === true;
 
     const arquivoNome =
         trabalho.arquivoNome ||
         "Arquivo não informado";
 
     const arquivoUrl =
-        trabalho.arquivoUrl || "";
+        trabalho.arquivoUrl ||
+        "";
 
     const dataEnvio =
-        formatarData(trabalho.criadoEm);
+        formatarData(
+            trabalho.criadoEm
+        );
 
     const observacao =
-        trabalho.observacao || "";
+        trabalho.observacao ||
+        "";
 
 
     // =================================================
@@ -235,45 +262,80 @@ function gerarCardTrabalho(trabalho) {
             <div class="informacoes">
 
                 <div class="informacao">
-                    <span>Autores</span>
+
+                    <span>
+                        Autores
+                    </span>
+
                     <strong>
                         ${escaparHTML(autores)}
                     </strong>
+
                 </div>
 
+
                 <div class="informacao">
-                    <span>Orientador</span>
+
+                    <span>
+                        Orientador
+                    </span>
+
                     <strong>
                         ${escaparHTML(orientador)}
                     </strong>
+
                 </div>
 
+
                 <div class="informacao">
-                    <span>Instituição</span>
+
+                    <span>
+                        Instituição
+                    </span>
+
                     <strong>
                         ${escaparHTML(instituicao)}
                     </strong>
+
                 </div>
 
+
                 <div class="informacao">
-                    <span>Tipo</span>
+
+                    <span>
+                        Tipo
+                    </span>
+
                     <strong>
                         ${escaparHTML(tipo)}
                     </strong>
+
                 </div>
 
+
                 <div class="informacao">
-                    <span>Área</span>
+
+                    <span>
+                        Área
+                    </span>
+
                     <strong>
                         ${escaparHTML(area)}
                     </strong>
+
                 </div>
 
+
                 <div class="informacao">
-                    <span>Enviado em</span>
+
+                    <span>
+                        Enviado em
+                    </span>
+
                     <strong>
                         ${dataEnvio}
                     </strong>
+
                 </div>
 
             </div>
@@ -286,9 +348,9 @@ function gerarCardTrabalho(trabalho) {
             </div>
 
 
-            <!-- ===================================== -->
-            <!-- AVALIAÇÃO DA COMISSÃO -->
-            <!-- ===================================== -->
+            <!-- =====================================
+                 AVALIAÇÃO DA COMISSÃO
+            ====================================== -->
 
             <div class="avaliacao-comissao">
 
@@ -301,9 +363,11 @@ function gerarCardTrabalho(trabalho) {
                     Status da avaliação
                 </label>
 
+
                 <select
                     class="campo-avaliacao-status"
                     data-id="${escaparHTML(trabalho.id)}"
+                    ${avaliacaoFinalizada ? "disabled" : ""}
                 >
 
                     <option
@@ -313,6 +377,7 @@ function gerarCardTrabalho(trabalho) {
                         Em avaliação
                     </option>
 
+
                     <option
                         value="aprovado"
                         ${status === "aprovado" ? "selected" : ""}
@@ -320,12 +385,14 @@ function gerarCardTrabalho(trabalho) {
                         Aprovado
                     </option>
 
+
                     <option
                         value="aprovado_com_correcoes"
                         ${status === "aprovado_com_correcoes" ? "selected" : ""}
                     >
                         Aprovado com correções
                     </option>
+
 
                     <option
                         value="reprovado"
@@ -341,21 +408,42 @@ function gerarCardTrabalho(trabalho) {
                     Observação da Comissão
                 </label>
 
+
                 <textarea
                     class="campo-avaliacao-observacao"
                     data-id="${escaparHTML(trabalho.id)}"
                     rows="4"
                     placeholder="Digite uma observação sobre a avaliação..."
+                    ${avaliacaoFinalizada ? "disabled" : ""}
                 >${escaparHTML(observacao)}</textarea>
 
 
                 <button
-    type="button"
-    class="btn-finalizar-avaliacao"
-    data-id="${escaparHTML(trabalho.id)}"
->
-    🔒 Finalizar avaliação
-</button>
+                    type="button"
+                    class="btn-salvar-avaliacao"
+                    data-id="${escaparHTML(trabalho.id)}"
+                    ${avaliacaoFinalizada ? "disabled" : ""}
+                >
+                    ${
+                        avaliacaoFinalizada
+                            ? "✓ Avaliação salva"
+                            : "💾 Salvar avaliação"
+                    }
+                </button>
+
+
+                <button
+                    type="button"
+                    class="btn-finalizar-avaliacao"
+                    data-id="${escaparHTML(trabalho.id)}"
+                    ${avaliacaoFinalizada ? "disabled" : ""}
+                >
+                    ${
+                        avaliacaoFinalizada
+                            ? "🔒 Avaliação finalizada"
+                            : "🔒 Finalizar avaliação"
+                    }
+                </button>
 
 
                 <div
@@ -382,43 +470,48 @@ function renderizarTrabalhos() {
             .toLowerCase();
 
     const statusSelecionado =
-        filtroStatus?.value || "todos";
+        filtroStatus?.value ||
+        "todos";
 
 
     const filtrados =
-        todosTrabalhos.filter(trabalho => {
+        todosTrabalhos.filter(
+            trabalho => {
 
-            const textoBusca = [
+                const textoBusca = [
 
-                trabalho.titulo,
-                trabalho.autores,
-                trabalho.instituicao,
-                trabalho.orientador,
-                trabalho.area,
-                trabalho.tipo
+                    trabalho.titulo,
+                    trabalho.autores,
+                    trabalho.instituicao,
+                    trabalho.orientador,
+                    trabalho.area,
+                    trabalho.tipo
 
-            ]
-                .filter(Boolean)
-                .join(" ")
-                .toLowerCase();
-
-
-            const correspondeBusca =
-                !busca ||
-                textoBusca.includes(busca);
+                ]
+                    .filter(Boolean)
+                    .join(" ")
+                    .toLowerCase();
 
 
-            const correspondeStatus =
-                statusSelecionado === "todos" ||
-                (trabalho.status || "em_avaliacao") ===
-                statusSelecionado;
+                const correspondeBusca =
+                    !busca ||
+                    textoBusca.includes(busca);
 
 
-            return (
-                correspondeBusca &&
-                correspondeStatus
-            );
-        });
+                const correspondeStatus =
+                    statusSelecionado === "todos" ||
+                    (
+                        trabalho.status ||
+                        "em_avaliacao"
+                    ) === statusSelecionado;
+
+
+                return (
+                    correspondeBusca &&
+                    correspondeStatus
+                );
+            }
+        );
 
 
     if (!filtrados.length) {
@@ -475,7 +568,11 @@ async function salvarAvaliacao(id) {
         );
 
 
-    if (!select || !textarea || !botao) {
+    if (
+        !select ||
+        !textarea ||
+        !botao
+    ) {
         return;
     }
 
@@ -498,23 +595,32 @@ async function salvarAvaliacao(id) {
 
 
         const trabalhoRef =
-            doc(db, "trabalhos", id);
+            doc(
+                db,
+                "trabalhos",
+                id
+            );
 
 
         await updateDoc(
             trabalhoRef,
             {
-                status: novoStatus,
-                observacao: novaObservacao,
-                atualizadoEm: serverTimestamp()
+                status:
+                    novoStatus,
+
+                observacao:
+                    novaObservacao,
+
+                atualizadoEm:
+                    serverTimestamp()
             }
         );
 
 
-        // Atualiza o objeto local
         const trabalho =
             todosTrabalhos.find(
-                item => item.id === id
+                item =>
+                    item.id === id
             );
 
 
@@ -528,12 +634,13 @@ async function salvarAvaliacao(id) {
         }
 
 
-        // Atualiza contadores
         totalAvaliacao.textContent =
             todosTrabalhos.filter(
                 item =>
-                    (item.status || "em_avaliacao") ===
-                    "em_avaliacao"
+                    (
+                        item.status ||
+                        "em_avaliacao"
+                    ) === "em_avaliacao"
             ).length;
 
 
@@ -548,7 +655,6 @@ async function salvarAvaliacao(id) {
             "✓ Avaliação salva";
 
 
-        // Atualiza o selo do card
         const card =
             document.querySelector(
                 `.trabalho-card[data-id="${id}"]`
@@ -556,24 +662,35 @@ async function salvarAvaliacao(id) {
 
 
         const selo =
-            card?.querySelector(".status");
+            card?.querySelector(
+                ".status"
+            );
 
 
         if (selo) {
 
             selo.textContent =
-                formatarStatus(novoStatus);
+                formatarStatus(
+                    novoStatus
+                );
         }
 
 
-        setTimeout(() => {
+        setTimeout(
+            () => {
 
-            if (botao) {
-                botao.textContent =
-                    "💾 Salvar avaliação";
-            }
+                if (
+                    botao &&
+                    !botao.disabled
+                ) {
 
-        }, 2000);
+                    botao.textContent =
+                        "💾 Salvar avaliação";
+                }
+
+            },
+            2000
+        );
 
 
     } catch (erro) {
@@ -590,6 +707,7 @@ async function salvarAvaliacao(id) {
             </span>
         `;
 
+
         botao.textContent =
             "Tentar novamente";
 
@@ -599,6 +717,11 @@ async function salvarAvaliacao(id) {
         botao.disabled = false;
     }
 }
+
+
+// =====================================================
+// FINALIZAR AVALIAÇÃO
+// =====================================================
 
 async function finalizarAvaliacao(id) {
 
@@ -622,9 +745,15 @@ async function finalizarAvaliacao(id) {
             `.mensagem-avaliacao[data-id="${id}"]`
         );
 
-    if (!select || !textarea || !botao) {
+
+    if (
+        !select ||
+        !textarea ||
+        !botao
+    ) {
         return;
     }
+
 
     const confirmar =
         confirm(
@@ -632,15 +761,21 @@ async function finalizarAvaliacao(id) {
             "Depois de finalizada, a avaliação não poderá mais ser alterada."
         );
 
+
     if (!confirmar) {
         return;
     }
 
+
     try {
 
         botao.disabled = true;
-        botao.textContent = "Finalizando...";
+
+        botao.textContent =
+            "Finalizando...";
+
         mensagem.textContent = "";
+
 
         const novoStatus =
             select.value;
@@ -648,23 +783,39 @@ async function finalizarAvaliacao(id) {
         const novaObservacao =
             textarea.value.trim();
 
+
         const trabalhoRef =
-            doc(db, "trabalhos", id);
+            doc(
+                db,
+                "trabalhos",
+                id
+            );
+
 
         await updateDoc(
             trabalhoRef,
             {
-                status: novoStatus,
-                observacao: novaObservacao,
-                avaliacaoFinalizada: true,
-                avaliacaoFinalizadaEm: serverTimestamp()
+                status:
+                    novoStatus,
+
+                observacao:
+                    novaObservacao,
+
+                avaliacaoFinalizada:
+                    true,
+
+                avaliacaoFinalizadaEm:
+                    serverTimestamp()
             }
         );
 
+
         const trabalho =
             todosTrabalhos.find(
-                item => item.id === id
+                item =>
+                    item.id === id
             );
+
 
         if (trabalho) {
 
@@ -678,40 +829,61 @@ async function finalizarAvaliacao(id) {
                 true;
         }
 
+
         select.disabled = true;
+
         textarea.disabled = true;
 
+
         botao.disabled = true;
+
         botao.textContent =
             "🔒 Avaliação finalizada";
+
 
         const botaoSalvar =
             document.querySelector(
                 `.btn-salvar-avaliacao[data-id="${id}"]`
             );
 
+
         if (botaoSalvar) {
-            botaoSalvar.disabled = true;
+
+            botaoSalvar.disabled =
+                true;
+
+            botaoSalvar.textContent =
+                "✓ Avaliação salva";
         }
+
 
         const card =
             document.querySelector(
                 `.trabalho-card[data-id="${id}"]`
             );
 
+
         const selo =
-            card?.querySelector(".status");
+            card?.querySelector(
+                ".status"
+            );
+
 
         if (selo) {
+
             selo.textContent =
-                formatarStatus(novoStatus);
+                formatarStatus(
+                    novoStatus
+                );
         }
+
 
         mensagem.innerHTML = `
             <span class="avaliacao-sucesso">
                 ✓ Avaliação finalizada com sucesso.
             </span>
         `;
+
 
     } catch (erro) {
 
@@ -720,17 +892,21 @@ async function finalizarAvaliacao(id) {
             erro
         );
 
+
         mensagem.innerHTML = `
             <span class="avaliacao-erro">
                 Não foi possível finalizar a avaliação.
             </span>
         `;
 
+
         botao.disabled = false;
+
         botao.textContent =
             "🔒 Finalizar avaliação";
     }
 }
+
 
 // =====================================================
 // ATIVAR BOTÕES
@@ -743,20 +919,22 @@ function ativarBotoesAvaliacao() {
             ".btn-salvar-avaliacao"
         );
 
-    botoes.forEach(botao => {
 
-        botao.addEventListener(
-            "click",
-            () => {
+    botoes.forEach(
+        botao => {
 
-                const id =
-                    botao.dataset.id;
+            botao.addEventListener(
+                "click",
+                () => {
 
-                salvarAvaliacao(id);
-            }
-        );
+                    const id =
+                        botao.dataset.id;
 
-    });
+                    salvarAvaliacao(id);
+                }
+            );
+        }
+    );
 
 
     const botoesFinalizar =
@@ -764,20 +942,22 @@ function ativarBotoesAvaliacao() {
             ".btn-finalizar-avaliacao"
         );
 
-    botoesFinalizar.forEach(botao => {
 
-        botao.addEventListener(
-            "click",
-            () => {
+    botoesFinalizar.forEach(
+        botao => {
 
-                const id =
-                    botao.dataset.id;
+            botao.addEventListener(
+                "click",
+                () => {
 
-                finalizarAvaliacao(id);
-            }
-        );
+                    const id =
+                        botao.dataset.id;
 
-    });
+                    finalizarAvaliacao(id);
+                }
+            );
+        }
+    );
 }
 
 
@@ -792,7 +972,9 @@ async function carregarTrabalhos() {
         listaTrabalhos.innerHTML = `
 
             <div class="estado">
+
                 Carregando trabalhos científicos...
+
             </div>
 
         `;
@@ -800,20 +982,30 @@ async function carregarTrabalhos() {
 
         const consulta =
             query(
-                collection(db, "trabalhos"),
-                orderBy("criadoEm", "desc")
+                collection(
+                    db,
+                    "trabalhos"
+                ),
+                orderBy(
+                    "criadoEm",
+                    "desc"
+                )
             );
 
 
         const snapshot =
-            await getDocs(consulta);
+            await getDocs(
+                consulta
+            );
 
 
         todosTrabalhos =
             snapshot.docs.map(
                 documento => ({
 
-                    id: documento.id,
+                    id:
+                        documento.id,
+
                     ...documento.data()
 
                 })
@@ -827,8 +1019,10 @@ async function carregarTrabalhos() {
         totalAvaliacao.textContent =
             todosTrabalhos.filter(
                 trabalho =>
-                    (trabalho.status || "em_avaliacao") ===
-                    "em_avaliacao"
+                    (
+                        trabalho.status ||
+                        "em_avaliacao"
+                    ) === "em_avaliacao"
             ).length;
 
 
@@ -947,7 +1141,9 @@ onAuthStateChanged(
 
 
             const documento =
-                await getDoc(referencia);
+                await getDoc(
+                    referencia
+                );
 
 
             if (
