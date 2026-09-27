@@ -65,6 +65,7 @@
             font-weight: 900;
             line-height: 1;
             letter-spacing: -0.5px;
+            flex-shrink: 0;
         }
 
 
@@ -75,11 +76,16 @@
         }
 
 
+        /* =====================================================
+           NAVEGAÇÃO ADMIN
+        ===================================================== */
+
         .site-header nav {
             display: flex;
             align-items: center;
             justify-content: flex-end;
-            gap: 24px;
+            gap: 20px;
+            flex-wrap: wrap;
         }
 
 
@@ -100,6 +106,8 @@
             color: #0b7a3b;
         }
 
+
+        /* Botão sair */
 
         .site-header nav a:last-child {
             padding: 0 17px;
@@ -377,6 +385,22 @@
            RESPONSIVO
         ===================================================== */
 
+        @media (max-width: 1000px) {
+
+            .site-header .container {
+                flex-direction: column;
+                justify-content: center;
+                padding: 18px 0;
+            }
+
+
+            .site-header nav {
+                justify-content: center;
+            }
+
+        }
+
+
         @media (max-width: 900px) {
 
             .dashboard-grid {
@@ -405,7 +429,7 @@
 
 
             .site-header nav {
-                gap: 8px;
+                gap: 7px;
             }
 
 
@@ -442,6 +466,29 @@
 
         }
 
+
+        @media (max-width: 500px) {
+
+            .site-header nav {
+                width: 100%;
+                display: grid;
+                grid-template-columns: repeat(2, 1fr);
+                gap: 6px;
+            }
+
+
+            .site-header nav a {
+                justify-content: center;
+                text-align: center;
+            }
+
+
+            .site-header nav a:last-child {
+                padding: 0 10px;
+            }
+
+        }
+
     </style>
 
 </head>
@@ -458,19 +505,51 @@
 
     <div class="container">
 
+
+        <!-- LOGO -->
+
         <a
             href="index.html"
             class="logo"
         >
+
             CRFE
-            <span>2027</span>
+
+            <span>
+                2027
+            </span>
+
         </a>
 
 
+
+        <!-- NAVEGAÇÃO -->
+
         <nav>
 
+
+            <a href="admin.html">
+                Inscrições
+            </a>
+
+
+            <a href="admin-palestrantes.html">
+                Palestrantes
+            </a>
+
+
+            <a href="#">
+                Minicursos
+            </a>
+
+
+            <a href="#">
+                Programação
+            </a>
+
+
             <a href="index.html">
-                Início
+                Site
             </a>
 
 
@@ -481,7 +560,9 @@
                 Sair
             </a>
 
+
         </nav>
+
 
     </div>
 
@@ -502,6 +583,7 @@
 
     <section class="admin-header">
 
+
         <span class="section-label">
             ADMINISTRAÇÃO
         </span>
@@ -513,9 +595,10 @@
 
 
         <p>
-            Gerencie as inscrições e confirme os pagamentos
-            dos participantes do CRFE 2027.
+            Gerencie as inscrições, palestrantes,
+            minicursos e programação do CRFE 2027.
         </p>
+
 
     </section>
 
@@ -534,11 +617,13 @@
                 INSCRIÇÕES
             </span>
 
+
             <strong id="totalInscricoes">
                 0
             </strong>
 
         </div>
+
 
 
         <div class="dashboard-card">
@@ -547,11 +632,13 @@
                 PAGAMENTOS PENDENTES
             </span>
 
+
             <strong id="pagamentosPendentes">
                 0
             </strong>
 
         </div>
+
 
 
         <div class="dashboard-card">
@@ -560,6 +647,7 @@
                 PAGAMENTOS CONFIRMADOS
             </span>
 
+
             <strong id="pagamentosConfirmados">
                 0
             </strong>
@@ -567,11 +655,13 @@
         </div>
 
 
+
         <div class="dashboard-card">
 
             <span>
                 ARRECADADO
             </span>
+
 
             <strong id="valorArrecadado">
                 R$ 0,00
@@ -590,23 +680,29 @@
 
     <section class="card filters-card">
 
+
         <div class="card-header">
+
 
             <span class="section-label">
                 INSCRIÇÕES
             </span>
 
+
             <h2>
                 Participantes
             </h2>
 
+
         </div>
+
 
 
         <div class="form-grid">
 
 
             <div class="form-group">
+
 
                 <label for="filtroPagamento">
                     Status do pagamento
@@ -616,6 +712,7 @@
                 <select
                     id="filtroPagamento"
                 >
+
 
                     <option value="todos">
                         Todos
@@ -631,12 +728,16 @@
                         Pagamento confirmado
                     </option>
 
+
                 </select>
+
 
             </div>
 
 
+
             <div class="form-group">
+
 
                 <label for="filtroBusca">
                     Buscar participante
@@ -649,10 +750,12 @@
                     placeholder="Nome ou e-mail"
                 >
 
+
             </div>
 
 
         </div>
+
 
     </section>
 
@@ -678,13 +781,17 @@
         class="admin-list"
     >
 
+
         <div class="card">
+
 
             <p>
                 Carregando inscrições...
             </p>
 
+
         </div>
+
 
     </section>
 
@@ -699,25 +806,35 @@
 
 <footer class="footer">
 
+
     <div class="container">
+
 
         <p>
             CRFE 2027
         </p>
 
+
         <p>
             Congresso Regional de Fisioterapia Esportiva
         </p>
+
 
         <p>
             LADRF | Mineiros – Goiás
         </p>
 
+
     </div>
+
 
 </footer>
 
 
+
+<!-- =====================================================
+     JAVASCRIPT
+====================================================== -->
 
 <script
     type="module"
