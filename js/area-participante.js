@@ -4106,6 +4106,55 @@ const areaTexto =
             `
             : "";
 
+    const podeReenviar =
+    status === "aprovado_com_correcoes";
+
+const botaoReenvio =
+    podeReenviar
+        ? `
+            <div
+                style="
+                    margin-top:12px;
+                    padding:12px;
+                    border-radius:10px;
+                    background:#fff7ed;
+                    border:1px solid #fed7aa;
+                "
+            >
+
+                <strong
+                    style="
+                        display:block;
+                        margin-bottom:6px;
+                        color:#9a3412;
+                    "
+                >
+                    Correções solicitadas
+                </strong>
+
+                <div
+                    style="
+                        font-size:13px;
+                        color:#7c2d12;
+                        margin-bottom:10px;
+                    "
+                >
+                    A Comissão Científica solicitou correções.
+                    Você poderá enviar uma nova versão do trabalho.
+                </div>
+
+                <button
+                    type="button"
+                    class="btn-trabalho btn-reenviar-trabalho"
+                    data-id="${trabalho.id}"
+                >
+                    🔄 Enviar versão corrigida
+                </button>
+
+            </div>
+        `
+        : "";
+    
 
     return `
 
