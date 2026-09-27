@@ -17,6 +17,14 @@ import {
 
 
 // =====================================================
+// CONFIGURAÇÃO DO ADMINISTRADOR
+// =====================================================
+
+const EMAIL_ADMIN =
+    "admin@ladrf.com";
+
+
+// =====================================================
 // ELEMENTOS
 // =====================================================
 
@@ -267,6 +275,7 @@ function renderizarInscricoes() {
             );
 
     }
+
 
     if (
         filtro === "pago"
@@ -648,12 +657,16 @@ btnSair?.addEventListener(
 
 
 // =====================================================
-// AUTENTICAÇÃO
+// AUTENTICAÇÃO E PROTEÇÃO DO PAINEL
 // =====================================================
 
 onAuthStateChanged(
     auth,
     async (usuario) => {
+
+        // ==========================================
+        // NÃO ESTÁ LOGADO
+        // ==========================================
 
         if (!usuario) {
 
@@ -663,6 +676,31 @@ onAuthStateChanged(
             return;
 
         }
+
+
+        // ==========================================
+        // NÃO É ADMINISTRADOR
+        // ==========================================
+
+        if (
+            usuario.email !== EMAIL_ADMIN
+        ) {
+
+            alert(
+                "Acesso restrito. Esta área é exclusiva para administradores."
+            );
+
+            window.location.href =
+                "area-participante.html";
+
+            return;
+
+        }
+
+
+        // ==========================================
+        // ADMINISTRADOR AUTORIZADO
+        // ==========================================
 
         await carregarInscricoes();
 
