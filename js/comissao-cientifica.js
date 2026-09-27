@@ -397,7 +397,7 @@ if (status === "reprovado") {
                  AVALIAÇÃO DA COMISSÃO
             ====================================== -->
 
-            <div class="avaliacao-comissao">
+           <div class="avaliacao-comissao ${classeAvaliacao}">
 
                 <h4>
                     Avaliação da Comissão
