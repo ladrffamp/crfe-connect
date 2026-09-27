@@ -16,294 +16,504 @@ import {
 } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
 
 
+
 // =====================================================
 // CONFIGURAÇÃO
 // =====================================================
 
 const EMAIL_ADMIN = "admin@ladrf.com";
 
-const colecaoMinicursos = collection(db, "minicursos");
+const colecaoMinicursos = collection(
+    db,
+    "minicursos"
+);
 
 let minicursoEditando = null;
+
 
 
 // =====================================================
 // ELEMENTOS
 // =====================================================
 
-const form = document.getElementById("formMinicurso");
+const form =
+    document.getElementById(
+        "formMinicurso"
+    );
 
-const nome = document.getElementById("nome");
-const ministrante = document.getElementById("ministrante");
-const instituicao = document.getElementById("instituicao");
-const descricao = document.getElementById("descricao");
+const nome =
+    document.getElementById("nome");
 
-const data = document.getElementById("data");
-const inicio = document.getElementById("inicio");
-const fim = document.getElementById("fim");
+const ministrante =
+    document.getElementById("ministrante");
 
-const cargaHoraria = document.getElementById("cargaHoraria");
-const vagas = document.getElementById("vagas");
-const valor = document.getElementById("valor");
-const local = document.getElementById("local");
+const instituicao =
+    document.getElementById("instituicao");
 
-const status = document.getElementById("status");
+const descricao =
+    document.getElementById("descricao");
 
-const btnSalvar = document.getElementById("btnSalvar");
-const btnCancelar = document.getElementById("btnCancelar");
+const data =
+    document.getElementById("data");
 
-const mensagem = document.getElementById("mensagemMinicurso");
+const inicio =
+    document.getElementById("inicio");
 
-const lista = document.getElementById("listaMinicursos");
+const fim =
+    document.getElementById("fim");
 
-const btnSair = document.getElementById("btnSair");
+const cargaHoraria =
+    document.getElementById("cargaHoraria");
+
+const vagas =
+    document.getElementById("vagas");
+
+const valor =
+    document.getElementById("valor");
+
+const local =
+    document.getElementById("local");
+
+const status =
+    document.getElementById("status");
+
+const btnSalvar =
+    document.getElementById("btnSalvar");
+
+const btnCancelar =
+    document.getElementById("btnCancelar");
+
+const mensagem =
+    document.getElementById(
+        "mensagemMinicurso"
+    );
+
+const lista =
+    document.getElementById(
+        "listaMinicursos"
+    );
+
+const btnSair =
+    document.getElementById("btnSair");
+
 
 
 // =====================================================
 // AUTENTICAÇÃO
 // =====================================================
 
-onAuthStateChanged(auth, async (usuario) => {
+onAuthStateChanged(
+    auth,
+    async (usuario) => {
 
-    if (!usuario) {
+        if (!usuario) {
 
-        window.location.href = "login.html";
+            window.location.href =
+                "login.html";
 
-        return;
+            return;
+        }
+
+
+
+        if (
+            usuario.email !==
+            EMAIL_ADMIN
+        ) {
+
+            alert(
+                "Acesso restrito ao administrador."
+            );
+
+            window.location.href =
+                "area-participante.html";
+
+            return;
+        }
+
+
+
+        await carregarMinicursos();
+
     }
+);
 
-
-    if (usuario.email !== EMAIL_ADMIN) {
-
-        alert("Acesso restrito ao administrador.");
-
-        window.location.href = "area-participante.html";
-
-        return;
-    }
-
-
-    await carregarMinicursos();
-
-});
 
 
 // =====================================================
 // CADASTRAR / EDITAR
 // =====================================================
 
-form.addEventListener("submit", async (evento) => {
+form.addEventListener(
+    "submit",
+    async (evento) => {
 
-    evento.preventDefault();
+        evento.preventDefault();
 
-
-    limparMensagem();
-
-
-    const nomeValor = nome.value.trim();
-    const ministranteValor = ministrante.value.trim();
-    const instituicaoValor = instituicao.value.trim();
-    const descricaoValor = descricao.value.trim();
-
-    const dataValor = data.value;
-    const inicioValor = inicio.value;
-    const fimValor = fim.value;
-
-    const cargaHorariaValor = cargaHoraria.value.trim();
-
-    const vagasValor =
-        vagas.value
-            ? Number(vagas.value)
-            : 0;
-
-    const valorValor =
-        valor.value
-            ? Number(valor.value)
-            : 0;
-
-    const localValor = local.value.trim();
-
-    const statusValor = status.value;
+        limparMensagem();
 
 
-    // =================================================
-    // VALIDAÇÕES
-    // =================================================
 
-    if (!nomeValor) {
+        const nomeValor =
+            nome.value.trim();
 
-        mostrarErro("Informe o nome do minicurso.");
+        const ministranteValor =
+            ministrante.value.trim();
 
-        nome.focus();
+        const instituicaoValor =
+            instituicao.value.trim();
 
-        return;
-    }
+        const descricaoValor =
+            descricao.value.trim();
 
+        const dataValor =
+            data.value;
 
-    if (!ministranteValor) {
+        const inicioValor =
+            inicio.value;
 
-        mostrarErro("Informe o ministrante.");
+        const fimValor =
+            fim.value;
 
-        ministrante.focus();
+        const cargaHorariaValor =
+            cargaHoraria.value.trim();
 
-        return;
-    }
+        const vagasValor =
+            vagas.value
+                ? Number(vagas.value)
+                : 0;
 
+        const valorValor =
+            valor.value
+                ? Number(valor.value)
+                : 0;
 
-    if (!dataValor) {
+        const localValor =
+            local.value.trim();
 
-        mostrarErro("Informe a data do minicurso.");
+        const statusValor =
+            status.value;
 
-        data.focus();
-
-        return;
-    }
-
-
-    if (!inicioValor || !fimValor) {
-
-        mostrarErro("Informe o horário de início e término.");
-
-        return;
-    }
-
-
-    if (fimValor <= inicioValor) {
-
-        mostrarErro(
-            "O horário de término deve ser posterior ao horário de início."
-        );
-
-        return;
-    }
-
-
-    if (vagasValor < 0) {
-
-        mostrarErro("O número de vagas não pode ser negativo.");
-
-        return;
-    }
-
-
-    if (valorValor < 0) {
-
-        mostrarErro("O valor adicional não pode ser negativo.");
-
-        return;
-    }
-
-
-    // =================================================
-    // OBJETO
-    // =================================================
-
-    const dados = {
-
-        nome: nomeValor,
-
-        ministrante: ministranteValor,
-
-        instituicao: instituicaoValor,
-
-        descricao: descricaoValor,
-
-        data: dataValor,
-
-        inicio: inicioValor,
-
-        fim: fimValor,
-
-        cargaHoraria: cargaHorariaValor,
-
-        vagas: vagasValor,
-
-        valor: valorValor,
-
-        local: localValor,
-
-        status: statusValor,
-
-        atualizadoEm: serverTimestamp()
-
-    };
-
-
-    try {
-
-        btnSalvar.disabled = true;
 
 
         // =================================================
-        // EDIÇÃO
+        // VALIDAÇÕES
         // =================================================
+
+        if (!nomeValor) {
+
+            mostrarErro(
+                "Informe o nome do minicurso."
+            );
+
+            nome.focus();
+
+            return;
+        }
+
+
+
+        if (!ministranteValor) {
+
+            mostrarErro(
+                "Informe o ministrante."
+            );
+
+            ministrante.focus();
+
+            return;
+        }
+
+
+
+        if (!dataValor) {
+
+            mostrarErro(
+                "Informe a data do minicurso."
+            );
+
+            data.focus();
+
+            return;
+        }
+
+
+
+        if (
+            !inicioValor ||
+            !fimValor
+        ) {
+
+            mostrarErro(
+                "Informe o horário de início e término."
+            );
+
+            return;
+        }
+
+
+
+        if (
+            fimValor <=
+            inicioValor
+        ) {
+
+            mostrarErro(
+                "O horário de término deve ser posterior ao horário de início."
+            );
+
+            return;
+        }
+
+
+
+        if (vagasValor < 0) {
+
+            mostrarErro(
+                "O número de vagas não pode ser negativo."
+            );
+
+            return;
+        }
+
+
+
+        if (valorValor < 0) {
+
+            mostrarErro(
+                "O valor adicional não pode ser negativo."
+            );
+
+            return;
+        }
+
+
+
+        // =================================================
+        // RECUPERAR VAGAS OCUPADAS
+        // =================================================
+
+        let vagasOcupadasAtual = 0;
+
+
 
         if (minicursoEditando) {
 
-            await updateDoc(
-                doc(
-                    db,
-                    "minicursos",
-                    minicursoEditando
-                ),
-                dados
-            );
+            try {
 
+                const minicursoRef =
+                    doc(
+                        db,
+                        "minicursos",
+                        minicursoEditando
+                    );
 
-            mostrarSucesso(
-                "Minicurso atualizado com sucesso."
-            );
+                const snapshot =
+                    await getDocs(
+                        colecaoMinicursos
+                    );
+
+                snapshot.forEach(
+                    (documento) => {
+
+                        if (
+                            documento.id ===
+                            minicursoEditando
+                        ) {
+
+                            const dados =
+                                documento.data();
+
+                            vagasOcupadasAtual =
+                                Number(
+                                    dados.vagasOcupadas ||
+                                    0
+                                );
+
+                        }
+
+                    }
+                );
+
+            } catch (erro) {
+
+                console.error(
+                    "Erro ao recuperar vagas ocupadas:",
+                    erro
+                );
+
+            }
 
         }
 
 
+
         // =================================================
-        // NOVO CADASTRO
+        // IMPEDIR REDUÇÃO ABAIXO DAS VAGAS JÁ OCUPADAS
         // =================================================
 
-        else {
+        if (
+            vagasValor <
+            vagasOcupadasAtual
+        ) {
 
-            await addDoc(
-                colecaoMinicursos,
-                {
-                    ...dados,
-
-                    criadoEm: serverTimestamp()
-                }
+            mostrarErro(
+                `Não é possível definir ${vagasValor} vagas. Já existem ${vagasOcupadasAtual} vagas ocupadas.`
             );
 
+            vagas.focus();
 
-            mostrarSucesso(
-                "Minicurso cadastrado com sucesso."
-            );
-
+            return;
         }
 
 
-        limparFormulario();
 
-        await carregarMinicursos();
+        // =================================================
+        // OBJETO
+        // =================================================
+
+        const dados = {
+
+            nome:
+                nomeValor,
+
+            ministrante:
+                ministranteValor,
+
+            instituicao:
+                instituicaoValor,
+
+            descricao:
+                descricaoValor,
+
+            data:
+                dataValor,
+
+            inicio:
+                inicioValor,
+
+            fim:
+                fimValor,
+
+            cargaHoraria:
+                cargaHorariaValor,
+
+            vagas:
+                vagasValor,
+
+            vagasOcupadas:
+                vagasOcupadasAtual,
+
+            valor:
+                valorValor,
+
+            local:
+                localValor,
+
+            status:
+                statusValor,
+
+            atualizadoEm:
+                serverTimestamp()
+
+        };
 
 
-    } catch (erro) {
 
-        console.error(
-            "Erro ao salvar minicurso:",
-            erro
-        );
+        try {
+
+            btnSalvar.disabled =
+                true;
 
 
-        mostrarErro(
-            "Não foi possível salvar o minicurso."
-        );
 
-    } finally {
+            // =================================================
+            // EDIÇÃO
+            // =================================================
 
-        btnSalvar.disabled = false;
+            if (
+                minicursoEditando
+            ) {
+
+                await updateDoc(
+                    doc(
+                        db,
+                        "minicursos",
+                        minicursoEditando
+                    ),
+                    dados
+                );
+
+
+
+                mostrarSucesso(
+                    "Minicurso atualizado com sucesso."
+                );
+
+            }
+
+
+
+            // =================================================
+            // NOVO CADASTRO
+            // =================================================
+
+            else {
+
+                await addDoc(
+                    colecaoMinicursos,
+                    {
+
+                        ...dados,
+
+                        vagasOcupadas:
+                            0,
+
+                        criadoEm:
+                            serverTimestamp()
+
+                    }
+                );
+
+
+
+                mostrarSucesso(
+                    "Minicurso cadastrado com sucesso."
+                );
+
+            }
+
+
+
+            limparFormulario();
+
+            await carregarMinicursos();
+
+
+
+        } catch (erro) {
+
+            console.error(
+                "Erro ao salvar minicurso:",
+                erro
+            );
+
+
+
+            mostrarErro(
+                "Não foi possível salvar o minicurso."
+            );
+
+        } finally {
+
+            btnSalvar.disabled =
+                false;
+
+        }
 
     }
+);
 
-});
 
 
 // =====================================================
@@ -321,42 +531,61 @@ async function carregarMinicursos() {
         `;
 
 
+
         const snapshot =
-            await getDocs(colecaoMinicursos);
+            await getDocs(
+                colecaoMinicursos
+            );
+
 
 
         const minicursos = [];
 
 
-        snapshot.forEach((documento) => {
 
-            minicursos.push({
+        snapshot.forEach(
+            (documento) => {
 
-                id: documento.id,
+                minicursos.push({
 
-                ...documento.data()
+                    id:
+                        documento.id,
 
-            });
+                    ...documento.data()
 
-        });
+                });
 
-
-        // Ordenação por data e horário
-
-        minicursos.sort((a, b) => {
-
-            const dataA =
-                `${a.data || ""} ${a.inicio || ""}`;
-
-            const dataB =
-                `${b.data || ""} ${b.inicio || ""}`;
-
-            return dataA.localeCompare(dataB);
-
-        });
+            }
+        );
 
 
-        renderizarMinicursos(minicursos);
+
+        // =================================================
+        // ORDENAÇÃO
+        // =================================================
+
+        minicursos.sort(
+            (a, b) => {
+
+                const dataA =
+                    `${a.data || ""} ${a.inicio || ""}`;
+
+                const dataB =
+                    `${b.data || ""} ${b.inicio || ""}`;
+
+                return dataA.localeCompare(
+                    dataB
+                );
+
+            }
+        );
+
+
+
+        renderizarMinicursos(
+            minicursos
+        );
+
 
 
     } catch (erro) {
@@ -365,6 +594,7 @@ async function carregarMinicursos() {
             "Erro ao carregar minicursos:",
             erro
         );
+
 
 
         lista.innerHTML = `
@@ -378,11 +608,14 @@ async function carregarMinicursos() {
 }
 
 
+
 // =====================================================
 // RENDERIZAR
 // =====================================================
 
-function renderizarMinicursos(minicursos) {
+function renderizarMinicursos(
+    minicursos
+) {
 
     if (!minicursos.length) {
 
@@ -403,242 +636,368 @@ function renderizarMinicursos(minicursos) {
     }
 
 
-    lista.innerHTML = minicursos
-        .map((minicurso) => {
 
-            const nomeCurso =
-                escapeHtml(
-                    minicurso.nome || "Sem nome"
-                );
+    lista.innerHTML =
+        minicursos
+            .map(
+                (minicurso) => {
 
-
-            const ministranteCurso =
-                escapeHtml(
-                    minicurso.ministrante || "Não informado"
-                );
+                    const nomeCurso =
+                        escapeHtml(
+                            minicurso.nome ||
+                            "Sem nome"
+                        );
 
 
-            const instituicaoCurso =
-                escapeHtml(
-                    minicurso.instituicao || "Não informado"
-                );
+
+                    const ministranteCurso =
+                        escapeHtml(
+                            minicurso.ministrante ||
+                            "Não informado"
+                        );
 
 
-            const descricaoCurso =
-                escapeHtml(
-                    minicurso.descricao || ""
-                );
+
+                    const instituicaoCurso =
+                        escapeHtml(
+                            minicurso.instituicao ||
+                            "Não informado"
+                        );
 
 
-            const localCurso =
-                escapeHtml(
-                    minicurso.local || "Não informado"
-                );
+
+                    const descricaoCurso =
+                        escapeHtml(
+                            minicurso.descricao ||
+                            ""
+                        );
 
 
-            const cargaCurso =
-                escapeHtml(
-                    minicurso.cargaHoraria || "Não informado"
-                );
+
+                    const localCurso =
+                        escapeHtml(
+                            minicurso.local ||
+                            "Não informado"
+                        );
 
 
-            const dataCurso =
-                formatarData(
-                    minicurso.data
-                );
+
+                    const cargaCurso =
+                        escapeHtml(
+                            minicurso.cargaHoraria ||
+                            "Não informado"
+                        );
 
 
-            const inicioCurso =
-                escapeHtml(
-                    minicurso.inicio || "--:--"
-                );
+
+                    const dataCurso =
+                        formatarData(
+                            minicurso.data
+                        );
 
 
-            const fimCurso =
-                escapeHtml(
-                    minicurso.fim || "--:--"
-                );
+
+                    const inicioCurso =
+                        escapeHtml(
+                            minicurso.inicio ||
+                            "--:--"
+                        );
 
 
-            const vagasCurso =
-                Number.isFinite(
-                    Number(minicurso.vagas)
-                )
-                    ? minicurso.vagas
-                    : 0;
+
+                    const fimCurso =
+                        escapeHtml(
+                            minicurso.fim ||
+                            "--:--"
+                        );
 
 
-            const valorCurso =
-                Number.isFinite(
-                    Number(minicurso.valor)
-                )
-                    ? Number(minicurso.valor)
-                    : 0;
+
+                    const vagasCurso =
+                        Number.isFinite(
+                            Number(
+                                minicurso.vagas
+                            )
+                        )
+                            ? Number(
+                                minicurso.vagas
+                            )
+                            : 0;
 
 
-            const statusCurso =
-                minicurso.status === "ativo"
-                    ? "Ativo"
-                    : "Inativo";
+
+                    const vagasOcupadasCurso =
+                        Number.isFinite(
+                            Number(
+                                minicurso.vagasOcupadas
+                            )
+                        )
+                            ? Number(
+                                minicurso.vagasOcupadas
+                            )
+                            : 0;
 
 
-            const classeStatus =
-                minicurso.status === "ativo"
-                    ? "status-ativo"
-                    : "status-inativo";
+
+                    const vagasDisponiveis =
+                        Math.max(
+                            0,
+                            vagasCurso -
+                            vagasOcupadasCurso
+                        );
 
 
-            return `
 
-                <article
-                    class="minicurso-item"
-                >
-
-
-                    <div
-                        class="minicurso-topo"
-                    >
-
-                        <div>
-
-                            <h3>
-                                ${nomeCurso}
-                            </h3>
+                    const valorCurso =
+                        Number.isFinite(
+                            Number(
+                                minicurso.valor
+                            )
+                        )
+                            ? Number(
+                                minicurso.valor
+                            )
+                            : 0;
 
 
-                            <p
-                                class="minicurso-ministrante"
+
+                    const statusCurso =
+                        minicurso.status ===
+                        "ativo"
+                            ? "Ativo"
+                            : "Inativo";
+
+
+
+                    const classeStatus =
+                        minicurso.status ===
+                        "ativo"
+                            ? "status-ativo"
+                            : "status-inativo";
+
+
+
+                    const classeVagas =
+                        vagasDisponiveis === 0
+                            ? "vagas-esgotadas"
+                            : "vagas-disponiveis";
+
+
+
+                    const textoVagas =
+                        vagasDisponiveis === 0
+                            ? "ESGOTADO"
+                            : `${vagasDisponiveis} disponíveis`;
+
+
+
+                    return `
+
+                        <article
+                            class="minicurso-item"
+                        >
+
+
+
+                            <div
+                                class="minicurso-topo"
                             >
-                                ${ministranteCurso}
-                            </p>
 
-                        </div>
+                                <div>
 
-
-                        <span
-                            class="status ${classeStatus}"
-                        >
-                            ${statusCurso}
-                        </span>
-
-                    </div>
+                                    <h3>
+                                        ${nomeCurso}
+                                    </h3>
 
 
 
-                    <div
-                        class="minicurso-info"
-                    >
+                                    <p
+                                        class="minicurso-ministrante"
+                                    >
+                                        ${ministranteCurso}
+                                    </p>
 
-                        <p>
-                            <strong>
-                                Instituição:
-                            </strong>
-                            ${instituicaoCurso}
-                        </p>
-
-
-                        <p>
-                            <strong>
-                                Data:
-                            </strong>
-                            ${dataCurso}
-                        </p>
-
-
-                        <p>
-                            <strong>
-                                Horário:
-                            </strong>
-                            ${inicioCurso}
-                            às
-                            ${fimCurso}
-                        </p>
-
-
-                        <p>
-                            <strong>
-                                Carga horária:
-                            </strong>
-                            ${cargaCurso}
-                        </p>
-
-
-                        <p>
-                            <strong>
-                                Vagas:
-                            </strong>
-                            ${vagasCurso}
-                        </p>
-
-
-                        <p>
-                            <strong>
-                                Local:
-                            </strong>
-                            ${localCurso}
-                        </p>
-
-
-                        <p>
-                            <strong>
-                                Valor adicional:
-                            </strong>
-                            ${formatarMoeda(valorCurso)}
-                        </p>
-
-                    </div>
+                                </div>
 
 
 
-                    ${
-                        descricaoCurso
-                            ? `
-                                <p
-                                    class="minicurso-descricao"
+                                <span
+                                    class="status ${classeStatus}"
                                 >
-                                    ${descricaoCurso}
+                                    ${statusCurso}
+                                </span>
+
+                            </div>
+
+
+
+
+
+                            <div
+                                class="minicurso-info"
+                            >
+
+                                <p>
+                                    <strong>
+                                        Instituição:
+                                    </strong>
+                                    ${instituicaoCurso}
                                 </p>
-                              `
-                            : ""
-                    }
 
 
 
-                    <div
-                        class="minicurso-acoes"
-                    >
-
-                        <button
-                            type="button"
-                            class="btn btn-editar"
-                            data-editar="${minicurso.id}"
-                        >
-                            EDITAR
-                        </button>
+                                <p>
+                                    <strong>
+                                        Data:
+                                    </strong>
+                                    ${dataCurso}
+                                </p>
 
 
-                        <button
-                            type="button"
-                            class="btn btn-danger"
-                            data-excluir="${minicurso.id}"
-                        >
-                            EXCLUIR
-                        </button>
 
-                    </div>
+                                <p>
+                                    <strong>
+                                        Horário:
+                                    </strong>
+                                    ${inicioCurso}
+                                    às
+                                    ${fimCurso}
+                                </p>
 
 
-                </article>
 
-            `;
+                                <p>
+                                    <strong>
+                                        Carga horária:
+                                    </strong>
+                                    ${cargaCurso}
+                                </p>
 
-        })
-        .join("");
+
+
+                                <p>
+                                    <strong>
+                                        Vagas totais:
+                                    </strong>
+                                    ${vagasCurso}
+                                </p>
+
+
+
+                                <p>
+                                    <strong>
+                                        Vagas ocupadas:
+                                    </strong>
+                                    ${vagasOcupadasCurso}
+                                </p>
+
+
+
+                                <p>
+                                    <strong>
+                                        Vagas disponíveis:
+                                    </strong>
+
+                                    <span
+                                        class="${classeVagas}"
+                                    >
+                                        ${textoVagas}
+                                    </span>
+
+                                </p>
+
+
+
+                                <p>
+                                    <strong>
+                                        Local:
+                                    </strong>
+                                    ${localCurso}
+                                </p>
+
+
+
+                                <p>
+                                    <strong>
+                                        Valor adicional:
+                                    </strong>
+                                    ${formatarMoeda(
+                                        valorCurso
+                                    )}
+                                </p>
+
+                            </div>
+
+
+
+
+
+                            ${
+                                descricaoCurso
+                                    ? `
+                                        <p
+                                            class="minicurso-descricao"
+                                        >
+                                            ${descricaoCurso}
+                                        </p>
+                                      `
+                                    : ""
+                            }
+
+
+
+
+
+                            <div
+                                class="minicurso-acoes"
+                            >
+
+                                <button
+                                    type="button"
+                                    class="btn btn-editar"
+                                    data-editar="${minicurso.id}"
+                                >
+                                    EDITAR
+                                </button>
+
+
+
+                                <button
+                                    type="button"
+                                    class="btn"
+                                    data-vagas="${minicurso.id}"
+                                >
+                                    AJUSTAR VAGAS
+                                </button>
+
+
+
+                                <button
+                                    type="button"
+                                    class="btn btn-danger"
+                                    data-excluir="${minicurso.id}"
+                                >
+                                    EXCLUIR
+                                </button>
+
+                            </div>
+
+
+
+                        </article>
+
+                    `;
+
+                }
+            )
+            .join("");
+
 
 
     adicionarEventosLista();
 
 }
+
 
 
 // =====================================================
@@ -648,51 +1007,94 @@ function renderizarMinicursos(minicursos) {
 function adicionarEventosLista() {
 
 
-    document
-        .querySelectorAll("[data-editar]")
-        .forEach((botao) => {
-
-            botao.addEventListener(
-                "click",
-                () => {
-
-                    editarMinicurso(
-                        botao.dataset.editar
-                    );
-
-                }
-            );
-
-        });
-
 
     document
-        .querySelectorAll("[data-excluir]")
-        .forEach((botao) => {
+        .querySelectorAll(
+            "[data-editar]"
+        )
+        .forEach(
+            (botao) => {
 
-            botao.addEventListener(
-                "click",
-                () => {
+                botao.addEventListener(
+                    "click",
+                    () => {
 
-                    excluirMinicurso(
-                        botao.dataset.excluir
-                    );
+                        editarMinicurso(
+                            botao.dataset.editar
+                        );
 
-                }
-            );
+                    }
+                );
 
-        });
+            }
+        );
+
+
+
+    document
+        .querySelectorAll(
+            "[data-vagas]"
+        )
+        .forEach(
+            (botao) => {
+
+                botao.addEventListener(
+                    "click",
+                    () => {
+
+                        ajustarVagas(
+                            botao.dataset.vagas
+                        );
+
+                    }
+                );
+
+            }
+        );
+
+
+
+    document
+        .querySelectorAll(
+            "[data-excluir]"
+        )
+        .forEach(
+            (botao) => {
+
+                botao.addEventListener(
+                    "click",
+                    () => {
+
+                        excluirMinicurso(
+                            botao.dataset.excluir
+                        );
+
+                    }
+                );
+
+            }
+        );
 
 }
 
 
+
 // =====================================================
-// EDITAR
+// AJUSTAR VAGAS OCUPADAS
 // =====================================================
 
-async function editarMinicurso(id) {
+async function ajustarVagas(id) {
 
     try {
+
+        const referencia =
+            doc(
+                db,
+                "minicursos",
+                id
+            );
+
+
 
         const snapshot =
             await getDocs(
@@ -700,18 +1102,26 @@ async function editarMinicurso(id) {
             );
 
 
+
         let dados = null;
 
 
-        snapshot.forEach((documento) => {
 
-            if (documento.id === id) {
+        snapshot.forEach(
+            (documento) => {
 
-                dados = documento.data();
+                if (
+                    documento.id === id
+                ) {
+
+                    dados =
+                        documento.data();
+
+                }
 
             }
+        );
 
-        });
 
 
         if (!dados) {
@@ -724,63 +1134,257 @@ async function editarMinicurso(id) {
         }
 
 
-        minicursoEditando = id;
+
+        const vagasTotais =
+            Number(
+                dados.vagas || 0
+            );
+
+
+
+        const vagasOcupadasAtuais =
+            Number(
+                dados.vagasOcupadas || 0
+            );
+
+
+
+        const resposta =
+            prompt(
+                `Minicurso: ${dados.nome}\n\n` +
+                `Vagas totais: ${vagasTotais}\n` +
+                `Vagas ocupadas atualmente: ${vagasOcupadasAtuais}\n\n` +
+                `Informe a quantidade de vagas ocupadas:`,
+                vagasOcupadasAtuais
+            );
+
+
+
+        if (
+            resposta === null
+        ) {
+
+            return;
+        }
+
+
+
+        const novaQuantidade =
+            Number(
+                resposta
+            );
+
+
+
+        if (
+            !Number.isInteger(
+                novaQuantidade
+            )
+        ) {
+
+            alert(
+                "Informe um número inteiro válido."
+            );
+
+            return;
+        }
+
+
+
+        if (
+            novaQuantidade < 0
+        ) {
+
+            alert(
+                "A quantidade de vagas ocupadas não pode ser negativa."
+            );
+
+            return;
+        }
+
+
+
+        if (
+            novaQuantidade >
+            vagasTotais
+        ) {
+
+            alert(
+                `A quantidade ocupada não pode ser maior que ${vagasTotais} vagas.`
+            );
+
+            return;
+        }
+
+
+
+        await updateDoc(
+            referencia,
+            {
+
+                vagasOcupadas:
+                    novaQuantidade,
+
+                atualizadoEm:
+                    serverTimestamp()
+
+            }
+        );
+
+
+
+        mostrarSucesso(
+            "Vagas atualizadas com sucesso."
+        );
+
+
+
+        await carregarMinicursos();
+
+
+
+    } catch (erro) {
+
+        console.error(
+            "Erro ao ajustar vagas:",
+            erro
+        );
+
+
+
+        mostrarErro(
+            "Não foi possível atualizar as vagas."
+        );
+
+    }
+
+}
+
+
+
+// =====================================================
+// EDITAR
+// =====================================================
+
+async function editarMinicurso(
+    id
+) {
+
+    try {
+
+        const snapshot =
+            await getDocs(
+                colecaoMinicursos
+            );
+
+
+
+        let dados = null;
+
+
+
+        snapshot.forEach(
+            (documento) => {
+
+                if (
+                    documento.id === id
+                ) {
+
+                    dados =
+                        documento.data();
+
+                }
+
+            }
+        );
+
+
+
+        if (!dados) {
+
+            mostrarErro(
+                "Minicurso não encontrado."
+            );
+
+            return;
+        }
+
+
+
+        minicursoEditando =
+            id;
+
 
 
         nome.value =
             dados.nome || "";
 
 
+
         ministrante.value =
             dados.ministrante || "";
+
 
 
         instituicao.value =
             dados.instituicao || "";
 
 
+
         descricao.value =
             dados.descricao || "";
+
 
 
         data.value =
             dados.data || "";
 
 
+
         inicio.value =
             dados.inicio || "";
+
 
 
         fim.value =
             dados.fim || "";
 
 
+
         cargaHoraria.value =
             dados.cargaHoraria || "";
+
 
 
         vagas.value =
             dados.vagas ?? "";
 
 
+
         valor.value =
             dados.valor ?? 0;
+
 
 
         local.value =
             dados.local || "";
 
 
+
         status.value =
-            dados.status || "ativo";
+            dados.status ||
+            "ativo";
+
 
 
         btnSalvar.textContent =
             "SALVAR ALTERAÇÕES";
 
 
+
         btnCancelar.style.display =
             "block";
+
 
 
         window.scrollTo({
@@ -789,9 +1393,11 @@ async function editarMinicurso(id) {
         });
 
 
+
         mostrarSucesso(
             "Modo de edição ativado."
         );
+
 
 
     } catch (erro) {
@@ -800,6 +1406,7 @@ async function editarMinicurso(id) {
             "Erro ao editar:",
             erro
         );
+
 
 
         mostrarErro(
@@ -811,11 +1418,14 @@ async function editarMinicurso(id) {
 }
 
 
+
 // =====================================================
 // EXCLUIR
 // =====================================================
 
-async function excluirMinicurso(id) {
+async function excluirMinicurso(
+    id
+) {
 
     const confirmar =
         confirm(
@@ -823,10 +1433,12 @@ async function excluirMinicurso(id) {
         );
 
 
+
     if (!confirmar) {
 
         return;
     }
+
 
 
     try {
@@ -840,12 +1452,15 @@ async function excluirMinicurso(id) {
         );
 
 
+
         mostrarSucesso(
             "Minicurso excluído com sucesso."
         );
 
 
+
         await carregarMinicursos();
+
 
 
     } catch (erro) {
@@ -856,6 +1471,7 @@ async function excluirMinicurso(id) {
         );
 
 
+
         mostrarErro(
             "Não foi possível excluir o minicurso."
         );
@@ -863,6 +1479,7 @@ async function excluirMinicurso(id) {
     }
 
 }
+
 
 
 // =====================================================
@@ -883,6 +1500,7 @@ btnCancelar.addEventListener(
 );
 
 
+
 // =====================================================
 // LIMPAR FORMULÁRIO
 // =====================================================
@@ -892,22 +1510,30 @@ function limparFormulario() {
     form.reset();
 
 
-    valor.value = "0";
 
-    status.value = "ativo";
+    valor.value =
+        "0";
+
+    status.value =
+        "ativo";
 
 
-    minicursoEditando = null;
+
+    minicursoEditando =
+        null;
+
 
 
     btnSalvar.textContent =
         "CADASTRAR MINICURSO";
 
 
+
     btnCancelar.style.display =
         "none";
 
 }
+
 
 
 // =====================================================
@@ -919,6 +1545,7 @@ btnSair.addEventListener(
     async (evento) => {
 
         evento.preventDefault();
+
 
 
         try {
@@ -941,13 +1568,17 @@ btnSair.addEventListener(
 );
 
 
+
 // =====================================================
 // MENSAGENS
 // =====================================================
 
-function mostrarErro(texto) {
+function mostrarErro(
+    texto
+) {
 
-    mensagem.textContent = texto;
+    mensagem.textContent =
+        texto;
 
     mensagem.className =
         "mensagem erro";
@@ -955,9 +1586,13 @@ function mostrarErro(texto) {
 }
 
 
-function mostrarSucesso(texto) {
 
-    mensagem.textContent = texto;
+function mostrarSucesso(
+    texto
+) {
+
+    mensagem.textContent =
+        texto;
 
     mensagem.className =
         "mensagem sucesso";
@@ -965,9 +1600,11 @@ function mostrarSucesso(texto) {
 }
 
 
+
 function limparMensagem() {
 
-    mensagem.textContent = "";
+    mensagem.textContent =
+        "";
 
     mensagem.className =
         "mensagem";
@@ -975,11 +1612,14 @@ function limparMensagem() {
 }
 
 
+
 // =====================================================
 // FORMATAR DATA
 // =====================================================
 
-function formatarData(dataString) {
+function formatarData(
+    dataString
+) {
 
     if (!dataString) {
 
@@ -987,14 +1627,19 @@ function formatarData(dataString) {
     }
 
 
+
     const partes =
         dataString.split("-");
 
 
-    if (partes.length !== 3) {
+
+    if (
+        partes.length !== 3
+    ) {
 
         return dataString;
     }
+
 
 
     return `${partes[2]}/${partes[1]}/${partes[0]}`;
@@ -1002,13 +1647,18 @@ function formatarData(dataString) {
 }
 
 
+
 // =====================================================
 // FORMATAR MOEDA
 // =====================================================
 
-function formatarMoeda(valorNumerico) {
+function formatarMoeda(
+    valorNumerico
+) {
 
-    return Number(valorNumerico || 0)
+    return Number(
+        valorNumerico || 0
+    )
         .toLocaleString(
             "pt-BR",
             {
@@ -1020,17 +1670,35 @@ function formatarMoeda(valorNumerico) {
 }
 
 
+
 // =====================================================
 // SEGURANÇA HTML
 // =====================================================
 
-function escapeHtml(valor) {
+function escapeHtml(
+    valor
+) {
 
     return String(valor)
-        .replace(/&/g, "&amp;")
-        .replace(/</g, "&lt;")
-        .replace(/>/g, "&gt;")
-        .replace(/"/g, "&quot;")
-        .replace(/'/g, "&#039;");
+        .replace(
+            /&/g,
+            "&amp;"
+        )
+        .replace(
+            /</g,
+            "&lt;"
+        )
+        .replace(
+            />/g,
+            "&gt;"
+        )
+        .replace(
+            /"/g,
+            "&quot;"
+        )
+        .replace(
+            /'/g,
+            "&#039;"
+        );
 
 }
