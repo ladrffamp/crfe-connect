@@ -4017,6 +4017,19 @@ function crfeGerarCardTrabalho(
             "em_avaliacao"
         );
 
+    const areas = {
+    fisioterapia_esportiva: "Fisioterapia Esportiva",
+    avaliacao_funcional: "Avaliação Funcional",
+    prevencao_lesoes: "Prevenção de Lesões",
+    reabilitacao: "Reabilitação",
+    performance: "Performance Esportiva",
+    outras: "Outras"
+};
+
+const areaTexto =
+    areas[trabalho.area] ||
+    trabalho.area ||
+    "Não informada";
 
     let textoStatus =
         "Em avaliação";
