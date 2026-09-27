@@ -3407,6 +3407,738 @@ async function crfeAguardarUpload(
 }
 
 // =====================================================
+// ENVIAR TRABALHO CIENTÍFICO
+// =====================================================
+
+async function crfeEnviarTrabalho() {
+
+    if (!usuarioAtual) {
+
+        throw new Error(
+            "Usuário não autenticado."
+        );
+
+    }
+
+
+    if (
+        !pagamentoFoiConfirmado()
+    ) {
+
+        throw new Error(
+            "A submissão está disponível somente para participantes com inscrição confirmada."
+        );
+
+    }
+
+
+    const titulo =
+        String(
+            trabalhoTitulo?.value ||
+            ""
+        ).trim();
+
+
+    const tipo =
+        String(
+            trabalhoTipo?.value ||
+            ""
+        ).trim();
+
+
+    const area =
+        String(
+            trabalhoArea?.value ||
+            ""
+        ).trim();
+
+
+    const autores =
+        String(
+            trabalhoAutores?.value ||
+            ""
+        ).trim();
+
+
+    const orientador =
+        String(
+            trabalhoOrientador?.value ||
+            ""
+        ).trim();
+
+
+    const instituicao =
+        String(
+            trabalhoInstituicao?.value ||
+            ""
+        ).trim();
+
+
+    const arquivo =
+        trabalhoArquivo?.files?.[0];
+
+
+    // =================================================
+    // VALIDAÇÕES
+    // =================================================
+
+    if (!titulo) {
+
+        throw new Error(
+            "Informe o título do trabalho."
+        );
+
+    }
+
+
+    if (!tipo) {
+
+        throw new Error(
+            "Selecione o tipo de trabalho."
+        );
+
+    }
+
+
+    if (!area) {
+
+        throw new Error(
+            "Selecione a área temática."
+        );
+
+    }
+
+
+    if (!autores) {
+
+        throw new Error(
+            "Informe os autores."
+        );
+
+    }
+
+
+    if (!instituicao) {
+
+        throw new Error(
+            "Informe a instituição."
+        );
+
+    }
+
+
+    if (!arquivo) {
+
+        throw new Error(
+            "Selecione o arquivo PDF."
+        );
+
+    }
+
+
+    if (
+        arquivo.type !==
+        "application/pdf"
+    ) {
+
+        throw new Error(
+            "Somente arquivos PDF são permitidos."
+        );
+
+    }
+
+
+    if (
+        arquivo.size >
+        LIMITE_ARQUIVO_TRABALHO
+    ) {
+
+        throw new Error(
+            "O PDF não pode ultrapassar 10 MB."
+        );
+
+    }
+
+
+    // =================================================
+    // INTERFACE
+    // =================================================
+
+    if (btnEnviarTrabalho) {
+
+        btnEnviarTrabalho.disabled =
+            true;
+
+        btnEnviarTrabalho.textContent =
+            "ENVIANDO PDF...";
+    }
+
+
+    if (mensagemTrabalho) {
+
+        mensagemTrabalho.textContent =
+            "Preparando arquivo...";
+
+    }
+
+
+    try {
+
+        // =================================================
+        // TOKEN
+        // =================================================
+
+        const token =
+            crfeGerarTokenUpload();
+
+
+        // =================================================
+        // UPLOAD
+        // =================================================
+
+        if (mensagemTrabalho) {
+
+            mensagemTrabalho.textContent =
+                "Enviando PDF para o Google Drive...";
+
+        }
+
+
+        await crfeEnviarArquivoDrive(
+            arquivo,
+            token
+        );
+
+
+        // =================================================
+        // AGUARDAR DRIVE
+        // =================================================
+
+        if (mensagemTrabalho) {
+
+            mensagemTrabalho.textContent =
+                "Confirmando envio do arquivo...";
+
+        }
+
+
+        const upload =
+            await crfeAguardarUpload(
+                token
+            );
+
+
+        if (
+            !upload ||
+            !upload.fileId
+        ) {
+
+            throw new Error(
+                "O arquivo foi processado, mas o Google Drive não retornou o identificador."
+            );
+
+        }
+
+
+        // =================================================
+        // CRIAR DOCUMENTO FIRESTORE
+        // =================================================
+
+        if (mensagemTrabalho) {
+
+            mensagemTrabalho.textContent =
+                "Registrando trabalho científico...";
+
+        }
+
+
+        const nomeParticipante =
+            perfilAtual.nome ||
+            perfilAtual.nomeCompleto ||
+            inscricaoAtual?.nome ||
+            usuarioAtual.displayName ||
+            "Participante";
+
+
+        const email =
+            perfilAtual.email ||
+            inscricaoAtual?.email ||
+            usuarioAtual.email ||
+            "";
+
+
+        const trabalho = {
+
+            uid:
+                usuarioAtual.uid,
+
+            nomeParticipante:
+                nomeParticipante,
+
+            email:
+                email,
+
+            titulo:
+                titulo,
+
+            tipo:
+                tipo,
+
+            area:
+                area,
+
+            autores:
+                autores,
+
+            orientador:
+                orientador,
+
+            instituicao:
+                instituicao,
+
+            arquivoNome:
+                upload.fileName ||
+                arquivo.name,
+
+            arquivoUrl:
+                upload.fileUrl ||
+                "",
+
+            arquivoId:
+                upload.fileId,
+
+            status:
+                "em_avaliacao",
+
+            observacao:
+                "",
+
+            criadoEm:
+                serverTimestamp(),
+
+            atualizadoEm:
+                serverTimestamp()
+
+        };
+
+
+        await addDoc(
+            collection(
+                db,
+                "trabalhos"
+            ),
+            trabalho
+        );
+
+
+        // =================================================
+        // SUCESSO
+        // =================================================
+
+        if (mensagemTrabalho) {
+
+            mensagemTrabalho.textContent =
+                "✓ Trabalho enviado com sucesso! A Comissão Científica realizará a avaliação.";
+
+        }
+
+
+        // =================================================
+        // LIMPAR FORMULÁRIO
+        // =================================================
+
+        if (formTrabalho) {
+
+            formTrabalho.reset();
+
+        }
+
+
+        // =================================================
+        // RECARREGAR LISTA
+        // =================================================
+
+        await crfeCarregarMeusTrabalhos();
+
+
+    } catch (erro) {
+
+        console.error(
+            "Erro ao enviar trabalho:",
+            erro
+        );
+
+
+        if (mensagemTrabalho) {
+
+            mensagemTrabalho.textContent =
+                erro.message ||
+                "Não foi possível enviar o trabalho.";
+        }
+
+
+        throw erro;
+
+
+    } finally {
+
+        if (btnEnviarTrabalho) {
+
+            btnEnviarTrabalho.disabled =
+                false;
+
+            btnEnviarTrabalho.textContent =
+                "ENVIAR TRABALHO";
+
+        }
+
+    }
+}
+
+// =====================================================
+// CARREGAR MEUS TRABALHOS
+// =====================================================
+
+async function crfeCarregarMeusTrabalhos() {
+
+    if (
+        !usuarioAtual ||
+        !listaTrabalhos
+    ) {
+
+        return;
+    }
+
+
+    try {
+
+        listaTrabalhos.innerHTML =
+            "<p>Carregando trabalhos...</p>";
+
+
+        const consulta =
+            query(
+                collection(
+                    db,
+                    "trabalhos"
+                ),
+                where(
+                    "uid",
+                    "==",
+                    usuarioAtual.uid
+                )
+            );
+
+
+        const snapshot =
+            await getDocs(
+                consulta
+            );
+
+
+        if (
+            snapshot.empty
+        ) {
+
+            listaTrabalhos.innerHTML =
+                "<p>Nenhum trabalho enviado ainda.</p>";
+
+            return;
+        }
+
+
+        const trabalhos =
+            snapshot.docs.map(
+                item => ({
+
+                    id:
+                        item.id,
+
+                    ...item.data()
+
+                })
+            );
+
+
+        trabalhos.sort(
+            (
+                a,
+                b
+            ) => {
+
+                const dataA =
+                    a.criadoEm?.seconds ||
+                    0;
+
+
+                const dataB =
+                    b.criadoEm?.seconds ||
+                    0;
+
+
+                return dataB - dataA;
+
+            }
+        );
+
+
+        listaTrabalhos.innerHTML =
+            trabalhos
+                .map(
+                    trabalho =>
+                        crfeGerarCardTrabalho(
+                            trabalho
+                        )
+                )
+                .join("");
+
+
+    } catch (erro) {
+
+        console.error(
+            "Erro ao carregar trabalhos:",
+            erro
+        );
+
+
+        listaTrabalhos.innerHTML =
+            "<p>Não foi possível carregar seus trabalhos.</p>";
+    }
+}
+
+// =====================================================
+// CARD DO TRABALHO
+// =====================================================
+
+function crfeGerarCardTrabalho(
+    trabalho
+) {
+
+    const status =
+        String(
+            trabalho.status ||
+            "em_avaliacao"
+        );
+
+
+    let textoStatus =
+        "Em avaliação";
+
+
+    let classeStatus =
+        "status-em-avaliacao";
+
+
+    if (
+        status ===
+        "aprovado"
+    ) {
+
+        textoStatus =
+            "Aprovado";
+
+        classeStatus =
+            "status-aprovado";
+
+    } else if (
+        status ===
+        "aprovado_com_correcoes"
+    ) {
+
+        textoStatus =
+            "Aprovado com correções";
+
+        classeStatus =
+            "status-correcoes";
+
+    } else if (
+        status ===
+        "reprovado"
+    ) {
+
+        textoStatus =
+            "Reprovado";
+
+        classeStatus =
+            "status-reprovado";
+    }
+
+
+    const observacao =
+        trabalho.observacao
+            ? `
+                <div class="trabalho-observacao">
+                    <strong>Observação da Comissão:</strong>
+                    <br>
+                    ${textoSeguro(
+                        trabalho.observacao
+                    )}
+                </div>
+            `
+            : "";
+
+
+    const arquivo =
+        trabalho.arquivoUrl
+            ? `
+                <div class="trabalho-acoes">
+
+                    <a
+                        href="${trabalho.arquivoUrl}"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        class="btn-trabalho"
+                    >
+                        📄 Visualizar PDF
+                    </a>
+
+                </div>
+            `
+            : "";
+
+
+    return `
+
+        <div class="trabalho-card">
+
+            <h4>
+                ${textoSeguro(
+                    trabalho.titulo
+                )}
+            </h4>
+
+            <div class="trabalho-meta">
+
+                <div>
+                    <strong>Tipo:</strong>
+                    ${textoSeguro(
+                        trabalho.tipo
+                    )}
+                </div>
+
+                <div>
+                    <strong>Área:</strong>
+                    ${textoSeguro(
+                        trabalho.area
+                    )}
+                </div>
+
+                <div>
+                    <strong>Autores:</strong>
+                    ${textoSeguro(
+                        trabalho.autores
+                    )}
+                </div>
+
+                <div>
+                    <strong>Orientador:</strong>
+                    ${textoSeguro(
+                        trabalho.orientador,
+                        "Não informado"
+                    )}
+                </div>
+
+                <div>
+                    <strong>Instituição:</strong>
+                    ${textoSeguro(
+                        trabalho.instituicao
+                    )}
+                </div>
+
+                <div>
+                    <strong>Arquivo:</strong>
+                    ${textoSeguro(
+                        trabalho.arquivoNome
+                    )}
+                </div>
+
+            </div>
+
+            <span
+                class="trabalho-status ${classeStatus}"
+            >
+                ${textoStatus}
+            </span>
+
+            ${observacao}
+
+            ${arquivo}
+
+        </div>
+
+    `;
+}
+
+// =====================================================
+// ATUALIZAR ÁREA DE TRABALHOS
+// =====================================================
+
+function atualizarAreaTrabalhos() {
+
+    if (!formTrabalho) {
+        return;
+    }
+
+
+    if (
+        pagamentoFoiConfirmado()
+    ) {
+
+        formTrabalho.style.display =
+            "block";
+
+
+        if (trabalhosBloqueado) {
+
+            trabalhosBloqueado.style.display =
+                "none";
+        }
+
+    } else {
+
+        formTrabalho.style.display =
+            "none";
+
+
+        if (trabalhosBloqueado) {
+
+            trabalhosBloqueado.style.display =
+                "block";
+        }
+    }
+}
+
+// =====================================================
+// FORMULÁRIO DE TRABALHO
+// =====================================================
+
+if (formTrabalho) {
+
+    formTrabalho.addEventListener(
+        "submit",
+        async evento => {
+
+            evento.preventDefault();
+
+
+            try {
+
+                await crfeEnviarTrabalho();
+
+            } catch (erro) {
+
+                console.error(
+                    erro
+                );
+
+            }
+
+        }
+    );
+}
+
+
+// =====================================================
 // SAIR
 // =====================================================
 
