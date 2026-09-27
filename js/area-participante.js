@@ -3699,20 +3699,14 @@ async function crfeEnviarTrabalho() {
         }
 
 
-        await crfeEnviarArquivoDrive(
-            arquivo,
-            token
-        );
-
-
         // =================================================
-// UPLOAD CONCLUÍDO
+// ENVIAR PDF PARA GOOGLE DRIVE
 // =================================================
 
 if (mensagemTrabalho) {
 
     mensagemTrabalho.textContent =
-        "PDF enviado com sucesso. Registrando trabalho científico...";
+        "Enviando PDF para o Google Drive...";
 
 }
 
@@ -3732,6 +3726,14 @@ if (
     throw new Error(
         "O arquivo foi enviado, mas o Google Drive não retornou o identificador."
     );
+
+}
+
+
+if (mensagemTrabalho) {
+
+    mensagemTrabalho.textContent =
+        "PDF enviado com sucesso. Registrando trabalho científico...";
 
 }
 
