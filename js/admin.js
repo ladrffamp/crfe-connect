@@ -2,8 +2,9 @@ import {
     collection,
     getDocs,
     doc,
-    updateDoc,
-    setDoc
+    getDoc,
+    setDoc,
+    updateDoc
 } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
 
 import {
@@ -149,6 +150,14 @@ async function carregarInscricoes() {
         renderizarInscricoes();
 
 
+        // Sincroniza inscrições que já estão pagas
+        await sincronizarValidacoes();
+
+
+        // Recarrega a lista para mostrar códigos
+        await recarregarDadosAposSincronizacao();
+
+
         mensagemAdmin.textContent =
             "";
 
@@ -167,6 +176,241 @@ async function carregarInscricoes() {
         mensagemAdmin.classList.add(
             "error"
         );
+
+    }
+
+}
+
+
+// =====================================================
+// RECARREGAR DADOS APÓS SINCRONIZAÇÃO
+// =====================================================
+
+async function recarregarDadosAposSincronizacao() {
+
+    try {
+
+        const snapshot =
+            await getDocs(
+                collection(
+                    db,
+                    "inscricoes"
+                )
+            );
+
+
+        inscricoes =
+            snapshot.docs.map(
+                documento => ({
+
+                    id: documento.id,
+                    ...documento.data()
+
+                })
+            );
+
+
+        atualizarResumo();
+
+        renderizarInscricoes();
+
+
+    } catch (erro) {
+
+        console.error(
+            "Erro ao atualizar dados:",
+            erro
+        );
+
+    }
+
+}
+
+
+// =====================================================
+// SINCRONIZAR VALIDAÇÕES DAS INSCRIÇÕES PAGAS
+// =====================================================
+
+async function sincronizarValidacoes() {
+
+    const inscricoesPagas =
+        inscricoes.filter(
+            inscricao =>
+                inscricao.pagamento === "pago"
+        );
+
+
+    for (const inscricao of inscricoesPagas) {
+
+        try {
+
+            // =================================================
+            // GERAR OU RECUPERAR CÓDIGO
+            // =================================================
+
+            const codigoCredencial =
+                inscricao.codigoCredencial ||
+                (
+                    "CRFE-2027-" +
+                    inscricao.id
+                        .substring(0, 8)
+                        .toUpperCase()
+                );
+
+
+            // =================================================
+            // REFERÊNCIA DA VALIDAÇÃO
+            // =================================================
+
+            const referencia =
+                doc(
+                    db,
+                    "validacoes",
+                    codigoCredencial
+                );
+
+
+            // =================================================
+            // VERIFICAR SE JÁ EXISTE
+            // =================================================
+
+            const validacao =
+                await getDoc(
+                    referencia
+                );
+
+
+            // Se já existe, não altera
+            if (validacao.exists()) {
+
+                // Se a inscrição ainda não possui
+                // o código, salva o código nela.
+                if (!inscricao.codigoCredencial) {
+
+                    await updateDoc(
+
+                        doc(
+                            db,
+                            "inscricoes",
+                            inscricao.id
+                        ),
+
+                        {
+                            codigoCredencial:
+                                codigoCredencial
+                        }
+
+                    );
+
+                }
+
+                continue;
+
+            }
+
+
+            // =================================================
+            // CRIAR VALIDAÇÃO PÚBLICA
+            // =================================================
+
+            await setDoc(
+
+                referencia,
+
+                {
+
+                    codigoCredencial:
+                        codigoCredencial,
+
+                    nome:
+                        inscricao.nome ||
+                        "Não informado",
+
+                    categoria:
+                        inscricao.categoria ||
+                        "Não informado",
+
+                    instituicao:
+                        inscricao.instituicao ||
+                        inscricao.instituicaoInscricao ||
+                        "Não informado",
+
+                    lote:
+                        inscricao.loteNome ||
+                        inscricao.lote ||
+                        "Não informado",
+
+                    status:
+                        "pago",
+
+                    pagamento:
+                        "pago",
+
+                    formaPagamento:
+                        inscricao.formaPagamento ||
+                        "Não informado",
+
+                    valor:
+                        Number(
+                            inscricao.valorFinal || 0
+                        ),
+
+                    evento:
+                        "CRFE 2027",
+
+                    criadoEm:
+                        new Date(),
+
+                    pagamentoConfirmadoEm:
+                        inscricao.pagamentoConfirmadoEm ||
+                        new Date()
+
+                }
+
+            );
+
+
+            // =================================================
+            // SALVAR CÓDIGO NA INSCRIÇÃO
+            // =================================================
+
+            if (!inscricao.codigoCredencial) {
+
+                await updateDoc(
+
+                    doc(
+                        db,
+                        "inscricoes",
+                        inscricao.id
+                    ),
+
+                    {
+
+                        codigoCredencial:
+                            codigoCredencial
+
+                    }
+
+                );
+
+            }
+
+
+            console.log(
+                "Validação criada:",
+                codigoCredencial
+            );
+
+
+        } catch (erro) {
+
+            console.error(
+                "Erro ao sincronizar validação:",
+                inscricao.id,
+                erro
+            );
+
+        }
 
     }
 
@@ -264,7 +508,9 @@ function renderizarInscricoes() {
         [...inscricoes];
 
 
+    // =================================================
     // FILTRO PAGAMENTO
+    // =================================================
 
     if (
         filtro === "pendente"
@@ -292,7 +538,9 @@ function renderizarInscricoes() {
     }
 
 
+    // =================================================
     // FILTRO BUSCA
+    // =================================================
 
     if (busca) {
 
@@ -330,7 +578,9 @@ function renderizarInscricoes() {
     }
 
 
+    // =================================================
     // SEM RESULTADOS
+    // =================================================
 
     if (
         lista.length === 0
@@ -351,7 +601,9 @@ function renderizarInscricoes() {
     }
 
 
+    // =================================================
     // RENDERIZA
+    // =================================================
 
     listaInscricoes.innerHTML =
         lista.map(
@@ -608,7 +860,7 @@ window.confirmarPagamento =
         try {
 
             // =================================================
-            // GERAR / RECUPERAR CÓDIGO DA CREDENCIAL
+            // GERAR CÓDIGO DA CREDENCIAL
             // =================================================
 
             const codigoCredencial =
@@ -741,7 +993,7 @@ window.confirmarPagamento =
 
 
             alert(
-                "O pagamento não pôde ser confirmado.\n\n" +
+                "Não foi possível confirmar o pagamento.\n\n" +
                 "Verifique as permissões do Firestore."
             );
 
