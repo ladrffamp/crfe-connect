@@ -2139,6 +2139,63 @@ function atualizarResumoInscricao() {
             );
     }
 
+    function formatarCategoria(valor) {
+
+    if (
+        valor === undefined ||
+        valor === null ||
+        String(valor).trim() === ""
+    ) {
+        return "-";
+    }
+
+    const categoria =
+        String(valor)
+            .trim()
+            .toLowerCase();
+
+
+    const categorias = {
+
+        estudante_fisioterapia:
+            "Estudante de Fisioterapia",
+
+        estudante_educacao_fisica:
+            "Estudante de Educação Física",
+
+        profissional_fisioterapia:
+            "Profissional de Fisioterapia",
+
+        profissional_educacao_fisica:
+            "Profissional de Educação Física",
+
+        estudante:
+            "Estudante",
+
+        profissional:
+            "Profissional",
+
+        atleta:
+            "Atleta",
+
+        outro:
+            "Outro"
+
+    };
+
+
+    return categorias[categoria] ||
+        categoria
+            .replace(/_/g, " ")
+            .replace(/\s+/g, " ")
+            .trim()
+            .toLowerCase()
+            .replace(
+                /(^|\s)\S/g,
+                letra =>
+                    letra.toUpperCase()
+            );
+}
 
     if (resumoInstituicao) {
 
