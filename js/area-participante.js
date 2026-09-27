@@ -4222,10 +4222,11 @@ const botaoReenvio =
 
             ${observacao}
 
-            ${arquivo}
+${arquivo}
 
-        </div>
+${botaoReenvio}
 
+</div>
     `;
 }
 
