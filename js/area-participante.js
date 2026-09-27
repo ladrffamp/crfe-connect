@@ -4165,10 +4165,11 @@ const areaTexto =
             </div>
 
             <span
-                class="trabalho-status ${classeStatus}"
-            >
-                ${textoStatus}
-            </span>
+    class="trabalho-status ${classeStatus}"
+>
+    ${status === "aprovado" ? "✓ " : ""}
+    ${textoStatus}
+</span>
 
             ${observacao}
 
