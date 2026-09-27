@@ -597,6 +597,137 @@ async function salvarAvaliacao(id) {
     }
 }
 
+async function finalizarAvaliacao(id) {
+
+    const select =
+        document.querySelector(
+            `.campo-avaliacao-status[data-id="${id}"]`
+        );
+
+    const textarea =
+        document.querySelector(
+            `.campo-avaliacao-observacao[data-id="${id}"]`
+        );
+
+    const botao =
+        document.querySelector(
+            `.btn-finalizar-avaliacao[data-id="${id}"]`
+        );
+
+    const mensagem =
+        document.querySelector(
+            `.mensagem-avaliacao[data-id="${id}"]`
+        );
+
+    if (!select || !textarea || !botao) {
+        return;
+    }
+
+    const confirmar =
+        confirm(
+            "Tem certeza que deseja finalizar esta avaliação?\n\n" +
+            "Depois de finalizada, a avaliação não poderá mais ser alterada."
+        );
+
+    if (!confirmar) {
+        return;
+    }
+
+    try {
+
+        botao.disabled = true;
+        botao.textContent = "Finalizando...";
+        mensagem.textContent = "";
+
+        const novoStatus =
+            select.value;
+
+        const novaObservacao =
+            textarea.value.trim();
+
+        const trabalhoRef =
+            doc(db, "trabalhos", id);
+
+        await updateDoc(
+            trabalhoRef,
+            {
+                status: novoStatus,
+                observacao: novaObservacao,
+                avaliacaoFinalizada: true,
+                avaliacaoFinalizadaEm: serverTimestamp()
+            }
+        );
+
+        const trabalho =
+            todosTrabalhos.find(
+                item => item.id === id
+            );
+
+        if (trabalho) {
+
+            trabalho.status =
+                novoStatus;
+
+            trabalho.observacao =
+                novaObservacao;
+
+            trabalho.avaliacaoFinalizada =
+                true;
+        }
+
+        select.disabled = true;
+        textarea.disabled = true;
+
+        botao.disabled = true;
+        botao.textContent =
+            "🔒 Avaliação finalizada";
+
+        const botaoSalvar =
+            document.querySelector(
+                `.btn-salvar-avaliacao[data-id="${id}"]`
+            );
+
+        if (botaoSalvar) {
+            botaoSalvar.disabled = true;
+        }
+
+        const card =
+            document.querySelector(
+                `.trabalho-card[data-id="${id}"]`
+            );
+
+        const selo =
+            card?.querySelector(".status");
+
+        if (selo) {
+            selo.textContent =
+                formatarStatus(novoStatus);
+        }
+
+        mensagem.innerHTML = `
+            <span class="avaliacao-sucesso">
+                ✓ Avaliação finalizada com sucesso.
+            </span>
+        `;
+
+    } catch (erro) {
+
+        console.error(
+            "Erro ao finalizar avaliação:",
+            erro
+        );
+
+        mensagem.innerHTML = `
+            <span class="avaliacao-erro">
+                Não foi possível finalizar a avaliação.
+            </span>
+        `;
+
+        botao.disabled = false;
+        botao.textContent =
+            "🔒 Finalizar avaliação";
+    }
+}
 
 // =====================================================
 // ATIVAR BOTÕES
