@@ -308,6 +308,69 @@ function textoSeguro(
 }
 
 
+// =====================================================
+// FORMATAR CATEGORIA
+// =====================================================
+
+function formatarCategoria(valor) {
+
+    if (
+        valor === undefined ||
+        valor === null ||
+        String(valor).trim() === ""
+    ) {
+        return "-";
+    }
+
+    const categoria =
+        String(valor)
+            .trim()
+            .toLowerCase();
+
+
+    const categorias = {
+
+        estudante_fisioterapia:
+            "Estudante de Fisioterapia",
+
+        estudante_educacao_fisica:
+            "Estudante de Educação Física",
+
+        profissional_fisioterapia:
+            "Profissional de Fisioterapia",
+
+        profissional_educacao_fisica:
+            "Profissional de Educação Física",
+
+        estudante:
+            "Estudante",
+
+        profissional:
+            "Profissional",
+
+        atleta:
+            "Atleta",
+
+        outro:
+            "Outro"
+
+    };
+
+
+    return categorias[categoria] ||
+        categoria
+            .replace(/_/g, " ")
+            .replace(/\s+/g, " ")
+            .trim()
+            .toLowerCase()
+            .replace(
+                /(^|\s)\S/g,
+                letra =>
+                    letra.toUpperCase()
+            );
+}
+
+
 function formatarMoeda(valor) {
 
     const numero =
@@ -2131,71 +2194,14 @@ function atualizarResumoInscricao() {
     }
 
 
-   if (resumoCategoria) {
+    if (resumoCategoria) {
 
-    resumoCategoria.textContent =
-        formatarCategoria(
-            inscricaoAtual.categoria
-        );
-}
-
-    function formatarCategoria(valor) {
-
-    if (
-        valor === undefined ||
-        valor === null ||
-        String(valor).trim() === ""
-    ) {
-        return "-";
+        resumoCategoria.textContent =
+            formatarCategoria(
+                inscricaoAtual.categoria
+            );
     }
 
-    const categoria =
-        String(valor)
-            .trim()
-            .toLowerCase();
-
-
-    const categorias = {
-
-        estudante_fisioterapia:
-            "Estudante de Fisioterapia",
-
-        estudante_educacao_fisica:
-            "Estudante de Educação Física",
-
-        profissional_fisioterapia:
-            "Profissional de Fisioterapia",
-
-        profissional_educacao_fisica:
-            "Profissional de Educação Física",
-
-        estudante:
-            "Estudante",
-
-        profissional:
-            "Profissional",
-
-        atleta:
-            "Atleta",
-
-        outro:
-            "Outro"
-
-    };
-
-
-    return categorias[categoria] ||
-        categoria
-            .replace(/_/g, " ")
-            .replace(/\s+/g, " ")
-            .trim()
-            .toLowerCase()
-            .replace(
-                /(^|\s)\S/g,
-                letra =>
-                    letra.toUpperCase()
-            );
-}
 
     if (resumoInstituicao) {
 
@@ -2850,9 +2856,9 @@ async function atualizarCredencial() {
 
 
     const categoriaCredencial =
-    formatarCategoria(
-        inscricaoAtual.categoria
-    );
+        formatarCategoria(
+            inscricaoAtual.categoria
+        );
 
 
     const instituicao =
