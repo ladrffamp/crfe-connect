@@ -347,12 +347,12 @@ function gerarCardTrabalho(trabalho) {
 
 
                 <button
-                    type="button"
-                    class="btn-salvar-avaliacao"
-                    data-id="${escaparHTML(trabalho.id)}"
-                >
-                    💾 Salvar avaliação
-                </button>
+    type="button"
+    class="btn-finalizar-avaliacao"
+    data-id="${escaparHTML(trabalho.id)}"
+>
+    🔒 Finalizar avaliação
+</button>
 
 
                 <div
