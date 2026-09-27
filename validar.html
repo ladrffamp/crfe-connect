@@ -1,0 +1,416 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <title>Validação | CRFE 2027</title>
+
+    <link
+        rel="stylesheet"
+        href="css/styles.css"
+    >
+
+    <style>
+
+        body {
+            margin: 0;
+            min-height: 100vh;
+            background: #f5f7f6;
+            font-family: Arial, sans-serif;
+        }
+
+        .validacao-page {
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .validacao-main {
+            flex: 1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 40px 20px;
+        }
+
+        .validacao-card {
+            width: min(520px, 100%);
+            background: #ffffff;
+            border: 1px solid #e0e7e2;
+            border-radius: 20px;
+            overflow: hidden;
+            box-shadow: 0 15px 45px rgba(20, 60, 40, 0.08);
+        }
+
+        .validacao-topo {
+            padding: 28px 30px;
+            background: #0b7a3b;
+            color: #ffffff;
+            text-align: center;
+        }
+
+        .validacao-topo .logo {
+            display: block;
+            margin-bottom: 8px;
+            font-size: 30px;
+            font-weight: 900;
+            letter-spacing: 1px;
+        }
+
+        .validacao-topo span {
+            font-size: 12px;
+            letter-spacing: 1.5px;
+            opacity: 0.9;
+        }
+
+        .validacao-conteudo {
+            padding: 30px;
+        }
+
+        .status-box {
+            padding: 22px;
+            border-radius: 14px;
+            text-align: center;
+            margin-bottom: 25px;
+        }
+
+        .status-box.confirmada {
+            background: #eef8f1;
+            border: 1px solid #cce5d4;
+        }
+
+        .status-box.pendente {
+            background: #fff8e8;
+            border: 1px solid #f0dfad;
+        }
+
+        .status-box.erro {
+            background: #fff1f1;
+            border: 1px solid #f0cccc;
+        }
+
+        .status-icone {
+            width: 58px;
+            height: 58px;
+            margin: 0 auto 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 50%;
+            background: #0b7a3b;
+            color: #ffffff;
+            font-size: 30px;
+            font-weight: 900;
+        }
+
+        .pendente .status-icone {
+            background: #b7791f;
+        }
+
+        .erro .status-icone {
+            background: #c53030;
+        }
+
+        .status-box h1 {
+            margin: 0 0 6px;
+            font-size: 22px;
+        }
+
+        .confirmada h1 {
+            color: #155d32;
+        }
+
+        .pendente h1 {
+            color: #8a5a13;
+        }
+
+        .erro h1 {
+            color: #a52828;
+        }
+
+        .status-box p {
+            margin: 0;
+            color: #64706a;
+            font-size: 13px;
+            line-height: 1.5;
+        }
+
+        .dados-participante {
+            display: grid;
+            gap: 12px;
+        }
+
+        .dado {
+            padding: 15px;
+            border-radius: 11px;
+            background: #f7f9f8;
+            border: 1px solid #e4ebe6;
+        }
+
+        .dado span {
+            display: block;
+            margin-bottom: 5px;
+            color: #7b867f;
+            font-size: 11px;
+            font-weight: 800;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .dado strong {
+            color: #20372b;
+            font-size: 15px;
+            word-break: break-word;
+        }
+
+        .codigo-validacao {
+            margin-top: 20px;
+            padding-top: 18px;
+            border-top: 1px solid #e2e8e4;
+            text-align: center;
+            color: #7a857f;
+            font-size: 11px;
+            font-weight: 700;
+            word-break: break-all;
+        }
+
+        .validacao-loading {
+            padding: 30px;
+            text-align: center;
+            color: #64706a;
+        }
+
+        .rodape-validacao {
+            padding: 20px;
+            text-align: center;
+            color: #7a857f;
+            font-size: 11px;
+        }
+
+        @media (max-width: 600px) {
+
+            .validacao-main {
+                padding: 20px 15px;
+            }
+
+            .validacao-conteudo {
+                padding: 22px;
+            }
+
+            .validacao-topo {
+                padding: 24px 20px;
+            }
+
+        }
+
+    </style>
+
+</head>
+
+
+<body class="validacao-page">
+
+
+    <main class="validacao-main">
+
+        <div class="validacao-card">
+
+
+            <!-- CABEÇALHO -->
+
+            <div class="validacao-topo">
+
+                <strong class="logo">
+                    CRFE <span>2027</span>
+                </strong>
+
+                <span>
+                    CONGRESSO REGIONAL DE FISIOTERAPIA ESPORTIVA
+                </span>
+
+            </div>
+
+
+
+            <!-- CONTEÚDO -->
+
+            <div class="validacao-conteudo">
+
+
+                <!-- CARREGANDO -->
+
+                <div
+                    id="validacaoLoading"
+                    class="validacao-loading"
+                >
+
+                    Verificando inscrição...
+
+                </div>
+
+
+
+                <!-- RESULTADO -->
+
+                <div
+                    id="resultadoValidacao"
+                    style="display:none;"
+                >
+
+
+                    <div
+                        id="statusBox"
+                        class="status-box confirmada"
+                    >
+
+                        <div
+                            id="statusIcone"
+                            class="status-icone"
+                        >
+                            ✓
+                        </div>
+
+                        <h1 id="statusTitulo">
+                            INSCRIÇÃO CONFIRMADA
+                        </h1>
+
+                        <p id="statusDescricao">
+                            A inscrição foi validada com sucesso.
+                        </p>
+
+                    </div>
+
+
+
+                    <!-- DADOS -->
+
+                    <div class="dados-participante">
+
+
+                        <div class="dado">
+
+                            <span>
+                                Participante
+                            </span>
+
+                            <strong id="dadosNome">
+                                -
+                            </strong>
+
+                        </div>
+
+
+                        <div class="dado">
+
+                            <span>
+                                Categoria
+                            </span>
+
+                            <strong id="dadosCategoria">
+                                -
+                            </strong>
+
+                        </div>
+
+
+                        <div class="dado">
+
+                            <span>
+                                Instituição
+                            </span>
+
+                            <strong id="dadosInstituicao">
+                                -
+                            </strong>
+
+                        </div>
+
+
+                        <div class="dado">
+
+                            <span>
+                                Lote
+                            </span>
+
+                            <strong id="dadosLote">
+                                -
+                            </strong>
+
+                        </div>
+
+
+                        <div class="dado">
+
+                            <span>
+                                Status do pagamento
+                            </span>
+
+                            <strong id="dadosPagamento">
+                                -
+                            </strong>
+
+                        </div>
+
+
+                        <div class="dado">
+
+                            <span>
+                                Forma de pagamento
+                            </span>
+
+                            <strong id="dadosFormaPagamento">
+                                -
+                            </strong>
+
+                        </div>
+
+
+                    </div>
+
+
+
+                    <div
+                        id="codigoValidacao"
+                        class="codigo-validacao"
+                    >
+                        -
+                    </div>
+
+
+                </div>
+
+            </div>
+
+
+        </div>
+
+    </main>
+
+
+
+    <footer class="rodape-validacao">
+
+        CRFE 2027 | Realização LADRF
+
+    </footer>
+
+
+
+    <!-- JAVASCRIPT -->
+
+    <script
+        type="module"
+        src="js/validar.js?v=1"
+    ></script>
+
+
+</body>
+
+</html>
