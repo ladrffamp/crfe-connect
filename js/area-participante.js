@@ -296,6 +296,69 @@ const btnSair =
         "btnSair"
     );
 
+// =====================================================
+// TRABALHOS CIENTÍFICOS
+// =====================================================
+
+const formTrabalho =
+    document.getElementById(
+        "formTrabalho"
+    );
+
+const trabalhosBloqueado =
+    document.getElementById(
+        "trabalhosBloqueado"
+    );
+
+const trabalhoTitulo =
+    document.getElementById(
+        "trabalhoTitulo"
+    );
+
+const trabalhoTipo =
+    document.getElementById(
+        "trabalhoTipo"
+    );
+
+const trabalhoArea =
+    document.getElementById(
+        "trabalhoArea"
+    );
+
+const trabalhoAutores =
+    document.getElementById(
+        "trabalhoAutores"
+    );
+
+const trabalhoOrientador =
+    document.getElementById(
+        "trabalhoOrientador"
+    );
+
+const trabalhoInstituicao =
+    document.getElementById(
+        "trabalhoInstituicao"
+    );
+
+const trabalhoArquivo =
+    document.getElementById(
+        "trabalhoArquivo"
+    );
+
+const btnEnviarTrabalho =
+    document.getElementById(
+        "btnEnviarTrabalho"
+    );
+
+const mensagemTrabalho =
+    document.getElementById(
+        "mensagemTrabalho"
+    );
+
+const listaTrabalhos =
+    document.getElementById(
+        "listaTrabalhos"
+    );
 
 // =====================================================
 // FUNÇÕES GERAIS
