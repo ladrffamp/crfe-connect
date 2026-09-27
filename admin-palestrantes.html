@@ -19,12 +19,21 @@
 
     <style>
 
+        /* =====================================================
+           BASE
+        ===================================================== */
+
         body {
             margin: 0;
             background: #f5f8f6;
             color: #173d2c;
             font-family: Arial, sans-serif;
         }
+
+
+        /* =====================================================
+           HEADER
+        ===================================================== */
 
         .site-header {
             width: 100%;
@@ -52,6 +61,7 @@
             font-size: 27px;
             font-weight: 900;
             line-height: 1;
+            letter-spacing: -0.5px;
         }
 
         .site-header .logo span {
@@ -63,16 +73,22 @@
         .site-header nav {
             display: flex;
             align-items: center;
+            justify-content: flex-end;
             gap: 10px;
         }
 
         .site-header nav a {
+            display: inline-flex;
+            align-items: center;
+            min-height: 42px;
+            box-sizing: border-box;
             color: #294538;
             text-decoration: none;
             font-size: 14px;
             font-weight: 700;
-            padding: 10px 14px;
+            padding: 0 14px;
             border-radius: 8px;
+            transition: 0.2s ease;
         }
 
         .site-header nav a:hover {
@@ -85,10 +101,25 @@
             color: #ffffff;
         }
 
+        .site-header nav a:last-child:hover {
+            background: #086330;
+            color: #ffffff;
+        }
+
+
+        /* =====================================================
+           CONTAINER
+        ===================================================== */
+
         .admin-container {
             width: min(1180px, 92%);
             margin: 40px auto 70px;
         }
+
+
+        /* =====================================================
+           CABEÇALHO DA PÁGINA
+        ===================================================== */
 
         .admin-header {
             margin-bottom: 30px;
@@ -98,12 +129,19 @@
             margin: 0 0 8px;
             font-size: 30px;
             color: #173d2c;
+            letter-spacing: -0.5px;
         }
 
         .admin-header p {
             margin: 0;
             color: #65756d;
+            font-size: 14px;
         }
+
+
+        /* =====================================================
+           LAYOUT
+        ===================================================== */
 
         .layout {
             display: grid;
@@ -111,6 +149,11 @@
             gap: 25px;
             align-items: start;
         }
+
+
+        /* =====================================================
+           CARDS
+        ===================================================== */
 
         .card {
             background: #ffffff;
@@ -125,6 +168,11 @@
             color: #173d2c;
             font-size: 20px;
         }
+
+
+        /* =====================================================
+           FORMULÁRIO
+        ===================================================== */
 
         .form-group {
             margin-bottom: 15px;
@@ -150,11 +198,18 @@
             font-family: inherit;
             outline: none;
             background: #ffffff;
+            color: #173d2c;
+            transition: 0.2s ease;
         }
 
         .form-group textarea {
             min-height: 110px;
             resize: vertical;
+        }
+
+        .form-group input::placeholder,
+        .form-group textarea::placeholder {
+            color: #9aa8a1;
         }
 
         .form-group input:focus,
@@ -163,6 +218,11 @@
             border-color: #0b7a3b;
             box-shadow: 0 0 0 3px rgba(11, 122, 59, 0.08);
         }
+
+
+        /* =====================================================
+           BOTÃO PRINCIPAL
+        ===================================================== */
 
         .btn-principal {
             width: 100%;
@@ -174,24 +234,45 @@
             font-size: 14px;
             font-weight: 800;
             cursor: pointer;
+            transition: 0.2s ease;
         }
 
         .btn-principal:hover {
             background: #086330;
         }
 
+        .btn-principal:active {
+            transform: translateY(1px);
+        }
+
+
+        /* =====================================================
+           MENSAGEM
+        ===================================================== */
+
         .mensagem {
             margin-top: 12px;
+            min-height: 18px;
             font-size: 13px;
             font-weight: 700;
             text-align: center;
         }
+
+
+        /* =====================================================
+           LISTA
+        ===================================================== */
 
         .lista {
             display: flex;
             flex-direction: column;
             gap: 15px;
         }
+
+
+        /* =====================================================
+           CARD DO PALESTRANTE
+        ===================================================== */
 
         .palestrante-card {
             display: grid;
@@ -202,6 +283,12 @@
             border: 1px solid #e3e9e5;
             border-radius: 12px;
             background: #ffffff;
+            transition: 0.2s ease;
+        }
+
+        .palestrante-card:hover {
+            border-color: #cbd9d1;
+            box-shadow: 0 4px 14px rgba(20, 60, 40, 0.05);
         }
 
         .palestrante-foto {
@@ -210,16 +297,27 @@
             border-radius: 50%;
             object-fit: cover;
             background: #edf3ef;
+            border: 2px solid #e8f0eb;
+        }
+
+
+        /* =====================================================
+           INFORMAÇÕES
+        ===================================================== */
+
+        .palestrante-info {
+            min-width: 0;
         }
 
         .palestrante-info h3 {
             margin: 0 0 5px;
             font-size: 18px;
             color: #173d2c;
+            word-break: break-word;
         }
 
         .palestrante-info .profissao {
-            margin: 0 0 5px;
+            margin: 0 0 7px;
             color: #0b7a3b;
             font-weight: 700;
             font-size: 14px;
@@ -229,13 +327,50 @@
             margin: 3px 0;
             color: #68776f;
             font-size: 13px;
+            line-height: 1.4;
         }
+
+        .palestrante-info strong {
+            color: #43574d;
+        }
+
+
+        /* =====================================================
+           AÇÕES
+        ===================================================== */
 
         .acoes {
             display: flex;
             flex-direction: column;
             gap: 7px;
+            min-width: 82px;
         }
+
+
+        /* =====================================================
+           BOTÃO EDITAR
+        ===================================================== */
+
+        .btn-editar {
+            border: 0;
+            border-radius: 7px;
+            padding: 9px 12px;
+            background: #eaf5ee;
+            color: #0b7a3b;
+            font-size: 12px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: 0.2s ease;
+        }
+
+        .btn-editar:hover {
+            background: #dcefe3;
+        }
+
+
+        /* =====================================================
+           BOTÃO EXCLUIR
+        ===================================================== */
 
         .btn-excluir {
             border: 0;
@@ -246,11 +381,17 @@
             font-size: 12px;
             font-weight: 700;
             cursor: pointer;
+            transition: 0.2s ease;
         }
 
         .btn-excluir:hover {
             background: #ffe1e1;
         }
+
+
+        /* =====================================================
+           ESTADO VAZIO
+        ===================================================== */
 
         .vazio {
             padding: 40px 20px;
@@ -258,7 +399,14 @@
             color: #718078;
             border: 1px dashed #ccd8d1;
             border-radius: 12px;
+            background: #fbfcfb;
+            font-size: 14px;
         }
+
+
+        /* =====================================================
+           STATUS
+        ===================================================== */
 
         .status-ativo {
             display: inline-block;
@@ -282,6 +430,11 @@
             font-weight: 800;
         }
 
+
+        /* =====================================================
+           RESPONSIVO
+        ===================================================== */
+
         @media (max-width: 850px) {
 
             .layout {
@@ -290,23 +443,47 @@
 
         }
 
+
         @media (max-width: 600px) {
 
             .site-header .container {
                 min-height: 68px;
+                gap: 10px;
+            }
+
+            .site-header .logo {
+                font-size: 23px;
+            }
+
+            .site-header .logo span {
+                font-size: 13px;
+            }
+
+            .site-header nav {
+                gap: 4px;
             }
 
             .site-header nav a {
-                font-size: 12px;
-                padding: 8px;
+                min-height: 38px;
+                font-size: 11px;
+                padding: 0 8px;
             }
 
             .admin-container {
                 margin-top: 25px;
             }
 
+            .admin-header h1 {
+                font-size: 25px;
+            }
+
+            .card {
+                padding: 18px;
+            }
+
             .palestrante-card {
                 grid-template-columns: 70px 1fr;
+                gap: 13px;
             }
 
             .palestrante-foto {
@@ -317,6 +494,12 @@
             .acoes {
                 grid-column: 1 / -1;
                 flex-direction: row;
+                min-width: 0;
+            }
+
+            .btn-editar,
+            .btn-excluir {
+                flex: 1;
             }
 
         }
@@ -328,6 +511,10 @@
 
 <body>
 
+
+<!-- =====================================================
+     HEADER
+===================================================== -->
 
 <header class="site-header">
 
@@ -341,6 +528,7 @@
             <span>2027</span>
         </a>
 
+
         <nav>
 
             <a href="admin.html">
@@ -351,7 +539,10 @@
                 Site
             </a>
 
-            <a href="#" id="btnSair">
+            <a
+                href="#"
+                id="btnSair"
+            >
                 Sair
             </a>
 
@@ -361,6 +552,11 @@
 
 </header>
 
+
+
+<!-- =====================================================
+     CONTEÚDO
+===================================================== -->
 
 <main class="admin-container">
 
@@ -378,10 +574,13 @@
     </div>
 
 
+
     <div class="layout">
 
 
-        <!-- FORMULÁRIO -->
+        <!-- =================================================
+             FORMULÁRIO
+        ================================================== -->
 
         <section class="card">
 
@@ -402,10 +601,12 @@
                     <input
                         type="text"
                         id="nome"
+                        autocomplete="name"
                         required
                     >
 
                 </div>
+
 
 
                 <div class="form-group">
@@ -424,6 +625,7 @@
                 </div>
 
 
+
                 <div class="form-group">
 
                     <label for="instituicao">
@@ -439,6 +641,7 @@
                 </div>
 
 
+
                 <div class="form-group">
 
                     <label for="tema">
@@ -452,6 +655,7 @@
                     >
 
                 </div>
+
 
 
                 <div class="form-group">
@@ -487,6 +691,7 @@
                 </div>
 
 
+
                 <div class="form-group">
 
                     <label for="foto">
@@ -502,6 +707,7 @@
                 </div>
 
 
+
                 <div class="form-group">
 
                     <label for="curriculo">
@@ -514,6 +720,7 @@
                     ></textarea>
 
                 </div>
+
 
 
                 <div class="form-group">
@@ -537,12 +744,14 @@
                 </div>
 
 
+
                 <button
                     type="submit"
                     class="btn-principal"
                 >
                     CADASTRAR PALESTRANTE
                 </button>
+
 
 
                 <div
@@ -556,13 +765,17 @@
         </section>
 
 
-        <!-- LISTA -->
+
+        <!-- =================================================
+             LISTA
+        ================================================== -->
 
         <section class="card">
 
             <h2>
                 Palestrantes cadastrados
             </h2>
+
 
             <div
                 id="listaPalestrantes"
@@ -584,9 +797,14 @@
 </main>
 
 
+
+<!-- =====================================================
+     JAVASCRIPT
+===================================================== -->
+
 <script
     type="module"
-    src="js/admin-palestrantes.js?v=1"
+    src="js/admin-palestrantes.js?v=2"
 ></script>
 
 
