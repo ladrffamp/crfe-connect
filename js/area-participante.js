@@ -397,6 +397,200 @@ function mostrarPagamento(inscricao) {
 
 }
 
+// =====================================================
+// MOSTRAR CREDENCIAL
+// =====================================================
+
+function mostrarCredencial(inscricao) {
+
+    const credencial =
+        document.getElementById(
+            "credencialDigital"
+        );
+
+    const mensagem =
+        document.getElementById(
+            "mensagemCredencial"
+        );
+
+    const nome =
+        document.getElementById(
+            "credencialNome"
+        );
+
+    const categoriaTexto =
+        document.getElementById(
+            "credencialCategoria"
+        );
+
+    const instituicao =
+        document.getElementById(
+            "credencialInstituicao"
+        );
+
+    const codigo =
+        document.getElementById(
+            "credencialCodigo"
+        );
+
+    const qrcode =
+        document.getElementById(
+            "qrcode"
+        );
+
+
+    if (!credencial) {
+        return;
+    }
+
+
+    // =================================================
+    // SÓ LIBERA COM PAGAMENTO CONFIRMADO
+    // =================================================
+
+    if (
+        !inscricao ||
+        inscricao.pagamento !== "pago"
+    ) {
+
+        credencial.style.display =
+            "none";
+
+        if (mensagem) {
+
+            mensagem.textContent =
+                "Sua credencial digital ficará disponível após a confirmação do pagamento.";
+
+        }
+
+        return;
+
+    }
+
+
+    // =================================================
+    // CÓDIGO DA CREDENCIAL
+    // =================================================
+
+    const codigoCredencial =
+        "CRFE-2027-" +
+        usuarioAtual.uid
+            .substring(0, 8)
+            .toUpperCase();
+
+
+    // =================================================
+    // DADOS
+    // =================================================
+
+    if (nome) {
+
+        nome.textContent =
+            inscricao.nome ||
+            dadosUsuario?.nome ||
+            "Participante";
+
+    }
+
+
+    if (categoriaTexto) {
+
+        const categorias = {
+
+            estudante_fisioterapia:
+                "Estudante de Fisioterapia",
+
+            fisioterapeuta:
+                "Fisioterapeuta",
+
+            profissional_saude:
+                "Profissional da Saúde",
+
+            profissional_esporte:
+                "Profissional do Esporte",
+
+            atleta:
+                "Atleta",
+
+            outro:
+                "Outro"
+
+        };
+
+
+        categoriaTexto.textContent =
+            categorias[
+                inscricao.categoria
+            ] ||
+            inscricao.categoria ||
+            "";
+
+    }
+
+
+    if (instituicao) {
+
+        instituicao.textContent =
+            inscricao.instituicao ||
+            dadosUsuario?.instituicao ||
+            "";
+
+    }
+
+
+    if (codigo) {
+
+        codigo.textContent =
+            codigoCredencial;
+
+    }
+
+
+    // =================================================
+    // GERAR QR CODE
+    // =================================================
+
+    if (qrcode) {
+
+        qrcode.innerHTML =
+            "";
+
+        new QRCode(
+            qrcode,
+            {
+                text:
+                    codigoCredencial,
+
+                width:
+                    180,
+
+                height:
+                    180,
+
+                correctLevel:
+                    QRCode.CorrectLevel.H
+            }
+        );
+
+    }
+
+
+    // =================================================
+    // MOSTRAR CREDENCIAL
+    // =================================================
+
+    credencial.style.display =
+        "block";
+
+
+    if (mensagem) {
+
+        mensagem.textContent =
+            "Sua credencial está disponível.";
+
+    }
+
+}
 
 // =====================================================
 // ESCONDER PAGAMENTO
