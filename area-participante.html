@@ -11,7 +11,7 @@
     >
 
     <title>
-        Área do Participante | CRFE Connect
+        CRFE Connect | Área do Participante
     </title>
 
     <link
@@ -27,884 +27,961 @@
 
 <header class="topbar">
 
-    <div class="logo-area">
+    <div class="container topbar-content">
 
-        <span>
-            CRFE 2027
-        </span>
+        <div class="brand">
+
+            <strong>
+                CRFE CONNECT
+            </strong>
+
+            <span>
+                Área do Participante
+            </span>
+
+        </div>
+
+
+        <nav>
+
+            <a href="index.html">
+                Início
+            </a>
+
+            <button
+                type="button"
+                id="btnSair"
+                class="btn btn-outline"
+            >
+                Sair
+            </button>
+
+        </nav>
 
     </div>
-
-
-    <nav>
-
-        <a href="index.html">
-            Início
-        </a>
-
-        <a href="#" id="btnSair">
-            Sair
-        </a>
-
-    </nav>
 
 </header>
 
 
 
-<main>
+<main class="container">
 
 
-    <section class="section participant-page">
+    <!-- ================================================= -->
+    <!-- CABEÇALHO -->
+    <!-- ================================================= -->
 
+    <section class="page-header">
 
         <span class="section-label">
-            CRFE CONNECT
+            CRFE 2027
         </span>
 
-
-        <h1>
-            Área do Participante
+        <h1 id="saudacao">
+            Olá! Seja bem-vindo(a) ao CRFE 2027.
         </h1>
 
+    </section>
 
-        <p id="saudacao">
-            Carregando seus dados...
-        </p>
 
 
+    <!-- ================================================= -->
+    <!-- MENU -->
+    <!-- ================================================= -->
 
-        <!-- =========================================
-             MENU DO PARTICIPANTE
-        ========================================== -->
+    <section class="participant-menu">
 
-        <div class="participant-menu">
-
-
-            <a
-                href="#perfil"
-                class="participant-menu-card active"
-            >
-
-                <span class="participant-menu-icon">
-                    👤
-                </span>
-
-                <div>
-
-                    <strong>
-                        Meu Perfil
-                    </strong>
-
-                    <span>
-                        Seus dados pessoais
-                    </span>
-
-                </div>
-
-            </a>
-
-
-
-            <a
-                href="#inscricao"
-                class="participant-menu-card"
-            >
-
-                <span class="participant-menu-icon">
-                    🎟️
-                </span>
-
-                <div>
-
-                    <strong>
-                        Minha Inscrição
-                    </strong>
-
-                    <span>
-                        Inscrição no CRFE 2027
-                    </span>
-
-                </div>
-
-            </a>
-
-
-
-            <a
-                href="#programacao"
-                class="participant-menu-card"
-            >
-
-                <span class="participant-menu-icon">
-                    📅
-                </span>
-
-                <div>
-
-                    <strong>
-                        Minha Programação
-                    </strong>
-
-                    <span>
-                        Palestras e minicursos
-                    </span>
-
-                </div>
-
-            </a>
-
-
-
-            <a
-                href="#credencial"
-                class="participant-menu-card"
-            >
-
-                <span class="participant-menu-icon">
-                    📱
-                </span>
-
-                <div>
-
-                    <strong>
-                        Minha Credencial
-                    </strong>
-
-                    <span>
-                        QR Code e acesso
-                    </span>
-
-                </div>
-
-            </a>
-
-
-
-            <a
-                href="#certificado"
-                class="participant-menu-card"
-            >
-
-                <span class="participant-menu-icon">
-                    📄
-                </span>
-
-                <div>
-
-                    <strong>
-                        Meu Certificado
-                    </strong>
-
-                    <span>
-                        Certificado do congresso
-                    </span>
-
-                </div>
-
-            </a>
-
-
-        </div>
-
-
-
-        <!-- =========================================
-             PERFIL
-        ========================================== -->
-
-        <div
-            id="perfil"
-            class="participant-panel"
-        >
-
-
-            <div class="participant-panel-header">
-
-                <div>
-
-                    <span class="section-label">
-                        MEU PERFIL
-                    </span>
-
-                    <h2>
-                        Dados do participante
-                    </h2>
-
-                </div>
-
-            </div>
-
-
-
-            <div class="profile-grid">
-
-
-                <div class="profile-item">
-
-                    <span>
-                        Nome completo
-                    </span>
-
-                    <strong id="perfilNome">
-                        Carregando...
-                    </strong>
-
-                </div>
-
-
-
-                <div class="profile-item">
-
-                    <span>
-                        E-mail
-                    </span>
-
-                    <strong id="perfilEmail">
-                        Carregando...
-                    </strong>
-
-                </div>
-
-
-
-                <div class="profile-item">
-
-                    <span>
-                        CPF
-                    </span>
-
-                    <strong id="perfilCpf">
-                        Carregando...
-                    </strong>
-
-                </div>
-
-
-
-                <div class="profile-item">
-
-                    <span>
-                        Data de nascimento
-                    </span>
-
-                    <strong id="perfilNascimento">
-                        Carregando...
-                    </strong>
-
-                </div>
-
-
-
-                <div class="profile-item">
-
-                    <span>
-                        Telefone / WhatsApp
-                    </span>
-
-                    <strong id="perfilTelefone">
-                        Carregando...
-                    </strong>
-
-                </div>
-
-
-
-                <div class="profile-item">
-
-                    <span>
-                        Cidade
-                    </span>
-
-                    <strong id="perfilCidade">
-                        Carregando...
-                    </strong>
-
-                </div>
-
-
-
-                <div class="profile-item">
-
-                    <span>
-                        Estado
-                    </span>
-
-                    <strong id="perfilEstado">
-                        Carregando...
-                    </strong>
-
-                </div>
-
-
-
-                <div class="profile-item">
-
-                    <span>
-                        Instituição
-                    </span>
-
-                    <strong id="perfilInstituicao">
-                        Carregando...
-                    </strong>
-
-                </div>
-
-
-
-                <div class="profile-item">
-
-                    <span>
-                        Curso / Profissão
-                    </span>
-
-                    <strong id="perfilCurso">
-                        Carregando...
-                    </strong>
-
-                </div>
-
-
-            </div>
-
-
-        </div>
-
-
-
-       <!-- =========================================
-     INSCRIÇÃO
-========================================== -->
-    
-
-<div
-    id="inscricao"
-    class="participant-panel"
->
-
-    <span class="section-label">
-        INSCRIÇÃO
-    </span>
-
-    <h2>
-        Minha inscrição
-    </h2>
-
-    <p class="panel-description">
-        Preencha os dados abaixo para realizar
-        sua inscrição no CRFE 2027.
-    </p>
-
-
-    <form id="formInscricao">
-
-
-        <!-- =====================================
-             CATEGORIA
-        ====================================== -->
-
-        <div class="inscricao-form-section">
-
-            <label for="categoria">
-                Categoria do participante
-            </label>
-
-            <select
-                id="categoria"
-                required
-            >
-
-                <option value="">
-                    Selecione sua categoria
-                </option>
-
-                <option value="estudante_fisioterapia">
-                    Estudante de Fisioterapia
-                </option>
-
-                <option value="fisioterapeuta">
-                    Fisioterapeuta
-                </option>
-
-                <option value="profissional_saude">
-                    Profissional da Saúde
-                </option>
-
-                <option value="profissional_esporte">
-                    Profissional do Esporte
-                </option>
-
-                <option value="atleta">
-                    Atleta
-                </option>
-
-                <option value="outro">
-                    Outro
-                </option>
-
-            </select>
-
-        </div>
-
-
-
-        <!-- =====================================
-             INSTITUIÇÃO
-        ====================================== -->
-
-        <div class="inscricao-form-section">
-
-            <label for="instituicaoInscricao">
-                Instituição
-            </label>
-
-            <input
-                type="text"
-                id="instituicaoInscricao"
-                readonly
-            >
-
-            <small>
-                Informação vinculada ao seu cadastro.
-            </small>
-
-        </div>
-
-
-
-        <!-- =====================================
-             LOTE
-        ====================================== -->
-
-        <div class="inscricao-form-section">
-
-            <label for="lote">
-                Lote de inscrição
-            </label>
-
-            <select
-                id="lote"
-                required
-                disabled
-            >
-
-                <option value="">
-                    Selecione primeiro sua categoria
-                </option>
-
-            </select>
-
-            <small id="informacaoLote">
-                Selecione sua categoria para visualizar
-                os lotes disponíveis.
-            </small>
-
-        </div>
-
-
-
-        <!-- =====================================
-             CUPOM DE DESCONTO
-        ====================================== -->
-
-        <div class="inscricao-form-section">
-
-            <label for="cupom">
-                Cupom de desconto
-            </label>
-
-            <div class="cupom-area">
-
-                <input
-                    type="text"
-                    id="cupom"
-                    placeholder="Digite seu cupom"
-                    autocomplete="off"
-                >
-
-                <button
-                    type="button"
-                    id="btnAplicarCupom"
-                    class="btn btn-secondary"
-                >
-                    APLICAR
-                </button>
-
-            </div>
-
-            <small id="mensagemCupom">
-                Se você possui um cupom, digite-o acima.
-            </small>
-
-        </div>
-
-
-
-        <!-- =====================================
-             MINICURSOS
-        ====================================== -->
-
-        <div class="inscricao-form-section">
-
-            <label>
-                Minicursos
-            </label>
-
-            <p class="form-help">
-                Os minicursos serão divulgados
-                posteriormente.
-            </p>
-
-
-            <div class="minicursos-list">
-
-
-                <label class="checkbox-option">
-
-                    <input
-    type="checkbox"
-    name="minicurso"
-    value="minicurso_1"
->
-
-                    <span>
-                        Minicurso 1
-                    </span>
-
-                    <small>
-                        Em breve
-                    </small>
-
-                </label>
-
-
-
-                <label class="checkbox-option">
-
-                    <input
-    type="checkbox"
-    name="minicurso"
-    value="minicurso_2"
->
-
-                    <span>
-                        Minicurso 2
-                    </span>
-
-                    <small>
-                        Em breve
-                    </small>
-
-                </label>
-
-
-
-                <label class="checkbox-option">
-
-                    <input
-    type="checkbox"
-    name="minicurso"
-    value="minicurso_3"
->
-
-                    <span>
-                        Minicurso 3
-                    </span>
-
-                    <small>
-                        Em breve
-                    </small>
-
-                </label>
-
-
-            </div>
-
-        </div>
-
-
-
-        <!-- =====================================
-             RESUMO FINANCEIRO
-        ====================================== -->
-
-        <div class="inscricao-resumo">
-
-
-            <div class="resumo-linha">
-
-                <span>
-                    Valor da inscrição
-                </span>
-
-                <strong id="valorOriginal">
-                    R$ 0,00
-                </strong>
-
-            </div>
-
-
-
-            <div
-                class="resumo-linha desconto"
-                id="linhaDesconto"
-                style="display: none;"
-            >
-
-                <span>
-                    Desconto
-                </span>
-
-                <strong id="valorDesconto">
-                    - R$ 0,00
-                </strong>
-
-            </div>
-
-
-
-            <div class="resumo-linha resumo-total">
-
-                <span>
-                    Total
-                </span>
-
-                <strong id="valorInscricao">
-                    R$ 0,00
-                </strong>
-
-            </div>
-
-
-        </div>
-
-
-
-        <!-- =====================================
-             BOTÃO
-        ====================================== -->
-
-        <button
-            type="submit"
-            class="btn btn-primary btn-inscricao"
-            disabled
-            id="btnContinuarInscricao"
-        >
-            CONTINUAR INSCRIÇÃO
-        </button>
-
-
-        <p
-            id="mensagemInscricao"
-            class="form-message"
-        ></p>
-<!-- =========================================
-     PAGAMENTO DA INSCRIÇÃO
-========================================== -->
-
-<section
-    id="pagamentoInscricao"
-    class="pagamento-inscricao"
-    style="display: none;"
->
-
-    <span class="section-label">
-        PAGAMENTO
-    </span>
-
-    <h3>
-        Finalize o pagamento
-    </h3>
-
-    <p>
-        Sua inscrição foi registrada. Escolha uma das formas
-        de pagamento abaixo.
-    </p>
-
-
-    <!-- =====================================
-         PIX
-    ====================================== -->
-
-    <div class="pagamento-box">
-
-        <h4>
-            PIX
-        </h4>
-
-        <p>
-            Valor da inscrição:
-            <strong id="valorPix">
-                R$ 0,00
-            </strong>
-        </p>
-
-        <p>
-            Chave Pix:
-        </p>
-
-        <div class="pix-chave">
-            <strong id="chavePix">
-                ladrf.fampfaculdade@gmail.com
-            </strong>
-        </div>
-
-        <button
-            type="button"
-            class="btn btn-primary"
-            id="btnCopiarPix"
-        >
-            COPIAR CHAVE PIX
-        </button>
-
-        <p
-            id="mensagemPix"
-            class="form-message"
-        ></p>
-
-        <small>
-            Após realizar o pagamento, envie o comprovante
-            para a organização do CRFE.
-        </small>
-
-    </div>
-
-
-    <!-- =====================================
-         CARTÃO
-    ====================================== -->
-
-    <div class="pagamento-box">
-
-        <h4>
-            CARTÃO DE CRÉDITO
-        </h4>
-
-        <p>
-            Você também pode realizar o pagamento
-            utilizando cartão de crédito.
-        </p>
 
         <a
-            id="btnPagamentoCartao"
-            href="#"
-            target="_blank"
-            rel="noopener noreferrer"
-            class="btn btn-primary"
+            href="#perfil"
+            class="participant-menu-item"
         >
-            PAGAR COM CARTÃO
+
+            <span class="menu-icon">
+                👤
+            </span>
+
+            <strong>
+                Meu Perfil
+            </strong>
+
+            <small>
+                Seus dados pessoais
+            </small>
+
         </a>
 
-    </div>
 
 
-    <div class="pagamento-status">
-
-        <strong>
-            Status do pagamento:
-        </strong>
-
-        <span id="statusPagamento">
-            Aguardando pagamento
-        </span>
-
-    </div>
-
-</section>
-
-    </form>
-
-</div>
-
-
-
-        <!-- =========================================
-             PROGRAMAÇÃO
-        ========================================== -->
-
-        <div
-            id="programacao"
-            class="participant-panel"
+        <a
+            href="#inscricao"
+            class="participant-menu-item"
         >
 
-            <span class="section-label">
-                PROGRAMAÇÃO
+            <span class="menu-icon">
+                🎟️
             </span>
 
-            <h2>
-                Minha programação
-            </h2>
+            <strong>
+                Minha Inscrição
+            </strong>
 
-            <p>
-                Sua programação personalizada ficará
-                disponível aqui.
-            </p>
+            <small>
+                Inscrição no CRFE 2027
+            </small>
 
-        </div>
-
+        </a>
 
 
-        <!-- =========================================
-             CREDENCIAL
-        ========================================== -->
 
-        <div
-            id="credencial"
-            class="participant-panel"
+        <a
+            href="#programacao"
+            class="participant-menu-item"
         >
 
-            <span class="section-label">
-                CREDENCIAL
+            <span class="menu-icon">
+                📅
             </span>
 
-            <h2>
-                Minha credencial
-            </h2>
+            <strong>
+                Minha Programação
+            </strong>
 
-            <p>
-                Seu QR Code de acesso ao CRFE 2027
-                aparecerá aqui após a inscrição.
-            </p>
+            <small>
+                Palestras e minicursos
+            </small>
 
-        </div>
-
+        </a>
 
 
-        <!-- =========================================
-             CERTIFICADO
-        ========================================== -->
 
-        <div
-            id="certificado"
-            class="participant-panel"
+        <a
+            href="#credencial"
+            class="participant-menu-item"
         >
 
-            <span class="section-label">
-                CERTIFICADO
+            <span class="menu-icon">
+                📱
             </span>
 
-            <h2>
-                Meu certificado
-            </h2>
+            <strong>
+                Minha Credencial
+            </strong>
 
-            <p>
-                Após a participação no congresso,
-                seu certificado poderá ser disponibilizado
-                nesta área.
-            </p>
+            <small>
+                QR Code e acesso
+            </small>
 
-        </div>
+        </a>
+
+
+
+        <a
+            href="#certificado"
+            class="participant-menu-item"
+        >
+
+            <span class="menu-icon">
+                📄
+            </span>
+
+            <strong>
+                Meu Certificado
+            </strong>
+
+            <small>
+                Certificado do congresso
+            </small>
+
+        </a>
 
 
     </section>
+
+
+
+    <!-- ================================================= -->
+    <!-- PERFIL -->
+    <!-- ================================================= -->
+
+    <section
+        id="perfil"
+        class="content-section"
+    >
+
+        <span class="section-label">
+            MEU PERFIL
+        </span>
+
+        <h2>
+            Dados do participante
+        </h2>
+
+
+        <div class="profile-grid">
+
+
+            <div class="profile-item">
+
+                <span>
+                    Nome completo
+                </span>
+
+                <strong id="perfilNome">
+                    -
+                </strong>
+
+            </div>
+
+
+            <div class="profile-item">
+
+                <span>
+                    E-mail
+                </span>
+
+                <strong id="perfilEmail">
+                    -
+                </strong>
+
+            </div>
+
+
+            <div class="profile-item">
+
+                <span>
+                    CPF
+                </span>
+
+                <strong id="perfilCpf">
+                    -
+                </strong>
+
+            </div>
+
+
+            <div class="profile-item">
+
+                <span>
+                    Data de nascimento
+                </span>
+
+                <strong id="perfilNascimento">
+                    -
+                </strong>
+
+            </div>
+
+
+            <div class="profile-item">
+
+                <span>
+                    Telefone / WhatsApp
+                </span>
+
+                <strong id="perfilTelefone">
+                    -
+                </strong>
+
+            </div>
+
+
+            <div class="profile-item">
+
+                <span>
+                    Cidade
+                </span>
+
+                <strong id="perfilCidade">
+                    -
+                </strong>
+
+            </div>
+
+
+            <div class="profile-item">
+
+                <span>
+                    Estado
+                </span>
+
+                <strong id="perfilEstado">
+                    -
+                </strong>
+
+            </div>
+
+
+            <div class="profile-item">
+
+                <span>
+                    Instituição
+                </span>
+
+                <strong id="perfilInstituicao">
+                    -
+                </strong>
+
+            </div>
+
+
+            <div class="profile-item">
+
+                <span>
+                    Curso / Profissão
+                </span>
+
+                <strong id="perfilCurso">
+                    -
+                </strong>
+
+            </div>
+
+
+        </div>
+
+    </section>
+
+
+
+    <!-- ================================================= -->
+    <!-- INSCRIÇÃO -->
+    <!-- ================================================= -->
+
+    <section
+        id="inscricao"
+        class="content-section"
+    >
+
+        <span class="section-label">
+            INSCRIÇÃO
+        </span>
+
+        <h2>
+            Minha inscrição
+        </h2>
+
+        <p>
+            Preencha os dados abaixo para realizar sua
+            inscrição no CRFE 2027.
+        </p>
+
+
+        <form id="formInscricao">
+
+
+            <!-- CATEGORIA -->
+
+            <div class="form-group">
+
+                <label for="categoria">
+                    Categoria do participante
+                </label>
+
+                <select
+                    id="categoria"
+                    required
+                >
+
+                    <option value="">
+                        Selecione sua categoria
+                    </option>
+
+                    <option value="estudante_fisioterapia">
+                        Estudante de Fisioterapia
+                    </option>
+
+                    <option value="fisioterapeuta">
+                        Fisioterapeuta
+                    </option>
+
+                    <option value="profissional_saude">
+                        Profissional da Saúde
+                    </option>
+
+                    <option value="profissional_esporte">
+                        Profissional do Esporte
+                    </option>
+
+                    <option value="atleta">
+                        Atleta
+                    </option>
+
+                    <option value="outro">
+                        Outro
+                    </option>
+
+                </select>
+
+            </div>
+
+
+
+            <!-- INSTITUIÇÃO -->
+
+            <div class="form-group">
+
+                <label for="instituicaoInscricao">
+                    Instituição
+                </label>
+
+                <input
+                    type="text"
+                    id="instituicaoInscricao"
+                    placeholder="Digite sua instituição"
+                    required
+                >
+
+                <small>
+                    Informação vinculada ao seu cadastro.
+                </small>
+
+            </div>
+
+
+
+            <!-- LOTE -->
+
+            <div class="form-group">
+
+                <label for="lote">
+                    Lote de inscrição
+                </label>
+
+                <select
+                    id="lote"
+                    required
+                >
+
+                    <option value="">
+                        Selecione o lote
+                    </option>
+
+                </select>
+
+                <small id="informacaoLote"></small>
+
+            </div>
+
+
+
+            <!-- CUPOM -->
+
+            <div class="form-group">
+
+                <label for="cupom">
+                    Cupom de desconto
+                </label>
+
+                <div class="input-button">
+
+                    <input
+                        type="text"
+                        id="cupom"
+                        placeholder="Digite seu cupom"
+                    >
+
+                    <button
+                        type="button"
+                        id="btnAplicarCupom"
+                        class="btn btn-primary"
+                    >
+                        APLICAR
+                    </button>
+
+                </div>
+
+                <p
+                    id="mensagemCupom"
+                    class="form-message"
+                ></p>
+
+            </div>
+
+
+
+            <!-- MINICURSOS -->
+
+            <div class="form-group">
+
+                <label>
+                    Minicursos
+                </label>
+
+                <p>
+                    Os minicursos serão divulgados posteriormente.
+                </p>
+
+
+                <label class="checkbox-item">
+
+                    <input
+                        type="checkbox"
+                        name="minicurso"
+                        value="minicurso_1"
+                    >
+
+                    Minicurso 1
+                    <small>
+                        Em breve
+                    </small>
+
+                </label>
+
+
+                <label class="checkbox-item">
+
+                    <input
+                        type="checkbox"
+                        name="minicurso"
+                        value="minicurso_2"
+                    >
+
+                    Minicurso 2
+                    <small>
+                        Em breve
+                    </small>
+
+                </label>
+
+
+                <label class="checkbox-item">
+
+                    <input
+                        type="checkbox"
+                        name="minicurso"
+                        value="minicurso_3"
+                    >
+
+                    Minicurso 3
+                    <small>
+                        Em breve
+                    </small>
+
+                </label>
+
+            </div>
+
+
+
+            <!-- VALORES -->
+
+            <div class="price-box">
+
+                <div>
+
+                    <span>
+                        Valor da inscrição
+                    </span>
+
+                    <strong id="valorOriginal">
+                        R$ 0,00
+                    </strong>
+
+                </div>
+
+
+                <div
+                    id="linhaDesconto"
+                    style="display: none;"
+                >
+
+                    <span>
+                        Desconto
+                    </span>
+
+                    <strong id="valorDesconto">
+                        R$ 0,00
+                    </strong>
+
+                </div>
+
+
+                <div>
+
+                    <span>
+                        Total
+                    </span>
+
+                    <strong id="valorInscricao">
+                        R$ 0,00
+                    </strong>
+
+                </div>
+
+            </div>
+
+
+
+            <!-- BOTÃO -->
+
+            <button
+                type="submit"
+                id="btnContinuarInscricao"
+                class="btn btn-primary"
+            >
+                CONTINUAR INSCRIÇÃO
+            </button>
+
+
+            <p
+                id="mensagemInscricao"
+                class="form-message"
+            ></p>
+
+
+
+            <!-- ================================================= -->
+            <!-- PAGAMENTO -->
+            <!-- ================================================= -->
+
+            <section
+                id="pagamentoInscricao"
+                class="pagamento-inscricao"
+                style="display: none;"
+            >
+
+                <span class="section-label">
+                    PAGAMENTO
+                </span>
+
+                <h3>
+                    Finalize o pagamento
+                </h3>
+
+                <p>
+                    Sua inscrição foi registrada.
+                    Escolha uma das formas de pagamento abaixo.
+                </p>
+
+
+
+                <!-- PIX -->
+
+                <div class="pagamento-box">
+
+                    <h4>
+                        PIX
+                    </h4>
+
+                    <p>
+                        Valor da inscrição:
+
+                        <strong id="valorPix">
+                            R$ 0,00
+                        </strong>
+
+                    </p>
+
+                    <p>
+                        Chave Pix:
+                    </p>
+
+                    <div class="pix-chave">
+
+                        <strong id="chavePix">
+                            ladrf.fampfaculdade@gmail.com
+                        </strong>
+
+                    </div>
+
+
+                    <button
+                        type="button"
+                        class="btn btn-primary"
+                        id="btnCopiarPix"
+                    >
+                        COPIAR CHAVE PIX
+                    </button>
+
+
+                    <p
+                        id="mensagemPix"
+                        class="form-message"
+                    ></p>
+
+
+                    <small>
+                        Após realizar o pagamento,
+                        envie o comprovante para a
+                        organização do CRFE.
+                    </small>
+
+                </div>
+
+
+
+                <!-- CARTÃO -->
+
+                <div class="pagamento-box">
+
+                    <h4>
+                        CARTÃO DE CRÉDITO
+                    </h4>
+
+                    <p>
+                        Você também pode realizar o
+                        pagamento utilizando cartão
+                        de crédito.
+                    </p>
+
+
+                    <a
+                        id="btnPagamentoCartao"
+                        href="#"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        class="btn btn-primary"
+                    >
+                        PAGAR COM CARTÃO
+                    </a>
+
+                </div>
+
+
+
+                <!-- STATUS -->
+
+                <div class="pagamento-status">
+
+                    <strong>
+                        Status do pagamento:
+                    </strong>
+
+                    <span id="statusPagamento">
+                        Aguardando pagamento
+                    </span>
+
+                </div>
+
+            </section>
+
+
+        </form>
+
+    </section>
+
+
+
+    <!-- ================================================= -->
+    <!-- PROGRAMAÇÃO -->
+    <!-- ================================================= -->
+
+    <section
+        id="programacao"
+        class="content-section"
+    >
+
+        <span class="section-label">
+            PROGRAMAÇÃO
+        </span>
+
+        <h2>
+            Minha programação
+        </h2>
+
+        <p>
+            Sua programação personalizada ficará disponível aqui.
+        </p>
+
+    </section>
+
+
+
+    <!-- ================================================= -->
+    <!-- CREDENCIAL -->
+    <!-- ================================================= -->
+
+    <section
+        id="credencial"
+        class="content-section"
+    >
+
+        <span class="section-label">
+            CREDENCIAL
+        </span>
+
+        <h2>
+            Minha credencial
+        </h2>
+
+        <p id="mensagemCredencial">
+            Sua credencial digital ficará disponível aqui
+            após a confirmação da inscrição.
+        </p>
+
+
+        <!-- CREDENCIAL -->
+
+        <div
+            id="credencialDigital"
+            class="credencial-digital"
+            style="display: none;"
+        >
+
+            <div class="credencial-topo">
+
+                <span>
+                    CRFE CONNECT
+                </span>
+
+                <strong>
+                    CRFE 2027
+                </strong>
+
+            </div>
+
+
+            <div class="credencial-conteudo">
+
+
+                <div class="credencial-identificacao">
+
+                    <span class="credencial-label">
+                        PARTICIPANTE
+                    </span>
+
+                    <h3 id="credencialNome">
+                        -
+                    </h3>
+
+                    <p id="credencialCategoria">
+                        -
+                    </p>
+
+                    <p id="credencialInstituicao">
+                        -
+                    </p>
+
+                </div>
+
+
+
+                <!-- QR CODE -->
+
+                <div
+                    id="qrcode"
+                    class="qrcode"
+                ></div>
+
+
+
+                <div class="credencial-status">
+
+                    <strong>
+                        INSCRIÇÃO CONFIRMADA
+                    </strong>
+
+                    <span>
+                        ✓
+                    </span>
+
+                </div>
+
+
+
+                <div class="credencial-codigo">
+
+                    <small>
+                        CÓDIGO DA CREDENCIAL
+                    </small>
+
+                    <strong id="credencialCodigo">
+                        -
+                    </strong>
+
+                </div>
+
+
+            </div>
+
+
+            <div class="credencial-rodape">
+
+                <span>
+                    Congresso Regional de Fisioterapia Esportiva
+                </span>
+
+                <span>
+                    19, 20 e 21 de fevereiro de 2027
+                </span>
+
+                <span>
+                    Mineiros - Goiás
+                </span>
+
+            </div>
+
+        </div>
+
+    </section>
+
+
+
+    <!-- ================================================= -->
+    <!-- CERTIFICADO -->
+    <!-- ================================================= -->
+
+    <section
+        id="certificado"
+        class="content-section"
+    >
+
+        <span class="section-label">
+            CERTIFICADO
+        </span>
+
+        <h2>
+            Meu certificado
+        </h2>
+
+        <p>
+            Após a participação no congresso,
+            seu certificado poderá ser disponibilizado
+            nesta área.
+        </p>
+
+    </section>
+
 
 </main>
 
 
 
+<footer>
+
+    <div class="container">
+
+        <p>
+            CRFE 2027 | LADRF
+        </p>
+
+        <p>
+            Congresso Regional de Fisioterapia Esportiva
+        </p>
+
+    </div>
+
+</footer>
+
+
+
+<!-- ===================================================== -->
+<!-- QR CODE -->
+<!-- ===================================================== -->
+
+<script
+    src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"
+></script>
+
+
+<!-- ===================================================== -->
+<!-- JAVASCRIPT -->
+<!-- ===================================================== -->
+
 <script
     type="module"
-    src="js/area-participante.js?v=4"
+    src="js/area-participante.js?v=5"
 ></script>
 
 
