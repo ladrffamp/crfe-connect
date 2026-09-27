@@ -292,9 +292,9 @@ if (status === "reprovado") {
 
                 </div>
 
-                <span class="status">
-                    ${formatarStatus(status)}
-                </span>
+                <span class="status ${classeStatus}">
+    ${formatarStatus(status)}
+</span>
 
             </div>
 
