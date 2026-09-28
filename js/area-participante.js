@@ -4230,61 +4230,112 @@ async function crfeCarregarMeusTrabalhos() {
 // PREPARAR REENVIO DE TRABALHO
 // =====================================================
 
-function crfePrepararReenvio(trabalho) {
+async function crfePrepararReenvio(trabalho) {
 
-    trabalhoReenvioId = trabalho.id;
-
-    if (trabalhoTitulo) {
-        trabalhoTitulo.value =
-            trabalho.titulo || "";
+    if (!trabalho?.id) {
+        alert("Não foi possível identificar o trabalho.");
+        return;
     }
 
-    if (trabalhoTipo) {
-        trabalhoTipo.value =
-            trabalho.tipo || "";
-    }
+    try {
 
-    if (trabalhoArea) {
-        trabalhoArea.value =
-            trabalho.area || "";
-    }
+        const trabalhoRef = doc(
+            db,
+            "trabalhos",
+            trabalho.id
+        );
 
-    if (trabalhoAutores) {
-        trabalhoAutores.value =
-            trabalho.autores || "";
-    }
+        const snap = await getDoc(trabalhoRef);
 
-    if (trabalhoOrientador) {
-        trabalhoOrientador.value =
-            trabalho.orientador || "";
-    }
+        if (!snap.exists()) {
+            alert("Trabalho não encontrado.");
+            return;
+        }
 
-    if (trabalhoInstituicao) {
-        trabalhoInstituicao.value =
-            trabalho.instituicao || "";
-    }
+        const dados = snap.data();
 
-    if (btnEnviarTrabalho) {
-        btnEnviarTrabalho.textContent =
-            "ENVIAR VERSÃO CORRIGIDA";
-    }
+        if (dados.uid !== usuarioAtual.uid) {
+            alert("Você não possui permissão para reenviar este trabalho.");
+            return;
+        }
 
-    if (mensagemTrabalho) {
-        mensagemTrabalho.textContent =
-            "Você está reenviando uma versão corrigida do trabalho. Selecione o novo arquivo PDF e envie novamente.";
-        mensagemTrabalho.style.color =
-            "#9a3412";
-    }
+        if (dados.status !== "aprovado_com_correcoes") {
+            alert(
+                "Este trabalho não está disponível para envio de versão corrigida."
+            );
+            return;
+        }
 
-    if (formTrabalho) {
-        formTrabalho.scrollIntoView({
-            behavior: "smooth",
-            block: "start"
-        });
-    }
+        trabalhoReenvioId = trabalho.id;
 
-    if (trabalhoArquivo) {
-        trabalhoArquivo.value = "";
+        document.getElementById("trabalhoTitulo").value =
+            dados.titulo || "";
+
+        document.getElementById("trabalhoTipo").value =
+            dados.tipo || "";
+
+        document.getElementById("trabalhoArea").value =
+            dados.area || "";
+
+        document.getElementById("trabalhoAutores").value =
+            dados.autores || "";
+
+        document.getElementById("trabalhoOrientador").value =
+            dados.orientador || "";
+
+        document.getElementById("trabalhoInstituicao").value =
+            dados.instituicao || "";
+
+        const arquivoInput =
+            document.getElementById("trabalhoArquivo");
+
+        if (arquivoInput) {
+            arquivoInput.value = "";
+        }
+
+        const botao =
+            document.getElementById("btnEnviarTrabalho");
+
+        if (botao) {
+            botao.textContent =
+                "ENVIAR VERSÃO CORRIGIDA";
+        }
+
+        const mensagem =
+            document.getElementById("mensagemCorrecaoTrabalho");
+
+        if (mensagem) {
+
+            mensagem.style.display = "block";
+
+            mensagem.innerHTML = `
+                <strong>Versão corrigida</strong><br>
+                Você está reenviando uma versão corrigida deste trabalho.
+                Os dados anteriores foram carregados automaticamente.
+                Se necessário, faça as alterações e selecione o novo PDF.
+            `;
+        }
+
+        const formulario =
+            document.getElementById("formTrabalho");
+
+        if (formulario) {
+            formulario.scrollIntoView({
+                behavior: "smooth",
+                block: "start"
+            });
+        }
+
+    } catch (erro) {
+
+        console.error(
+            "Erro ao preparar reenvio:",
+            erro
+        );
+
+        alert(
+            "Não foi possível carregar o trabalho para correção."
+        );
     }
 }
 
