@@ -4005,6 +4005,68 @@ async function crfeCarregarMeusTrabalhos() {
 }
 
 // =====================================================
+// PREPARAR REENVIO DE TRABALHO
+// =====================================================
+
+function crfePrepararReenvio(trabalho) {
+
+    trabalhoReenvioId = trabalho.id;
+
+    if (trabalhoTitulo) {
+        trabalhoTitulo.value =
+            trabalho.titulo || "";
+    }
+
+    if (trabalhoTipo) {
+        trabalhoTipo.value =
+            trabalho.tipo || "";
+    }
+
+    if (trabalhoArea) {
+        trabalhoArea.value =
+            trabalho.area || "";
+    }
+
+    if (trabalhoAutores) {
+        trabalhoAutores.value =
+            trabalho.autores || "";
+    }
+
+    if (trabalhoOrientador) {
+        trabalhoOrientador.value =
+            trabalho.orientador || "";
+    }
+
+    if (trabalhoInstituicao) {
+        trabalhoInstituicao.value =
+            trabalho.instituicao || "";
+    }
+
+    if (btnEnviarTrabalho) {
+        btnEnviarTrabalho.textContent =
+            "ENVIAR VERSÃO CORRIGIDA";
+    }
+
+    if (mensagemTrabalho) {
+        mensagemTrabalho.textContent =
+            "Você está reenviando uma versão corrigida do trabalho. Selecione o novo arquivo PDF e envie novamente.";
+        mensagemTrabalho.style.color =
+            "#9a3412";
+    }
+
+    if (formTrabalho) {
+        formTrabalho.scrollIntoView({
+            behavior: "smooth",
+            block: "start"
+        });
+    }
+
+    if (trabalhoArquivo) {
+        trabalhoArquivo.value = "";
+    }
+}
+
+// =====================================================
 // CARD DO TRABALHO
 // =====================================================
 
