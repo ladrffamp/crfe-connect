@@ -5119,3 +5119,57 @@ onAuthStateChanged(
         }
     }
 );
+onAuthStateChanged(
+    auth,
+    async usuario => {
+
+        if (!usuario) {
+
+            window.location.href =
+                "login.html";
+
+            return;
+        }
+
+
+        usuarioAtual =
+            usuario;
+
+
+        try {
+
+            await carregarPerfil();
+
+            await carregarMinicursos();
+
+            await carregarInscricao();
+
+            atualizarResumoMinicursos();
+
+            atualizarValores();
+
+            atualizarResumoInscricao();
+
+            atualizarPagamento();
+
+            await atualizarCredencial();
+
+            bloquearInscricaoConfirmada();
+
+            atualizarAreaTrabalhos();
+
+            // ================================
+            // PROGRAMAÇÃO
+            // ================================
+
+            await carregarProgramacaoParticipante();
+
+        } catch (erro) {
+
+            console.error(
+                "Erro ao inicializar área do participante:",
+                erro
+            );
+        }
+    }
+);
