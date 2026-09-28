@@ -12,15 +12,11 @@
 
     <title>Programação | CRFE 2027</title>
 
-    <link
-        rel="stylesheet"
-        href="css/styles.css"
-    >
+    <!-- =====================================================
+         FONTES
+    ====================================================== -->
 
-    <link
-        rel="preconnect"
-        href="https://fonts.googleapis.com"
-    >
+    <link rel="preconnect" href="https://fonts.googleapis.com">
 
     <link
         rel="preconnect"
@@ -29,641 +25,1209 @@
     >
 
     <link
-        href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap"
+        href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800;900&display=swap"
         rel="stylesheet"
     >
 
+
+    <!-- =====================================================
+         CSS GLOBAL
+    ====================================================== -->
+
+    <link
+        rel="stylesheet"
+        href="css/styles.css"
+    >
+
+
+    <!-- =====================================================
+         ESTILOS DA PÁGINA
+    ====================================================== -->
+
     <style>
+
+        /* =====================================================
+           RESET
+        ====================================================== */
 
         * {
             box-sizing: border-box;
         }
 
+        html {
+            scroll-behavior: smooth;
+        }
+
         body {
             margin: 0;
+            padding: 0;
+
             font-family: "Poppins", sans-serif;
+
             background: #f5f7f6;
-            color: #17301f;
+
+            color: #173d2c;
         }
 
-        header {
-            background:
-                linear-gradient(
-                    135deg,
-                    #075c2d,
-                    #0b7a3b,
-                    #15a34a
-                );
 
-            color: white;
-            padding: 25px 20px;
+        /* =====================================================
+           HEADER PADRÃO ADMIN
+        ====================================================== */
+
+        .site-header {
+            width: 100%;
+
+            background: #ffffff;
+
+            border-bottom: 1px solid #e3e9e5;
+
+            box-shadow:
+                0 2px 12px
+                rgba(20, 60, 40, 0.04);
         }
 
-        .header-container {
-            max-width: 1200px;
-            margin: auto;
+
+        .site-header .container {
+            width: min(1180px, 92%);
+
+            min-height: 76px;
+
+            margin: 0 auto;
+
             display: flex;
-            justify-content: space-between;
+
             align-items: center;
-            gap: 20px;
+
+            justify-content: space-between;
+
+            gap: 30px;
         }
 
-        .logo-area h1 {
-            margin: 0;
-            font-size: 24px;
-        }
 
-        .logo-area p {
-            margin: 5px 0 0;
-            opacity: .9;
-            font-size: 13px;
-        }
+        .site-header .logo {
+            display: inline-flex;
 
-        nav {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 8px;
-            justify-content: flex-end;
-        }
+            align-items: baseline;
 
-        nav a {
-            color: white;
+            gap: 5px;
+
+            color: #0b7a3b;
+
             text-decoration: none;
-            padding: 9px 12px;
-            border-radius: 8px;
-            font-size: 13px;
-            transition: .2s;
+
+            font-size: 27px;
+
+            font-weight: 900;
+
+            line-height: 1;
+
+            letter-spacing: -0.5px;
+
+            flex-shrink: 0;
         }
 
-        nav a:hover {
-            background: rgba(255,255,255,.15);
+
+        .site-header .logo span {
+            color: #173d2c;
+
+            font-size: 15px;
+
+            font-weight: 800;
         }
 
-        .container {
-            max-width: 1200px;
-            margin: 35px auto;
-            padding: 0 20px;
+
+        .site-header nav {
+            display: flex;
+
+            align-items: center;
+
+            justify-content: flex-end;
+
+            gap: 20px;
+
+            flex-wrap: wrap;
         }
 
-        .titulo {
-            margin-bottom: 25px;
+
+        .site-header nav a {
+            display: inline-flex;
+
+            align-items: center;
+
+            min-height: 42px;
+
+            color: #294538;
+
+            text-decoration: none;
+
+            font-size: 14px;
+
+            font-weight: 700;
+
+            white-space: nowrap;
+
+            transition: 0.2s ease;
         }
 
-        .titulo h2 {
+
+        .site-header nav a:hover {
+            color: #0b7a3b;
+        }
+
+
+        .site-header nav a:last-child {
+            padding: 0 17px;
+
+            border-radius: 9px;
+
+            background: #0b7a3b;
+
+            color: #ffffff;
+        }
+
+
+        .site-header nav a:last-child:hover {
+            background: #086330;
+
+            color: #ffffff;
+        }
+
+
+        /* =====================================================
+           CONTAINER PRINCIPAL
+        ====================================================== */
+
+        .container-principal {
+            width: min(1180px, 92%);
+
+            margin: 0 auto;
+
+            padding: 38px 0 70px;
+        }
+
+
+        /* =====================================================
+           CABEÇALHO DA PÁGINA
+        ====================================================== */
+
+        .page-heading {
+            margin-bottom: 28px;
+        }
+
+
+        .page-heading h1 {
             margin: 0;
+
             color: #075c2d;
+
+            font-size: 30px;
+
+            line-height: 1.2;
+
+            font-weight: 800;
         }
 
-        .titulo p {
-            margin-top: 5px;
-            color: #66736b;
+
+        .page-heading p {
+            margin: 8px 0 0;
+
+            color: #6c7972;
+
+            font-size: 14px;
+
+            line-height: 1.6;
         }
+
+
+        /* =====================================================
+           CARD
+        ====================================================== */
 
         .card {
-            background: white;
+            background: #ffffff;
+
+            border: 1px solid #e1e8e3;
+
             border-radius: 16px;
-            padding: 25px;
-            margin-bottom: 25px;
-            box-shadow: 0 5px 20px rgba(0,0,0,.06);
+
+            padding: 26px;
+
+            margin-bottom: 24px;
+
+            box-shadow:
+                0 5px 20px
+                rgba(20, 60, 40, 0.05);
         }
 
-        .card h3 {
-            margin-top: 0;
+
+        .card h2 {
+            margin: 0 0 22px;
+
             color: #075c2d;
+
+            font-size: 19px;
+
+            font-weight: 800;
         }
 
-        .grid {
+
+        /* =====================================================
+           GRID
+        ====================================================== */
+
+        .form-grid {
             display: grid;
+
             grid-template-columns:
                 repeat(2, minmax(0, 1fr));
-            gap: 16px;
+
+            gap: 17px;
         }
+
 
         .campo {
             display: flex;
+
             flex-direction: column;
-            gap: 6px;
+
+            gap: 7px;
         }
 
-        .campo.full {
+
+        .campo-full {
             grid-column: 1 / -1;
         }
 
+
+        /* =====================================================
+           LABEL
+        ====================================================== */
+
         label {
-            font-size: 13px;
-            font-weight: 600;
             color: #365342;
+
+            font-size: 13px;
+
+            font-weight: 700;
         }
+
+
+        /* =====================================================
+           INPUTS
+        ====================================================== */
 
         input,
         select,
         textarea {
             width: 100%;
-            border: 1px solid #d7dfda;
+
+            padding: 12px 13px;
+
+            border: 1px solid #d6dfd9;
+
             border-radius: 9px;
-            padding: 11px 12px;
-            font-family: inherit;
+
+            background: #ffffff;
+
+            color: #173d2c;
+
+            font-family: "Poppins", sans-serif;
+
             font-size: 14px;
+
             outline: none;
-            background: white;
+
+            transition:
+                border-color 0.2s ease,
+                box-shadow 0.2s ease;
         }
+
 
         input:focus,
         select:focus,
         textarea:focus {
             border-color: #0b7a3b;
-            box-shadow: 0 0 0 3px rgba(11,122,59,.08);
+
+            box-shadow:
+                0 0 0 3px
+                rgba(11, 122, 59, 0.09);
         }
 
+
         textarea {
-            min-height: 100px;
+            min-height: 110px;
+
             resize: vertical;
         }
 
-        .acoes {
+
+        /* =====================================================
+           BOTÕES
+        ====================================================== */
+
+        .acoes-form {
             display: flex;
+
+            align-items: center;
+
             gap: 10px;
-            margin-top: 20px;
+
+            margin-top: 22px;
+
             flex-wrap: wrap;
         }
 
+
         button {
-            border: none;
+            border: 0;
+
             border-radius: 9px;
+
             padding: 11px 18px;
-            font-family: inherit;
-            font-weight: 600;
+
+            font-family: "Poppins", sans-serif;
+
+            font-size: 13px;
+
+            font-weight: 700;
+
             cursor: pointer;
+
+            transition:
+                background 0.2s ease,
+                transform 0.15s ease;
         }
 
-        .btn-principal {
+
+        button:hover {
+            transform: translateY(-1px);
+        }
+
+
+        .btn-primary {
             background: #0b7a3b;
-            color: white;
+
+            color: #ffffff;
         }
 
-        .btn-principal:hover {
+
+        .btn-primary:hover {
             background: #075c2d;
         }
 
-        .btn-secundario {
+
+        .btn-secondary {
             background: #e9efeb;
-            color: #254b35;
+
+            color: #294538;
         }
 
-        .btn-perigo {
-            background: #ffe8e8;
-            color: #a42626;
+
+        .btn-secondary:hover {
+            background: #dce6df;
         }
 
-        .mensagem {
-            margin-top: 15px;
-            padding: 12px;
+
+        .btn-edit {
+            background: #eaf4ee;
+
+            color: #0b7a3b;
+        }
+
+
+        .btn-delete {
+            background: #ffe9e9;
+
+            color: #a42828;
+        }
+
+
+        .btn-delete:hover {
+            background: #ffdada;
+        }
+
+
+        /* =====================================================
+           MENSAGEM
+        ====================================================== */
+
+        #mensagemProgramacao {
+            margin-top: 17px;
+
+            padding: 12px 14px;
+
             border-radius: 9px;
+
+            font-size: 13px;
+
             display: none;
-            font-size: 14px;
         }
 
-        .mensagem.sucesso {
+
+        #mensagemProgramacao.sucesso {
             display: block;
-            background: #e7f7ed;
+
+            background: #e8f7ed;
+
             color: #176b38;
         }
 
-        .mensagem.erro {
+
+        #mensagemProgramacao.erro {
             display: block;
+
             background: #ffe8e8;
+
             color: #9b2424;
         }
 
+
+        /* =====================================================
+           LISTA
+        ====================================================== */
+
+        #listaProgramacao {
+            display: flex;
+
+            flex-direction: column;
+
+            gap: 14px;
+        }
+
+
+        /* =====================================================
+           ITEM DA PROGRAMAÇÃO
+        ====================================================== */
+
         .programacao-item {
             border: 1px solid #e1e8e3;
+
             border-radius: 14px;
-            padding: 18px;
-            margin-bottom: 15px;
-            background: #fff;
+
+            padding: 19px;
+
+            background: #ffffff;
+
+            transition: 0.2s ease;
         }
 
-        .programacao-topo {
-            display: flex;
-            justify-content: space-between;
-            gap: 15px;
-            align-items: flex-start;
+
+        .programacao-item:hover {
+            border-color: #cbd8d0;
+
+            box-shadow:
+                0 4px 15px
+                rgba(20, 60, 40, 0.05);
         }
+
+
+        .programacao-cabecalho {
+            display: flex;
+
+            justify-content: space-between;
+
+            align-items: flex-start;
+
+            gap: 20px;
+        }
+
+
+        .programacao-principal {
+            min-width: 0;
+        }
+
 
         .programacao-data {
+            margin-bottom: 4px;
+
             color: #0b7a3b;
-            font-size: 13px;
-            font-weight: 700;
+
+            font-size: 12px;
+
+            font-weight: 800;
+
             text-transform: uppercase;
         }
 
-        .programacao-item h4 {
-            margin: 5px 0;
+
+        .programacao-item h3 {
+            margin: 0 0 7px;
+
+            color: #173d2c;
+
             font-size: 18px;
-            color: #17301f;
+
+            line-height: 1.35;
         }
+
 
         .programacao-info {
-            color: #66736b;
+            color: #69766f;
+
             font-size: 13px;
-            line-height: 1.7;
+
+            line-height: 1.8;
         }
 
-        .badge {
-            display: inline-block;
-            padding: 5px 9px;
-            border-radius: 20px;
-            font-size: 11px;
-            font-weight: 600;
-            background: #e7f7ed;
-            color: #176b38;
+
+        .programacao-info strong {
+            color: #3b5145;
         }
+
+
+        /* =====================================================
+           BADGE
+        ====================================================== */
+
+        .badge {
+            display: inline-flex;
+
+            align-items: center;
+
+            justify-content: center;
+
+            padding: 5px 10px;
+
+            border-radius: 20px;
+
+            background: #e7f7ed;
+
+            color: #176b38;
+
+            font-size: 11px;
+
+            font-weight: 700;
+
+            white-space: nowrap;
+        }
+
 
         .badge.cancelado {
             background: #ffe8e8;
+
             color: #a42626;
         }
 
-        .acoes-item {
+
+        /* =====================================================
+           AÇÕES DO ITEM
+        ====================================================== */
+
+        .programacao-acoes {
             display: flex;
+
             gap: 8px;
-            margin-top: 14px;
+
+            margin-top: 15px;
+
             flex-wrap: wrap;
         }
 
-        .vazio {
-            text-align: center;
-            color: #7a867f;
-            padding: 30px;
+
+        .programacao-acoes button {
+            padding: 9px 13px;
+
+            font-size: 12px;
         }
+
+
+        /* =====================================================
+           ESTADO VAZIO
+        ====================================================== */
+
+        .estado-vazio {
+            padding: 35px 20px;
+
+            border: 1px dashed #cfdad3;
+
+            border-radius: 12px;
+
+            text-align: center;
+
+            color: #758179;
+
+            font-size: 14px;
+        }
+
+
+        /* =====================================================
+           LOADING
+        ====================================================== */
+
+        .loading {
+            padding: 30px;
+
+            text-align: center;
+
+            color: #738078;
+
+            font-size: 14px;
+        }
+
+
+        /* =====================================================
+           RESPONSIVO
+        ====================================================== */
+
+        @media (max-width: 1000px) {
+
+            .site-header .container {
+                flex-direction: column;
+
+                justify-content: center;
+
+                padding: 18px 0;
+            }
+
+
+            .site-header nav {
+                justify-content: center;
+            }
+
+        }
+
 
         @media (max-width: 800px) {
 
-            .header-container {
-                flex-direction: column;
-                align-items: flex-start;
-            }
-
-            nav {
-                justify-content: flex-start;
-            }
-
-            .grid {
+            .form-grid {
                 grid-template-columns: 1fr;
             }
 
-            .campo.full {
+
+            .campo-full {
                 grid-column: auto;
             }
 
-            .programacao-topo {
+
+            .programacao-cabecalho {
+                flex-direction: column;
+
+                gap: 10px;
+            }
+
+        }
+
+
+        @media (max-width: 600px) {
+
+            .site-header .container {
+                min-height: 68px;
+
+                gap: 10px;
+            }
+
+
+            .site-header .logo {
+                font-size: 23px;
+            }
+
+
+            .site-header .logo span {
+                font-size: 13px;
+            }
+
+
+            .site-header nav {
+                gap: 4px;
+            }
+
+
+            .site-header nav a {
+                min-height: 38px;
+
+                padding: 0 8px;
+
+                font-size: 11px;
+            }
+
+
+            .container-principal {
+                width: 92%;
+
+                padding-top: 25px;
+            }
+
+
+            .page-heading h1 {
+                font-size: 25px;
+            }
+
+
+            .card {
+                padding: 18px;
+            }
+
+        }
+
+
+        @media (max-width: 500px) {
+
+            .site-header nav {
+                width: 100%;
+
+                display: grid;
+
+                grid-template-columns:
+                    repeat(2, 1fr);
+
+                gap: 6px;
+            }
+
+
+            .site-header nav a {
+                justify-content: center;
+
+                text-align: center;
+            }
+
+
+            .site-header nav a:last-child {
+                padding: 0 10px;
+            }
+
+
+            .acoes-form {
+                flex-direction: column;
+
+                align-items: stretch;
+            }
+
+
+            .acoes-form button {
+                width: 100%;
+            }
+
+
+            .programacao-acoes {
                 flex-direction: column;
             }
+
+
+            .programacao-acoes button {
+                width: 100%;
+            }
+
         }
 
     </style>
 
 </head>
 
+
 <body>
 
-<header>
 
-    <div class="header-container">
+    <!-- =====================================================
+         HEADER
+    ====================================================== -->
 
-        <div class="logo-area">
+    <header class="site-header">
 
-            <h1>CRFE 2027</h1>
+        <div class="container">
+
+            <a
+                href="index.html"
+                class="logo"
+            >
+                CRFE
+                <span>2027</span>
+            </a>
+
+
+            <nav>
+
+                <a href="admin.html">
+                    Inscrições
+                </a>
+
+                <a href="admin-palestrantes.html">
+                    Palestrantes
+                </a>
+
+                <a href="admin-minicursos.html">
+                    Minicursos
+                </a>
+
+                <a href="admin-programacao.html">
+                    Programação
+                </a>
+
+                <a href="index.html">
+                    Site
+                </a>
+
+                <a
+                    href="#"
+                    id="btnSair"
+                >
+                    Sair
+                </a>
+
+            </nav>
+
+        </div>
+
+    </header>
+
+
+
+    <!-- =====================================================
+         CONTEÚDO PRINCIPAL
+    ====================================================== -->
+
+    <main class="container-principal">
+
+
+        <!-- =================================================
+             TÍTULO
+        ================================================== -->
+
+        <section class="page-heading">
+
+            <h1>
+                Programação do CRFE 2027
+            </h1>
 
             <p>
-                Painel Administrativo
+                Cadastre e organize palestras, mesas-redondas,
+                minicursos e demais atividades do congresso.
             </p>
 
-        </div>
-
-        <nav>
-
-            <a href="admin.html">
-                Inscrições
-            </a>
-
-            <a href="admin-palestrantes.html">
-                Palestrantes
-            </a>
-
-            <a href="admin-minicursos.html">
-                Minicursos
-            </a>
-
-            <a href="admin-programacao.html">
-                Programação
-            </a>
-
-            <a href="index.html">
-                Site
-            </a>
-
-            <a href="#" id="btnSair">
-                Sair
-            </a>
-
-        </nav>
-
-    </div>
-
-</header>
+        </section>
 
 
-<main class="container">
 
-    <div class="titulo">
+        <!-- =================================================
+             FORMULÁRIO
+        ================================================== -->
 
-        <h2>
-            Programação do CRFE 2027
-        </h2>
+        <section class="card">
 
-        <p>
-            Cadastre e organize palestras, mesas-redondas,
-            minicursos e demais atividades.
-        </p>
-
-    </div>
+            <h2 id="tituloFormulario">
+                Nova atividade
+            </h2>
 
 
-    <!-- FORMULÁRIO -->
+            <form id="formProgramacao">
 
-    <section class="card">
 
-        <h3 id="tituloFormulario">
-            Nova atividade
-        </h3>
+                <div class="form-grid">
 
-        <form id="formProgramacao">
 
-            <div class="grid">
+                    <!-- DATA -->
 
-                <div class="campo">
+                    <div class="campo">
 
-                    <label for="data">
-                        Data
-                    </label>
+                        <label for="data">
+                            Data
+                        </label>
 
-                    <input
-                        type="date"
-                        id="data"
-                        required
+                        <input
+                            type="date"
+                            id="data"
+                            required
+                        >
+
+                    </div>
+
+
+
+                    <!-- DIA -->
+
+                    <div class="campo">
+
+                        <label for="dia">
+                            Dia
+                        </label>
+
+                        <select
+                            id="dia"
+                            required
+                        >
+
+                            <option value="">
+                                Selecione o dia
+                            </option>
+
+                            <option value="sexta">
+                                Sexta-feira
+                            </option>
+
+                            <option value="sabado">
+                                Sábado
+                            </option>
+
+                            <option value="domingo">
+                                Domingo
+                            </option>
+
+                        </select>
+
+                    </div>
+
+
+
+                    <!-- INÍCIO -->
+
+                    <div class="campo">
+
+                        <label for="inicio">
+                            Horário de início
+                        </label>
+
+                        <input
+                            type="time"
+                            id="inicio"
+                            required
+                        >
+
+                    </div>
+
+
+
+                    <!-- FIM -->
+
+                    <div class="campo">
+
+                        <label for="fim">
+                            Horário de término
+                        </label>
+
+                        <input
+                            type="time"
+                            id="fim"
+                        >
+
+                    </div>
+
+
+
+                    <!-- TIPO -->
+
+                    <div class="campo">
+
+                        <label for="tipo">
+                            Tipo de atividade
+                        </label>
+
+                        <select
+                            id="tipo"
+                            required
+                        >
+
+                            <option value="">
+                                Selecione o tipo
+                            </option>
+
+                            <option value="Palestra">
+                                Palestra
+                            </option>
+
+                            <option value="Mesa-redonda">
+                                Mesa-redonda
+                            </option>
+
+                            <option value="Minicurso">
+                                Minicurso
+                            </option>
+
+                            <option value="Cerimônia">
+                                Cerimônia
+                            </option>
+
+                            <option value="Intervalo">
+                                Intervalo
+                            </option>
+
+                            <option value="Outro">
+                                Outro
+                            </option>
+
+                        </select>
+
+                    </div>
+
+
+
+                    <!-- STATUS -->
+
+                    <div class="campo">
+
+                        <label for="status">
+                            Status
+                        </label>
+
+                        <select id="status">
+
+                            <option value="Programado">
+                                Programado
+                            </option>
+
+                            <option value="Cancelado">
+                                Cancelado
+                            </option>
+
+                        </select>
+
+                    </div>
+
+
+
+                    <!-- TÍTULO -->
+
+                    <div class="campo campo-full">
+
+                        <label for="titulo">
+                            Título da atividade
+                        </label>
+
+                        <input
+                            type="text"
+                            id="titulo"
+                            placeholder="Ex.: Avaliação funcional do atleta"
+                            required
+                        >
+
+                    </div>
+
+
+
+                    <!-- PALESTRANTE -->
+
+                    <div class="campo">
+
+                        <label for="palestrante">
+                            Palestrante / responsável
+                        </label>
+
+                        <select id="palestrante">
+
+                            <option value="">
+                                Nenhum / não informado
+                            </option>
+
+                        </select>
+
+                    </div>
+
+
+
+                    <!-- LOCAL -->
+
+                    <div class="campo">
+
+                        <label for="local">
+                            Local
+                        </label>
+
+                        <input
+                            type="text"
+                            id="local"
+                            placeholder="Ex.: Auditório Principal"
+                        >
+
+                    </div>
+
+
+
+                    <!-- DESCRIÇÃO -->
+
+                    <div class="campo campo-full">
+
+                        <label for="descricao">
+                            Descrição / observações
+                        </label>
+
+                        <textarea
+                            id="descricao"
+                            placeholder="Digite informações adicionais sobre a atividade..."
+                        ></textarea>
+
+                    </div>
+
+
+                </div>
+
+
+
+                <!-- =================================================
+                     BOTÕES
+                ================================================== -->
+
+                <div class="acoes-form">
+
+                    <button
+                        type="submit"
+                        id="btnSalvar"
+                        class="btn-primary"
                     >
+                        Salvar atividade
+                    </button>
 
-                </div>
 
-
-                <div class="campo">
-
-                    <label for="dia">
-                        Dia
-                    </label>
-
-                    <select
-                        id="dia"
-                        required
+                    <button
+                        type="button"
+                        id="btnCancelar"
+                        class="btn-secondary"
+                        style="display: none;"
                     >
-
-                        <option value="">
-                            Selecione
-                        </option>
-
-                        <option value="sexta">
-                            Sexta-feira
-                        </option>
-
-                        <option value="sabado">
-                            Sábado
-                        </option>
-
-                        <option value="domingo">
-                            Domingo
-                        </option>
-
-                    </select>
+                        Cancelar edição
+                    </button>
 
                 </div>
 
 
-                <div class="campo">
 
-                    <label for="inicio">
-                        Horário de início
-                    </label>
+                <!-- =================================================
+                     MENSAGEM
+                ================================================== -->
 
-                    <input
-                        type="time"
-                        id="inicio"
-                        required
-                    >
-
-                </div>
+                <div
+                    id="mensagemProgramacao"
+                ></div>
 
 
-                <div class="campo">
+            </form>
 
-                    <label for="fim">
-                        Horário de término
-                    </label>
-
-                    <input
-                        type="time"
-                        id="fim"
-                    >
-
-                </div>
+        </section>
 
 
-                <div class="campo">
 
-                    <label for="tipo">
-                        Tipo
-                    </label>
+        <!-- =================================================
+             LISTA DA PROGRAMAÇÃO
+        ================================================== -->
 
-                    <select
-                        id="tipo"
-                        required
-                    >
+        <section class="card">
 
-                        <option value="">
-                            Selecione
-                        </option>
-
-                        <option value="Palestra">
-                            Palestra
-                        </option>
-
-                        <option value="Mesa-redonda">
-                            Mesa-redonda
-                        </option>
-
-                        <option value="Minicurso">
-                            Minicurso
-                        </option>
-
-                        <option value="Cerimônia">
-                            Cerimônia
-                        </option>
-
-                        <option value="Intervalo">
-                            Intervalo
-                        </option>
-
-                        <option value="Outro">
-                            Outro
-                        </option>
-
-                    </select>
-
-                </div>
+            <h2>
+                Atividades cadastradas
+            </h2>
 
 
-                <div class="campo">
+            <div id="listaProgramacao">
 
-                    <label for="status">
-                        Status
-                    </label>
-
-                    <select id="status">
-
-                        <option value="Programado">
-                            Programado
-                        </option>
-
-                        <option value="Cancelado">
-                            Cancelado
-                        </option>
-
-                    </select>
-
-                </div>
-
-
-                <div class="campo full">
-
-                    <label for="titulo">
-                        Título da atividade
-                    </label>
-
-                    <input
-                        type="text"
-                        id="titulo"
-                        placeholder="Ex.: Avaliação funcional do atleta"
-                        required
-                    >
-
-                </div>
-
-
-                <div class="campo">
-
-                    <label for="palestrante">
-                        Palestrante / responsável
-                    </label>
-
-                    <select id="palestrante">
-
-                        <option value="">
-                            Nenhum / não informado
-                        </option>
-
-                    </select>
-
-                </div>
-
-
-                <div class="campo">
-
-                    <label for="local">
-                        Local
-                    </label>
-
-                    <input
-                        type="text"
-                        id="local"
-                        placeholder="Ex.: Auditório Principal"
-                    >
-
-                </div>
-
-
-                <div class="campo full">
-
-                    <label for="descricao">
-                        Descrição / observações
-                    </label>
-
-                    <textarea
-                        id="descricao"
-                        placeholder="Informações adicionais sobre a atividade..."
-                    ></textarea>
-
+                <div class="loading">
+                    Carregando programação...
                 </div>
 
             </div>
 
-
-            <div class="acoes">
-
-                <button
-                    type="submit"
-                    class="btn-principal"
-                    id="btnSalvar"
-                >
-                    Salvar atividade
-                </button>
-
-                <button
-                    type="button"
-                    class="btn-secundario"
-                    id="btnCancelar"
-                    style="display:none;"
-                >
-                    Cancelar edição
-                </button>
-
-            </div>
+        </section>
 
 
-            <div
-                id="mensagemProgramacao"
-                class="mensagem"
-            ></div>
-
-        </form>
-
-    </section>
+    </main>
 
 
-    <!-- LISTA -->
 
-    <section class="card">
+    <!-- =====================================================
+         JAVASCRIPT
+    ====================================================== -->
 
-        <h3>
-            Atividades cadastradas
-        </h3>
+    <script
+        type="module"
+        src="js/admin-programacao.js?v=1"
+    ></script>
 
-        <div id="listaProgramacao">
-
-            <div class="vazio">
-                Carregando programação...
-            </div>
-
-        </div>
-
-    </section>
-
-</main>
-
-
-<script
-    type="module"
-    src="js/admin-programacao.js?v=1"
-></script>
 
 </body>
 
