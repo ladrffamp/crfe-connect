@@ -10,9 +10,7 @@
         content="width=device-width, initial-scale=1.0"
     >
 
-    <title>
-        Administração | CRFE 2027
-    </title>
+    <title>Administração | CRFE 2027</title>
 
     <link
         rel="stylesheet"
@@ -22,18 +20,19 @@
     <style>
 
         /* =====================================================
-           PADRÃO VISUAL DO ADMINISTRADOR
+           BASE
         ===================================================== */
 
         body {
             margin: 0;
-            background: #f6f9f7;
+            background: #f5f8f6;
             color: #173d2c;
+            font-family: Arial, sans-serif;
         }
 
 
         /* =====================================================
-           CABEÇALHO
+           HEADER PADRÃO
         ===================================================== */
 
         .site-header {
@@ -76,10 +75,6 @@
         }
 
 
-        /* =====================================================
-           NAVEGAÇÃO ADMIN
-        ===================================================== */
-
         .site-header nav {
             display: flex;
             align-items: center;
@@ -107,8 +102,6 @@
         }
 
 
-        /* Botão sair */
-
         .site-header nav a:last-child {
             padding: 0 17px;
             border-radius: 9px;
@@ -129,158 +122,109 @@
 
         .admin-container {
             width: min(1180px, 92%);
-            margin: 0 auto;
-            padding: 55px 0 70px;
+            margin: 40px auto 70px;
         }
 
 
         .admin-header {
-            margin-bottom: 35px;
-        }
-
-
-        .admin-header .section-label {
-            display: inline-block;
-            margin-bottom: 10px;
+            margin-bottom: 30px;
         }
 
 
         .admin-header h1 {
-            margin: 0 0 12px;
+            margin: 0 0 8px;
+            font-size: 30px;
             color: #173d2c;
-            font-size: clamp(30px, 4vw, 42px);
-            line-height: 1.1;
         }
 
 
         .admin-header p {
-            max-width: 700px;
             margin: 0;
-            color: #64756c;
-            line-height: 1.7;
+            color: #65756d;
+            font-size: 14px;
         }
 
 
         /* =====================================================
-           CARDS DE RESUMO
+           RESUMO
         ===================================================== */
 
-        .dashboard-grid {
+        .resumo {
             display: grid;
             grid-template-columns: repeat(4, 1fr);
-            gap: 18px;
-            margin-bottom: 28px;
+            gap: 16px;
+            margin-bottom: 25px;
         }
 
 
-        .dashboard-card {
+        .resumo-card {
             background: #ffffff;
-            border: 1px solid #e2e9e4;
+            border: 1px solid #e3e9e5;
             border-radius: 14px;
-            padding: 24px;
-            box-shadow: 0 5px 18px rgba(20, 60, 40, 0.05);
+            padding: 22px;
+            box-shadow: 0 4px 18px rgba(20, 60, 40, 0.05);
         }
 
 
-        .dashboard-card span {
+        .resumo-card span {
             display: block;
-            margin-bottom: 12px;
-            color: #6b7b73;
-            font-size: 11px;
-            font-weight: 800;
-            letter-spacing: 0.08em;
-        }
-
-
-        .dashboard-card strong {
-            display: block;
-            color: #0b7a3b;
-            font-size: 30px;
-            line-height: 1.1;
-        }
-
-
-        /* =====================================================
-           CARD
-        ===================================================== */
-
-        .card {
-            background: #ffffff;
-            border: 1px solid #e2e9e4;
-            border-radius: 14px;
-            box-shadow: 0 5px 18px rgba(20, 60, 40, 0.05);
-        }
-
-
-        .filters-card {
-            padding: 28px;
-            margin-bottom: 24px;
-        }
-
-
-        .card-header {
-            margin-bottom: 22px;
-        }
-
-
-        .card-header h2 {
-            margin: 5px 0 0;
-            color: #173d2c;
-            font-size: 24px;
-        }
-
-
-        .section-label {
-            color: #0b7a3b;
-            font-size: 11px;
-            font-weight: 800;
-            letter-spacing: 0.08em;
-        }
-
-
-        /* =====================================================
-           FORMULÁRIO
-        ===================================================== */
-
-        .form-grid {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 20px;
-        }
-
-
-        .form-group {
-            display: flex;
-            flex-direction: column;
-            gap: 8px;
-        }
-
-
-        .form-group label {
-            color: #294538;
-            font-size: 13px;
+            margin-bottom: 8px;
+            color: #718078;
+            font-size: 12px;
             font-weight: 700;
         }
 
 
-        .form-group input,
-        .form-group select {
-            width: 100%;
-            min-height: 46px;
-            padding: 0 14px;
-            box-sizing: border-box;
-            border: 1px solid #d7e1db;
-            border-radius: 9px;
+        .resumo-card strong {
+            display: block;
+            color: #0b7a3b;
+            font-size: 27px;
+            line-height: 1;
+        }
+
+
+        /* =====================================================
+           CARD PRINCIPAL
+        ===================================================== */
+
+        .card {
             background: #ffffff;
-            color: #243b30;
-            font-family: inherit;
+            border: 1px solid #e3e9e5;
+            border-radius: 14px;
+            padding: 25px;
+            box-shadow: 0 4px 18px rgba(20, 60, 40, 0.05);
+        }
+
+
+        /* =====================================================
+           FILTROS
+        ===================================================== */
+
+        .filtros {
+            display: grid;
+            grid-template-columns: 220px 1fr;
+            gap: 14px;
+            margin-bottom: 25px;
+        }
+
+
+        .filtros select,
+        .filtros input {
+            width: 100%;
+            box-sizing: border-box;
+            min-height: 44px;
+            padding: 0 13px;
+            border: 1px solid #ccd8d1;
+            border-radius: 8px;
+            background: #ffffff;
+            color: #173d2c;
             font-size: 14px;
             outline: none;
         }
 
 
-        .form-group input:focus,
-        .form-group select:focus {
+        .filtros select:focus,
+        .filtros input:focus {
             border-color: #0b7a3b;
             box-shadow: 0 0 0 3px rgba(11, 122, 59, 0.08);
         }
@@ -290,94 +234,148 @@
            LISTA
         ===================================================== */
 
-        .admin-list {
-            display: grid;
-            gap: 18px;
+        .lista {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
         }
 
 
-        .inscricao-admin {
-            padding: 28px;
+        .inscricao-card {
+            padding: 20px;
+            border: 1px solid #e2e9e4;
+            border-radius: 12px;
+            background: #fbfdfc;
         }
 
 
-        .inscricao-admin h3 {
-            margin: 8px 0 5px;
+        .inscricao-topo {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            gap: 15px;
+        }
+
+
+        .inscricao-topo h3 {
+            margin: 0 0 5px;
             color: #173d2c;
-            font-size: 21px;
+            font-size: 18px;
         }
 
 
-        .inscricao-admin p {
-            margin: 8px 0;
+        .inscricao-topo p {
+            margin: 3px 0;
+            color: #66766e;
+            font-size: 13px;
+        }
+
+
+        .status {
+            display: inline-flex;
+            padding: 6px 10px;
+            border-radius: 20px;
+            font-size: 10px;
+            font-weight: 800;
+            white-space: nowrap;
+        }
+
+
+        .status-pendente {
+            background: #fff4dc;
+            color: #996300;
+        }
+
+
+        .status-confirmado {
+            background: #e7f6ed;
+            color: #0b7a3b;
+        }
+
+
+        .status-cancelado {
+            background: #fff0ef;
+            color: #b42318;
+        }
+
+
+        .inscricao-info {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 8px 20px;
+            margin-top: 16px;
+            padding-top: 16px;
+            border-top: 1px solid #e5ebe7;
+        }
+
+
+        .inscricao-info p {
+            margin: 0;
             color: #596b61;
+            font-size: 13px;
             line-height: 1.5;
         }
 
 
-        .inscricao-admin p strong {
+        .inscricao-info strong {
             color: #294538;
-            margin-right: 5px;
         }
 
 
-        .inscricao-admin .btn {
-            margin-top: 15px;
+        .acoes {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            margin-top: 18px;
         }
 
 
         .btn {
-            min-height: 44px;
-            padding: 0 18px;
+            min-height: 38px;
+            padding: 0 14px;
             border: 0;
-            border-radius: 9px;
-            font-family: inherit;
-            font-size: 13px;
+            border-radius: 8px;
+            font-size: 12px;
             font-weight: 800;
             cursor: pointer;
+            transition: 0.2s ease;
         }
 
 
-        .btn-primary {
+        .btn-confirmar {
             background: #0b7a3b;
             color: #ffffff;
         }
 
 
-        .btn-primary:hover {
+        .btn-confirmar:hover {
             background: #086330;
         }
 
 
-        /* =====================================================
-           MENSAGEM
-        ===================================================== */
+        .btn-editar {
+            background: #edf5ef;
+            color: #0b7a3b;
+        }
 
-        .form-message {
-            margin: 15px 0;
+
+        .mensagem {
+            min-height: 20px;
+            margin-bottom: 15px;
             color: #52665a;
+            font-size: 13px;
+            font-weight: 700;
         }
 
 
-        .form-message.error {
-            color: #b42318;
-        }
-
-
-        /* =====================================================
-           RODAPÉ
-        ===================================================== */
-
-        .footer {
-            padding: 35px 0;
-            background: #173d2c;
-            color: #ffffff;
-        }
-
-
-        .footer p {
-            margin: 5px 0;
-            color: rgba(255, 255, 255, 0.82);
+        .vazio {
+            padding: 45px 20px;
+            border: 1px dashed #ccd8d1;
+            border-radius: 12px;
+            background: #fbfcfb;
+            color: #718078;
+            text-align: center;
+            font-size: 14px;
         }
 
 
@@ -398,12 +396,8 @@
                 justify-content: center;
             }
 
-        }
 
-
-        @media (max-width: 900px) {
-
-            .dashboard-grid {
+            .resumo {
                 grid-template-columns: repeat(2, 1fr);
             }
 
@@ -412,9 +406,28 @@
 
         @media (max-width: 700px) {
 
+            .filtros {
+                grid-template-columns: 1fr;
+            }
+
+
+            .inscricao-info {
+                grid-template-columns: 1fr;
+            }
+
+
+            .inscricao-topo {
+                flex-direction: column;
+            }
+
+        }
+
+
+        @media (max-width: 600px) {
+
             .site-header .container {
                 min-height: 68px;
-                gap: 15px;
+                gap: 10px;
             }
 
 
@@ -429,39 +442,29 @@
 
 
             .site-header nav {
-                gap: 7px;
+                gap: 4px;
             }
 
 
             .site-header nav a {
-                font-size: 11px;
                 min-height: 38px;
-            }
-
-
-            .site-header nav a:last-child {
-                padding: 0 12px;
+                font-size: 11px;
+                padding: 0 8px;
             }
 
 
             .admin-container {
-                padding: 35px 0 50px;
+                margin-top: 25px;
             }
 
 
-            .dashboard-grid {
+            .resumo {
                 grid-template-columns: 1fr;
             }
 
 
-            .form-grid {
-                grid-template-columns: 1fr;
-            }
-
-
-            .filters-card,
-            .inscricao-admin {
-                padding: 20px;
+            .card {
+                padding: 18px;
             }
 
         }
@@ -498,115 +501,90 @@
 
 
 <!-- =====================================================
-     CABEÇALHO
-====================================================== -->
+     HEADER
+===================================================== -->
 
 <header class="site-header">
 
     <div class="container">
 
-
-        <!-- LOGO -->
-
         <a
             href="index.html"
             class="logo"
         >
-
             CRFE
-
-            <span>
-                2027
-            </span>
-
+            <span>2027</span>
         </a>
 
 
+        <nav>
 
-        <!-- NAVEGAÇÃO -->
+            <a href="admin.html">
+                Inscrições
+            </a>
 
-        <nav id="adminNav">
+            <a href="admin-palestrantes.html">
+                Palestrantes
+            </a>
 
-    <a href="./admin.html">
-        Inscrições
-    </a>
+            <a href="admin-minicursos.html">
+                Minicursos
+            </a>
 
-    <a href="./admin-palestrantes.html">
-        Palestrantes
-    </a>
+            <a href="admin-programacao.html">
+                Programação
+            </a>
 
-    <a href="./admin-minicursos.html">
-        Minicursos
-    </a>
+            <a href="index.html">
+                Site
+            </a>
 
-    <a href="./admin-programacao.html">
-        Programação
-    </a>
+            <a
+                href="#"
+                id="btnSair"
+            >
+                Sair
+            </a>
 
-    <a href="./index.html">
-        Site
-    </a>
-
-    <a href="#" id="btnSair">
-        Sair
-    </a>
-
-</nav>
-
+        </nav>
 
     </div>
 
 </header>
 
 
-
 <!-- =====================================================
      CONTEÚDO
-====================================================== -->
+===================================================== -->
 
 <main class="admin-container">
 
 
-    <!-- =================================================
-         CABEÇALHO
-    ================================================== -->
-
-    <section class="admin-header">
-
-
-        <span class="section-label">
-            ADMINISTRAÇÃO
-        </span>
-
+    <div class="admin-header">
 
         <h1>
-            Painel administrativo
+            Administração
         </h1>
 
-
         <p>
-            Gerencie as inscrições, palestrantes,
-            minicursos e programação do CRFE 2027.
+            Gerenciamento das inscrições e pagamentos do CRFE 2027.
         </p>
 
-
-    </section>
-
+    </div>
 
 
     <!-- =================================================
          RESUMO
     ================================================== -->
 
-    <section class="dashboard-grid">
+    <section class="resumo">
 
 
-        <div class="dashboard-card">
+        <div class="resumo-card">
 
             <span>
-                INSCRIÇÕES
+                Total de inscrições
             </span>
-
 
             <strong id="totalInscricoes">
                 0
@@ -615,13 +593,11 @@
         </div>
 
 
-
-        <div class="dashboard-card">
+        <div class="resumo-card">
 
             <span>
-                PAGAMENTOS PENDENTES
+                Pagamentos pendentes
             </span>
-
 
             <strong id="pagamentosPendentes">
                 0
@@ -630,13 +606,11 @@
         </div>
 
 
-
-        <div class="dashboard-card">
+        <div class="resumo-card">
 
             <span>
-                PAGAMENTOS CONFIRMADOS
+                Pagamentos confirmados
             </span>
-
 
             <strong id="pagamentosConfirmados">
                 0
@@ -645,13 +619,11 @@
         </div>
 
 
-
-        <div class="dashboard-card">
+        <div class="resumo-card">
 
             <span>
-                ARRECADADO
+                Valor arrecadado
             </span>
-
 
             <strong id="valorArrecadado">
                 R$ 0,00
@@ -663,122 +635,59 @@
     </section>
 
 
-
     <!-- =================================================
-         FILTROS
+         INSCRIÇÕES
     ================================================== -->
 
-    <section class="card filters-card">
+    <section class="card">
 
 
-        <div class="card-header">
+        <div class="filtros">
+
+            <select id="filtroPagamento">
+
+                <option value="todos">
+                    Todos os pagamentos
+                </option>
+
+                <option value="pendente">
+                    Pendentes
+                </option>
+
+                <option value="confirmado">
+                    Confirmados
+                </option>
+
+                <option value="cancelado">
+                    Cancelados
+                </option>
+
+            </select>
 
 
-            <span class="section-label">
-                INSCRIÇÕES
-            </span>
-
-
-            <h2>
-                Participantes
-            </h2>
-
+            <input
+                type="text"
+                id="filtroBusca"
+                placeholder="Buscar por nome, CPF ou e-mail..."
+            >
 
         </div>
 
 
-
-        <div class="form-grid">
-
-
-            <div class="form-group">
-
-
-                <label for="filtroPagamento">
-                    Status do pagamento
-                </label>
+        <div
+            id="mensagemAdmin"
+            class="mensagem"
+        ></div>
 
 
-                <select
-                    id="filtroPagamento"
-                >
+        <div
+            id="listaInscricoes"
+            class="lista"
+        >
 
-
-                    <option value="todos">
-                        Todos
-                    </option>
-
-
-                    <option value="pendente">
-                        Aguardando pagamento
-                    </option>
-
-
-                    <option value="pago">
-                        Pagamento confirmado
-                    </option>
-
-
-                </select>
-
-
-            </div>
-
-
-
-            <div class="form-group">
-
-
-                <label for="filtroBusca">
-                    Buscar participante
-                </label>
-
-
-                <input
-                    type="text"
-                    id="filtroBusca"
-                    placeholder="Nome ou e-mail"
-                >
-
-
-            </div>
-
-
-        </div>
-
-
-    </section>
-
-
-
-    <!-- =================================================
-         MENSAGEM
-    ================================================== -->
-
-    <p
-        id="mensagemAdmin"
-        class="form-message"
-    ></p>
-
-
-
-    <!-- =================================================
-         LISTA DE INSCRIÇÕES
-    ================================================== -->
-
-    <section
-        id="listaInscricoes"
-        class="admin-list"
-    >
-
-
-        <div class="card">
-
-
-            <p>
+            <div class="vazio">
                 Carregando inscrições...
-            </p>
-
+            </div>
 
         </div>
 
@@ -789,46 +698,9 @@
 </main>
 
 
-
-<!-- =====================================================
-     RODAPÉ
-====================================================== -->
-
-<footer class="footer">
-
-
-    <div class="container">
-
-
-        <p>
-            CRFE 2027
-        </p>
-
-
-        <p>
-            Congresso Regional de Fisioterapia Esportiva
-        </p>
-
-
-        <p>
-            LADRF | Mineiros – Goiás
-        </p>
-
-
-    </div>
-
-
-</footer>
-
-
-
-<!-- =====================================================
-     JAVASCRIPT
-====================================================== -->
-
 <script
     type="module"
-    src="js/admin.js?v=1"
+    src="js/admin.js?v=3"
 ></script>
 
 
