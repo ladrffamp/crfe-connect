@@ -1021,6 +1021,340 @@
 
         }
 
+/* =====================================================
+   PROGRAMAÇÃO DO PARTICIPANTE
+===================================================== */
+
+.programacao-participante {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+
+/* =====================================================
+   DIA
+===================================================== */
+
+.dia-programacao-participante {
+    overflow: hidden;
+    border: 1px solid #dfe8e2;
+    border-radius: 14px;
+    background: #ffffff;
+    transition: 0.2s ease;
+}
+
+.dia-programacao-participante.aberto {
+    border-color: #0b7a3b;
+    box-shadow:
+        0 8px 25px
+        rgba(11, 122, 59, 0.08);
+}
+
+
+/* =====================================================
+   BOTÃO DO DIA
+===================================================== */
+
+.dia-botao-participante {
+    width: 100%;
+    min-height: 82px;
+    padding: 15px 18px;
+    border: none;
+    background: #ffffff;
+    color: #173d2c;
+    font-family: inherit;
+    text-align: left;
+    cursor: pointer;
+
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 15px;
+
+    transition: 0.2s ease;
+}
+
+.dia-botao-participante:hover {
+    background: #f7faf8;
+}
+
+
+/* =====================================================
+   CONTEÚDO DO BOTÃO
+===================================================== */
+
+.dia-botao-conteudo {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+}
+
+
+/* =====================================================
+   NÚMERO
+===================================================== */
+
+.dia-numero-participante {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    width: 48px;
+    height: 48px;
+
+    flex-shrink: 0;
+
+    border-radius: 12px;
+
+    background: #eef8f1;
+    color: #0b7a3b;
+
+    font-size: 19px;
+    font-weight: 900;
+}
+
+
+/* =====================================================
+   TEXTO
+===================================================== */
+
+.dia-botao-texto-participante {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
+
+.dia-botao-texto-participante strong {
+    color: #173d2c;
+    font-size: 16px;
+    font-weight: 900;
+}
+
+.dia-botao-texto-participante span {
+    color: #77837c;
+    font-size: 12px;
+    font-weight: 600;
+}
+
+
+/* =====================================================
+   SETA
+===================================================== */
+
+.dia-seta-participante {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    width: 32px;
+    height: 32px;
+
+    flex-shrink: 0;
+
+    border-radius: 50%;
+
+    background: #f1f5f2;
+    color: #0b7a3b;
+
+    font-size: 22px;
+    font-weight: 700;
+
+    transition: 0.2s ease;
+}
+
+.dia-programacao-participante.aberto
+.dia-seta-participante {
+    transform: rotate(45deg);
+    background: #0b7a3b;
+    color: #ffffff;
+}
+
+
+/* =====================================================
+   CONTEÚDO
+===================================================== */
+
+.programacao-conteudo-participante {
+    padding: 0 18px 18px;
+}
+
+
+/* =====================================================
+   ITEM DA PROGRAMAÇÃO
+===================================================== */
+
+.programacao-item-participante {
+    display: grid;
+    grid-template-columns: 100px 1fr;
+
+    gap: 20px;
+
+    padding: 20px 0;
+
+    border-top: 1px solid #e8eee9;
+}
+
+
+/* =====================================================
+   HORÁRIO
+===================================================== */
+
+.programacao-horario-participante {
+    color: #0b7a3b;
+    font-size: 15px;
+    font-weight: 900;
+    line-height: 1.4;
+}
+
+
+/* =====================================================
+   DETALHES
+===================================================== */
+
+.programacao-detalhes-participante {
+    min-width: 0;
+}
+
+.programacao-tipo-participante {
+    display: inline-block;
+
+    margin-bottom: 7px;
+    padding: 5px 9px;
+
+    border-radius: 6px;
+
+    background: #eef8f1;
+    color: #0b7a3b;
+
+    font-size: 10px;
+    font-weight: 900;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.programacao-titulo-participante {
+    margin: 0 0 7px;
+
+    color: #173d2c;
+
+    font-size: 17px;
+    font-weight: 900;
+    line-height: 1.35;
+}
+
+.programacao-palestrante-participante {
+    margin-bottom: 5px;
+
+    color: #405449;
+    font-size: 13px;
+    font-weight: 700;
+}
+
+.programacao-local-participante {
+    margin-bottom: 7px;
+
+    color: #6c7971;
+    font-size: 12px;
+}
+
+.programacao-descricao-participante {
+    margin: 8px 0 0;
+
+    color: #69766f;
+
+    font-size: 13px;
+    line-height: 1.6;
+}
+
+
+/* =====================================================
+   CANCELADO
+===================================================== */
+
+.programacao-item-participante.cancelado {
+    opacity: 0.7;
+}
+
+.programacao-status-cancelado-participante {
+    display: inline-block;
+
+    margin-top: 8px;
+    padding: 5px 9px;
+
+    border-radius: 6px;
+
+    background: #fff1f1;
+    color: #b42318;
+
+    font-size: 10px;
+    font-weight: 900;
+    text-transform: uppercase;
+}
+
+
+/* =====================================================
+   VAZIO / LOADING
+===================================================== */
+
+.programacao-loading-participante,
+.programacao-vazio-participante {
+    padding: 22px 10px;
+
+    color: #748078;
+
+    text-align: center;
+
+    font-size: 13px;
+}
+
+
+/* =====================================================
+   RESPONSIVO
+===================================================== */
+
+@media (max-width: 600px) {
+
+    .dia-botao-participante {
+        min-height: 72px;
+        padding: 12px;
+    }
+
+    .dia-botao-conteudo {
+        gap: 11px;
+    }
+
+    .dia-numero-participante {
+        width: 42px;
+        height: 42px;
+        border-radius: 10px;
+        font-size: 16px;
+    }
+
+    .dia-botao-texto-participante strong {
+        font-size: 14px;
+    }
+
+    .dia-botao-texto-participante span {
+        font-size: 11px;
+    }
+
+    .programacao-conteudo-participante {
+        padding: 0 12px 12px;
+    }
+
+    .programacao-item-participante {
+        grid-template-columns: 1fr;
+        gap: 7px;
+        padding: 17px 0;
+    }
+
+    .programacao-horario-participante {
+        font-size: 14px;
+    }
+
+}
+        
     </style>
 
 </head>
