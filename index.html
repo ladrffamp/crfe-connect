@@ -482,6 +482,376 @@
         }
 
 
+
+        /* =========================================
+           PROGRAMAÇÃO
+        ========================================== */
+
+        .programacao-dias {
+
+            margin-top: 40px;
+
+            display: flex;
+
+            flex-direction: column;
+
+            gap: 14px;
+
+        }
+
+
+        .dia-programacao {
+
+            width: 100%;
+
+        }
+
+
+        .dia-botao {
+
+            width: 100%;
+
+            display: flex;
+
+            align-items: center;
+
+            justify-content: space-between;
+
+            gap: 20px;
+
+            padding: 22px 25px;
+
+            border: 1px solid #dfe8e2;
+
+            border-radius: 15px;
+
+            background: #ffffff;
+
+            color: #173d2c;
+
+            cursor: pointer;
+
+            text-align: left;
+
+            font-family: inherit;
+
+            transition:
+                background 0.2s ease,
+                border-color 0.2s ease,
+                box-shadow 0.2s ease,
+                transform 0.2s ease;
+
+        }
+
+
+        .dia-botao:hover {
+
+            border-color: #0b7a3b;
+
+            box-shadow:
+                0 8px 25px
+                rgba(11, 122, 59, 0.08);
+
+        }
+
+
+        .dia-botao.aberto {
+
+            border-color: #0b7a3b;
+
+            background: #f8fcf9;
+
+        }
+
+
+        .dia-botao-conteudo {
+
+            display: flex;
+
+            align-items: center;
+
+            gap: 16px;
+
+        }
+
+
+        .dia-numero {
+
+            width: 52px;
+
+            height: 52px;
+
+            flex-shrink: 0;
+
+            display: flex;
+
+            align-items: center;
+
+            justify-content: center;
+
+            border-radius: 12px;
+
+            background: #e8f5ee;
+
+            color: #0b7a3b;
+
+            font-size: 13px;
+
+            font-weight: 800;
+
+            line-height: 1.1;
+
+            text-align: center;
+
+        }
+
+
+        .dia-botao-texto strong {
+
+            display: block;
+
+            color: #173d2c;
+
+            font-size: 18px;
+
+            line-height: 1.2;
+
+        }
+
+
+        .dia-botao-texto span {
+
+            display: block;
+
+            margin-top: 4px;
+
+            color: #718078;
+
+            font-size: 12px;
+
+        }
+
+
+        .dia-seta {
+
+            color: #0b7a3b;
+
+            font-size: 22px;
+
+            font-weight: 700;
+
+            transition:
+                transform 0.25s ease;
+
+        }
+
+
+        .dia-botao.aberto .dia-seta {
+
+            transform:
+                rotate(180deg);
+
+        }
+
+
+        .programacao-conteudo {
+
+            display: none;
+
+            margin-top: 10px;
+
+            padding: 5px 0 5px 20px;
+
+        }
+
+
+        .programacao-conteudo.aberto {
+
+            display: block;
+
+        }
+
+
+        .programacao-loading,
+        .programacao-vazia {
+
+            padding: 25px;
+
+            border-radius: 12px;
+
+            background: #ffffff;
+
+            color: #64748b;
+
+            text-align: center;
+
+            font-size: 14px;
+
+        }
+
+
+        .programacao-item {
+
+            position: relative;
+
+            display: grid;
+
+            grid-template-columns: 90px 1fr;
+
+            gap: 20px;
+
+            padding: 20px 0;
+
+            border-bottom: 1px solid #e5ebe7;
+
+        }
+
+
+        .programacao-item:last-child {
+
+            border-bottom: none;
+
+        }
+
+
+        .programacao-horario {
+
+            color: #0b7a3b;
+
+            font-size: 15px;
+
+            font-weight: 800;
+
+            padding-top: 3px;
+
+        }
+
+
+        .programacao-detalhes {
+
+            min-width: 0;
+
+        }
+
+
+        .programacao-tipo {
+
+            display: inline-block;
+
+            margin-bottom: 6px;
+
+            padding: 4px 9px;
+
+            border-radius: 20px;
+
+            background: #e8f5ee;
+
+            color: #0b7a3b;
+
+            font-size: 10px;
+
+            font-weight: 800;
+
+            text-transform: uppercase;
+
+        }
+
+
+        .programacao-titulo {
+
+            margin: 0 0 7px;
+
+            color: #111827;
+
+            font-size: 17px;
+
+            line-height: 1.35;
+
+        }
+
+
+        .programacao-palestrante {
+
+            margin: 0 0 4px;
+
+            color: #475569;
+
+            font-size: 13px;
+
+        }
+
+
+        .programacao-palestrante strong {
+
+            color: #0b7a3b;
+
+        }
+
+
+        .programacao-local {
+
+            margin: 0;
+
+            color: #64748b;
+
+            font-size: 12px;
+
+        }
+
+
+        .programacao-descricao {
+
+            margin: 10px 0 0;
+
+            color: #64748b;
+
+            font-size: 13px;
+
+            line-height: 1.5;
+
+        }
+
+
+        .programacao-cancelada {
+
+            opacity: 0.65;
+
+        }
+
+
+        .programacao-cancelada .programacao-titulo {
+
+            text-decoration: line-through;
+
+        }
+
+
+        .programacao-status-cancelado {
+
+            display: inline-block;
+
+            margin-left: 7px;
+
+            padding: 3px 7px;
+
+            border-radius: 20px;
+
+            background: #ffe8e8;
+
+            color: #a42626;
+
+            font-size: 9px;
+
+            font-weight: 800;
+
+        }
+
+
+
+        /* =========================================
+           RESPONSIVO
+        ========================================== */
+
         @media (max-width: 700px) {
 
             .palestrantes-container {
@@ -526,6 +896,43 @@
             .minicurso-publico-btn {
 
                 width: 100%;
+
+            }
+
+
+            .dia-botao {
+
+                padding: 18px;
+
+            }
+
+
+            .dia-botao-texto strong {
+
+                font-size: 16px;
+
+            }
+
+
+            .programacao-conteudo {
+
+                padding-left: 5px;
+
+            }
+
+
+            .programacao-item {
+
+                grid-template-columns: 1fr;
+
+                gap: 7px;
+
+            }
+
+
+            .programacao-horario {
+
+                padding-top: 0;
 
             }
 
@@ -597,7 +1004,6 @@
 
         <div class="hero-content">
 
-
             <span class="hero-label">
                 LADRF apresenta
             </span>
@@ -629,43 +1035,40 @@
                 <div>
 
                     <strong>
-                        19
+                        26
                     </strong>
 
                     <span>
-                        FEV
+                        MAR
                     </span>
 
                 </div>
-
 
 
                 <div>
 
                     <strong>
-                        20
+                        27
                     </strong>
 
                     <span>
-                        FEV
+                        MAR
                     </span>
 
                 </div>
-
 
 
                 <div>
 
                     <strong>
-                        21
+                        28
                     </strong>
 
                     <span>
-                        FEV
+                        MAR
                     </span>
 
                 </div>
-
 
 
                 <p>
@@ -679,36 +1082,36 @@
 
             <div class="hero-buttons">
 
-    <a
-        href="cadastro.html"
-        class="btn btn-primary"
-    >
-        INSCREVA-SE
-    </a>
+                <a
+                    href="cadastro.html"
+                    class="btn btn-primary"
+                >
+                    INSCREVA-SE
+                </a>
 
-    <a
-        href="login.html"
-        class="btn btn-secondary"
-    >
-        ENTRAR
-    </a>
 
-    <a
-        href="#sobre"
-        class="btn btn-secondary"
-    >
-        CONHEÇA O CRFE
-    </a>
+                <a
+                    href="login.html"
+                    class="btn btn-secondary"
+                >
+                    ENTRAR
+                </a>
 
-    <a
-        href="comissao-login.html"
-        class="btn btn-secondary"
-    >
-        COMISSÃO CIENTÍFICA
-    </a>
 
-</div>
+                <a
+                    href="#sobre"
+                    class="btn btn-secondary"
+                >
+                    CONHEÇA O CRFE
+                </a>
 
+
+                <a
+                    href="comissao-login.html"
+                    class="btn btn-secondary"
+                >
+                    COMISSÃO CIENTÍFICA
+                </a>
 
             </div>
 
@@ -776,68 +1179,199 @@
         </h2>
 
 
+        <p>
 
-        <div class="cards">
+            Clique no dia para visualizar
+            a programação.
+
+        </p>
 
 
-            <div class="card">
 
-                <span>
-                    19 FEV
-                </span>
+        <div class="programacao-dias">
 
-                <h3>
-                    Sexta-feira
-                </h3>
 
-                <p>
+            <!-- =====================================
+                 SEXTA-FEIRA
+            ====================================== -->
 
-                    Abertura, palestras
-                    e atividades científicas.
+            <div class="dia-programacao">
 
-                </p>
+                <button
+                    type="button"
+                    class="dia-botao"
+                    data-dia="sexta"
+                    aria-expanded="false"
+                >
+
+                    <div class="dia-botao-conteudo">
+
+                        <div class="dia-numero">
+
+                            26<br>
+                            MAR
+
+                        </div>
+
+
+                        <div class="dia-botao-texto">
+
+                            <strong>
+                                Sexta-feira
+                            </strong>
+
+                            <span>
+                                26 de março de 2027
+                            </span>
+
+                        </div>
+
+                    </div>
+
+
+                    <span class="dia-seta">
+                        ▼
+                    </span>
+
+                </button>
+
+
+                <div
+                    class="programacao-conteudo"
+                    data-conteudo="sexta"
+                >
+
+                    <div class="programacao-loading">
+
+                        Clique para carregar a programação.
+
+                    </div>
+
+                </div>
 
             </div>
 
 
 
-            <div class="card">
+            <!-- =====================================
+                 SÁBADO
+            ====================================== -->
 
-                <span>
-                    20 FEV
-                </span>
+            <div class="dia-programacao">
 
-                <h3>
-                    Sábado
-                </h3>
+                <button
+                    type="button"
+                    class="dia-botao"
+                    data-dia="sabado"
+                    aria-expanded="false"
+                >
 
-                <p>
+                    <div class="dia-botao-conteudo">
 
-                    Palestras, mesas-redondas
-                    e minicursos.
+                        <div class="dia-numero">
 
-                </p>
+                            27<br>
+                            MAR
+
+                        </div>
+
+
+                        <div class="dia-botao-texto">
+
+                            <strong>
+                                Sábado
+                            </strong>
+
+                            <span>
+                                27 de março de 2027
+                            </span>
+
+                        </div>
+
+                    </div>
+
+
+                    <span class="dia-seta">
+                        ▼
+                    </span>
+
+                </button>
+
+
+                <div
+                    class="programacao-conteudo"
+                    data-conteudo="sabado"
+                >
+
+                    <div class="programacao-loading">
+
+                        Clique para carregar a programação.
+
+                    </div>
+
+                </div>
 
             </div>
 
 
 
-            <div class="card">
+            <!-- =====================================
+                 DOMINGO
+            ====================================== -->
 
-                <span>
-                    21 FEV
-                </span>
+            <div class="dia-programacao">
 
-                <h3>
-                    Domingo
-                </h3>
+                <button
+                    type="button"
+                    class="dia-botao"
+                    data-dia="domingo"
+                    aria-expanded="false"
+                >
 
-                <p>
+                    <div class="dia-botao-conteudo">
 
-                    Encerramento e
-                    CRFE Experience.
+                        <div class="dia-numero">
 
-                </p>
+                            28<br>
+                            MAR
+
+                        </div>
+
+
+                        <div class="dia-botao-texto">
+
+                            <strong>
+                                Domingo
+                            </strong>
+
+                            <span>
+                                28 de março de 2027
+                            </span>
+
+                        </div>
+
+                    </div>
+
+
+                    <span class="dia-seta">
+                        ▼
+                    </span>
+
+                </button>
+
+
+                <div
+                    class="programacao-conteudo"
+                    data-conteudo="domingo"
+                >
+
+                    <div class="programacao-loading">
+
+                        Clique para carregar a programação.
+
+                    </div>
+
+                </div>
 
             </div>
 
@@ -870,8 +1404,10 @@
 
 
         <p>
+
             Conheça os profissionais confirmados
             para o CRFE 2027.
+
         </p>
 
 
@@ -1035,7 +1571,7 @@
         </p>
 
         <p>
-            19, 20 e 21 de fevereiro de 2027
+            26, 27 e 28 de março de 2027
         </p>
 
     </div>
@@ -1045,10 +1581,500 @@
 
 
 
+<!-- =========================================
+     JAVASCRIPT PRINCIPAL
+========================================== -->
+
 <script
     type="module"
     src="js/index.js?v=2"
 ></script>
+
+
+
+<!-- =========================================
+     PROGRAMAÇÃO PÚBLICA
+========================================== -->
+
+<script type="module">
+
+    import { db } from "./js/firebase.js";
+
+    import {
+        collection,
+        getDocs
+    } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+
+
+    /* =====================================================
+       ELEMENTOS
+    ===================================================== */
+
+    const botoesDia =
+        document.querySelectorAll(".dia-botao");
+
+    const conteudosDia =
+        document.querySelectorAll(".programacao-conteudo");
+
+
+    /* =====================================================
+       CACHE
+    ===================================================== */
+
+    let programacaoCarregada = false;
+
+    let programacao = [];
+
+
+    /* =====================================================
+       ESCAPAR HTML
+    ===================================================== */
+
+    function escapeHtml(valor) {
+
+        if (valor === null || valor === undefined) {
+            return "";
+        }
+
+        return String(valor)
+            .replace(/&/g, "&amp;")
+            .replace(/</g, "&lt;")
+            .replace(/>/g, "&gt;")
+            .replace(/"/g, "&quot;")
+            .replace(/'/g, "&#039;");
+
+    }
+
+
+    /* =====================================================
+       NORMALIZAR DIA
+    ===================================================== */
+
+    function normalizarDia(valor) {
+
+        if (!valor) {
+            return "";
+        }
+
+        return String(valor)
+            .toLowerCase()
+            .normalize("NFD")
+            .replace(/[\u0300-\u036f]/g, "");
+
+    }
+
+
+    /* =====================================================
+       FORMATAR DATA
+    ===================================================== */
+
+    function formatarData(data) {
+
+        if (!data) {
+            return "";
+        }
+
+        if (
+            typeof data === "string"
+            && data.includes("-")
+        ) {
+
+            const partes =
+                data.split("-");
+
+            if (partes.length === 3) {
+
+                return `${partes[2]}/${partes[1]}/${partes[0]}`;
+
+            }
+
+        }
+
+        return data;
+
+    }
+
+
+    /* =====================================================
+       CARREGAR PROGRAMAÇÃO
+    ===================================================== */
+
+    async function carregarProgramacao() {
+
+        try {
+
+            const snapshot =
+                await getDocs(
+                    collection(db, "programacao")
+                );
+
+
+            programacao = [];
+
+
+            snapshot.forEach((docSnap) => {
+
+                programacao.push({
+
+                    id: docSnap.id,
+
+                    ...docSnap.data()
+
+                });
+
+            });
+
+
+            programacao.sort((a, b) => {
+
+                const dataA =
+                    a.data || "";
+
+                const dataB =
+                    b.data || "";
+
+
+                if (dataA !== dataB) {
+
+                    return dataA.localeCompare(dataB);
+
+                }
+
+
+                const inicioA =
+                    a.inicio || "";
+
+                const inicioB =
+                    b.inicio || "";
+
+
+                return inicioA.localeCompare(inicioB);
+
+            });
+
+
+            programacaoCarregada = true;
+
+
+            botoesDia.forEach((botao) => {
+
+                const dia =
+                    botao.dataset.dia;
+
+                const conteudo =
+                    document.querySelector(
+                        `[data-conteudo="${dia}"]`
+                    );
+
+                if (conteudo) {
+
+                    renderizarDia(
+                        dia,
+                        conteudo
+                    );
+
+                }
+
+            });
+
+
+        } catch (erro) {
+
+            console.error(
+                "Erro ao carregar programação:",
+                erro
+            );
+
+
+            conteudosDia.forEach((conteudo) => {
+
+                conteudo.innerHTML = `
+                    <div class="programacao-vazia">
+                        Não foi possível carregar a programação.
+                    </div>
+                `;
+
+            });
+
+        }
+
+    }
+
+
+    /* =====================================================
+       RENDERIZAR UM DIA
+    ===================================================== */
+
+    function renderizarDia(
+        dia,
+        elemento
+    ) {
+
+        const diaNormalizado =
+            normalizarDia(dia);
+
+
+        const atividades =
+            programacao.filter((item) => {
+
+                const diaItem =
+                    normalizarDia(item.dia);
+
+                return diaItem === diaNormalizado;
+
+            });
+
+
+        if (!atividades.length) {
+
+            elemento.innerHTML = `
+                <div class="programacao-vazia">
+                    A programação deste dia será divulgada em breve.
+                </div>
+            `;
+
+            return;
+
+        }
+
+
+        elemento.innerHTML =
+            atividades
+                .map((item) => {
+
+                    const status =
+                        item.status || "Programado";
+
+
+                    const cancelada =
+                        normalizarDia(status)
+                        === "cancelado";
+
+
+                    const classe =
+                        cancelada
+                            ? "programacao-item programacao-cancelada"
+                            : "programacao-item";
+
+
+                    const horario =
+                        item.fim
+                            ? `${escapeHtml(item.inicio || "")} - ${escapeHtml(item.fim)}`
+                            : escapeHtml(item.inicio || "");
+
+
+                    const palestrante =
+                        item.palestranteNome
+                        || item.palestrante
+                        || "";
+
+
+                    const local =
+                        item.local || "";
+
+
+                    const descricao =
+                        item.descricao || "";
+
+
+                    return `
+
+                        <article class="${classe}">
+
+                            <div class="programacao-horario">
+
+                                ${horario || "Horário a definir"}
+
+                            </div>
+
+
+                            <div class="programacao-detalhes">
+
+                                ${
+                                    item.tipo
+                                        ? `
+                                            <span class="programacao-tipo">
+                                                ${escapeHtml(item.tipo)}
+                                            </span>
+                                        `
+                                        : ""
+                                }
+
+
+                                <h3 class="programacao-titulo">
+
+                                    ${escapeHtml(item.titulo || "Atividade")}
+
+                                    ${
+                                        cancelada
+                                            ? `
+                                                <span class="programacao-status-cancelado">
+                                                    CANCELADO
+                                                </span>
+                                            `
+                                            : ""
+                                    }
+
+                                </h3>
+
+
+                                ${
+                                    palestrante
+                                        ? `
+                                            <p class="programacao-palestrante">
+                                                <strong>
+                                                    Palestrante:
+                                                </strong>
+                                                ${escapeHtml(palestrante)}
+                                            </p>
+                                        `
+                                        : ""
+                                }
+
+
+                                ${
+                                    local
+                                        ? `
+                                            <p class="programacao-local">
+                                                📍 ${escapeHtml(local)}
+                                            </p>
+                                        `
+                                        : ""
+                                }
+
+
+                                ${
+                                    descricao
+                                        ? `
+                                            <p class="programacao-descricao">
+                                                ${escapeHtml(descricao)}
+                                            </p>
+                                        `
+                                        : ""
+                                }
+
+                            </div>
+
+                        </article>
+
+                    `;
+
+                })
+                .join("");
+
+    }
+
+
+    /* =====================================================
+       ABRIR / FECHAR DIA
+    ===================================================== */
+
+    botoesDia.forEach((botao) => {
+
+        botao.addEventListener(
+            "click",
+            async () => {
+
+                const dia =
+                    botao.dataset.dia;
+
+
+                const conteudo =
+                    document.querySelector(
+                        `[data-conteudo="${dia}"]`
+                    );
+
+
+                if (!conteudo) {
+                    return;
+                }
+
+
+                const estaAberto =
+                    conteudo.classList.contains("aberto");
+
+
+                /*
+                 * Fecha todos os outros dias
+                 */
+
+                botoesDia.forEach((outroBotao) => {
+
+                    outroBotao.classList.remove(
+                        "aberto"
+                    );
+
+                    outroBotao.setAttribute(
+                        "aria-expanded",
+                        "false"
+                    );
+
+                });
+
+
+                conteudosDia.forEach((outroConteudo) => {
+
+                    outroConteudo.classList.remove(
+                        "aberto"
+                    );
+
+                });
+
+
+                /*
+                 * Se estava aberto,
+                 * apenas fecha.
+                 */
+
+                if (estaAberto) {
+
+                    return;
+
+                }
+
+
+                /*
+                 * Abre o dia selecionado.
+                 */
+
+                botao.classList.add(
+                    "aberto"
+                );
+
+                botao.setAttribute(
+                    "aria-expanded",
+                    "true"
+                );
+
+
+                conteudo.classList.add(
+                    "aberto"
+                );
+
+
+                /*
+                 * Carrega somente na primeira vez.
+                 */
+
+                if (!programacaoCarregada) {
+
+                    conteudo.innerHTML = `
+                        <div class="programacao-loading">
+                            Carregando programação...
+                        </div>
+                    `;
+
+
+                    await carregarProgramacao();
+
+                }
+
+            }
+        );
+
+    });
+
+</script>
 
 
 </body>
