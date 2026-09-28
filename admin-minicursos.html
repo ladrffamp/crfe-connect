@@ -33,7 +33,7 @@
 
 
         /* =====================================================
-           CABEÇALHO
+           HEADER PADRÃO ADMIN
         ===================================================== */
 
         .site-header {
@@ -64,6 +64,7 @@
             font-size: 27px;
             font-weight: 900;
             line-height: 1;
+            letter-spacing: -0.5px;
             flex-shrink: 0;
         }
 
@@ -256,6 +257,10 @@
             gap: 14px;
         }
 
+
+        /* =====================================================
+           BOTÕES
+        ===================================================== */
 
         .btn {
             width: 100%;
@@ -575,25 +580,19 @@
 
 
 <!-- =====================================================
-     CABEÇALHO
-====================================================== -->
+     HEADER PADRÃO
+===================================================== -->
 
 <header class="site-header">
 
     <div class="container">
 
-
         <a
             href="index.html"
             class="logo"
         >
-
             CRFE
-
-            <span>
-                2027
-            </span>
-
+            <span>2027</span>
         </a>
 
 
@@ -603,26 +602,21 @@
                 Inscrições
             </a>
 
-
             <a href="admin-palestrantes.html">
                 Palestrantes
             </a>
-
 
             <a href="admin-minicursos.html">
                 Minicursos
             </a>
 
-
-            <a href="#">
+            <a href="admin-programacao.html">
                 Programação
             </a>
-
 
             <a href="index.html">
                 Site
             </a>
-
 
             <a
                 href="#"
@@ -638,10 +632,9 @@
 </header>
 
 
-
 <!-- =====================================================
      CONTEÚDO
-====================================================== -->
+===================================================== -->
 
 <main class="admin-container">
 
@@ -666,7 +659,6 @@
     </section>
 
 
-
     <div class="admin-layout">
 
 
@@ -675,7 +667,6 @@
         ================================================== -->
 
         <section class="card form-card">
-
 
             <h2>
                 Cadastrar minicurso
@@ -701,7 +692,6 @@
                 </div>
 
 
-
                 <div class="form-group">
 
                     <label for="ministrante">
@@ -716,7 +706,6 @@
                     >
 
                 </div>
-
 
 
                 <div class="form-group">
@@ -734,7 +723,6 @@
                 </div>
 
 
-
                 <div class="form-group">
 
                     <label for="descricao">
@@ -749,9 +737,7 @@
                 </div>
 
 
-
                 <div class="form-row">
-
 
                     <div class="form-group">
 
@@ -768,7 +754,6 @@
                     </div>
 
 
-
                     <div class="form-group">
 
                         <label for="cargaHoraria">
@@ -783,13 +768,10 @@
 
                     </div>
 
-
                 </div>
 
 
-
                 <div class="form-row">
-
 
                     <div class="form-group">
 
@@ -806,7 +788,6 @@
                     </div>
 
 
-
                     <div class="form-group">
 
                         <label for="fim">
@@ -821,13 +802,10 @@
 
                     </div>
 
-
                 </div>
 
 
-
                 <div class="form-row">
-
 
                     <div class="form-group">
 
@@ -843,7 +821,6 @@
                         >
 
                     </div>
-
 
 
                     <div class="form-group">
@@ -863,9 +840,7 @@
 
                     </div>
 
-
                 </div>
-
 
 
                 <div class="form-group">
@@ -881,7 +856,6 @@
                     >
 
                 </div>
-
 
 
                 <div class="form-group">
@@ -903,7 +877,6 @@
                     </select>
 
                 </div>
-
 
 
                 <button
@@ -933,9 +906,7 @@
 
             </form>
 
-
         </section>
-
 
 
         <!-- =================================================
@@ -943,7 +914,6 @@
         ================================================== -->
 
         <section class="card lista-card">
-
 
             <h2>
                 Minicursos cadastrados
@@ -961,20 +931,17 @@
 
             </div>
 
-
         </section>
 
 
     </div>
 
-
 </main>
-
 
 
 <!-- =====================================================
      RODAPÉ
-====================================================== -->
+===================================================== -->
 
 <footer class="footer">
 
@@ -997,10 +964,13 @@
 </footer>
 
 
+<!-- =====================================================
+     JAVASCRIPT
+===================================================== -->
 
 <script
     type="module"
-    src="js/admin-minicursos.js?v=1"
+    src="js/admin-minicursos.js?v=2"
 ></script>
 
 
