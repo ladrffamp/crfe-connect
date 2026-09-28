@@ -4088,6 +4088,33 @@ if (mensagemTrabalho) {
     }
 }
 
+document.addEventListener("click", function (event) {
+
+    const botao = event.target.closest(".btn-reenviar-trabalho");
+
+    if (!botao) return;
+
+    const trabalhoId = botao.dataset.id;
+
+    if (!trabalhoId) {
+        alert("Não foi possível identificar o trabalho.");
+        return;
+    }
+
+    const trabalho = {
+        id: trabalhoId,
+        titulo: botao.dataset.titulo || "",
+        tipo: botao.dataset.tipo || "",
+        area: botao.dataset.area || "",
+        autores: botao.dataset.autores || "",
+        orientador: botao.dataset.orientador || "",
+        instituicao: botao.dataset.instituicao || ""
+    };
+
+    crfePrepararReenvio(trabalho);
+
+});
+
 // =====================================================
 // CARREGAR MEUS TRABALHOS
 // =====================================================
