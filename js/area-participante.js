@@ -5,6 +5,7 @@ import {
     getDoc,
     setDoc,
     addDoc,
+    updateDoc,
     collection,
     getDocs,
     query,
@@ -13,7 +14,6 @@ import {
     runTransaction,
     serverTimestamp
 } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
-
 import {
     onAuthStateChanged,
     signOut
@@ -25,6 +25,7 @@ import {
 // =====================================================
 
 let usuarioAtual = null;
+let trabalhoReenvioId = null;
 let perfilAtual = {};
 let inscricaoAtual = null;
 
