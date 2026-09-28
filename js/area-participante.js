@@ -41,7 +41,7 @@ let descontoAtual = 0;
 // =====================================================
 
 const URL_UPLOAD_TRABALHOS =
-    "https://script.google.com/macros/s/AKfycbyGbfNPhfyNllO0H5_kTRY6J2i941qxj5nD0t20LGKR3YMO-WNMkbw8AKsWzWUlwdqur1Q/exec";
+    "https://script.google.com/macros/s/AKfycbyGbfNPhfyNllO0H5_kRY6J2i941qxj5nD0t20LGKR3YMO-WNMkbw8AKsWzWUlwdqur1Q/exec";
 
 const LIMITE_ARQUIVO_TRABALHO =
     10 * 1024 * 1024;
