@@ -1,0 +1,670 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <title>Programação | CRFE 2027</title>
+
+    <link
+        rel="stylesheet"
+        href="css/styles.css"
+    >
+
+    <link
+        rel="preconnect"
+        href="https://fonts.googleapis.com"
+    >
+
+    <link
+        rel="preconnect"
+        href="https://fonts.gstatic.com"
+        crossorigin
+    >
+
+    <link
+        href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap"
+        rel="stylesheet"
+    >
+
+    <style>
+
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            font-family: "Poppins", sans-serif;
+            background: #f5f7f6;
+            color: #17301f;
+        }
+
+        header {
+            background:
+                linear-gradient(
+                    135deg,
+                    #075c2d,
+                    #0b7a3b,
+                    #15a34a
+                );
+
+            color: white;
+            padding: 25px 20px;
+        }
+
+        .header-container {
+            max-width: 1200px;
+            margin: auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 20px;
+        }
+
+        .logo-area h1 {
+            margin: 0;
+            font-size: 24px;
+        }
+
+        .logo-area p {
+            margin: 5px 0 0;
+            opacity: .9;
+            font-size: 13px;
+        }
+
+        nav {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            justify-content: flex-end;
+        }
+
+        nav a {
+            color: white;
+            text-decoration: none;
+            padding: 9px 12px;
+            border-radius: 8px;
+            font-size: 13px;
+            transition: .2s;
+        }
+
+        nav a:hover {
+            background: rgba(255,255,255,.15);
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 35px auto;
+            padding: 0 20px;
+        }
+
+        .titulo {
+            margin-bottom: 25px;
+        }
+
+        .titulo h2 {
+            margin: 0;
+            color: #075c2d;
+        }
+
+        .titulo p {
+            margin-top: 5px;
+            color: #66736b;
+        }
+
+        .card {
+            background: white;
+            border-radius: 16px;
+            padding: 25px;
+            margin-bottom: 25px;
+            box-shadow: 0 5px 20px rgba(0,0,0,.06);
+        }
+
+        .card h3 {
+            margin-top: 0;
+            color: #075c2d;
+        }
+
+        .grid {
+            display: grid;
+            grid-template-columns:
+                repeat(2, minmax(0, 1fr));
+            gap: 16px;
+        }
+
+        .campo {
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+        }
+
+        .campo.full {
+            grid-column: 1 / -1;
+        }
+
+        label {
+            font-size: 13px;
+            font-weight: 600;
+            color: #365342;
+        }
+
+        input,
+        select,
+        textarea {
+            width: 100%;
+            border: 1px solid #d7dfda;
+            border-radius: 9px;
+            padding: 11px 12px;
+            font-family: inherit;
+            font-size: 14px;
+            outline: none;
+            background: white;
+        }
+
+        input:focus,
+        select:focus,
+        textarea:focus {
+            border-color: #0b7a3b;
+            box-shadow: 0 0 0 3px rgba(11,122,59,.08);
+        }
+
+        textarea {
+            min-height: 100px;
+            resize: vertical;
+        }
+
+        .acoes {
+            display: flex;
+            gap: 10px;
+            margin-top: 20px;
+            flex-wrap: wrap;
+        }
+
+        button {
+            border: none;
+            border-radius: 9px;
+            padding: 11px 18px;
+            font-family: inherit;
+            font-weight: 600;
+            cursor: pointer;
+        }
+
+        .btn-principal {
+            background: #0b7a3b;
+            color: white;
+        }
+
+        .btn-principal:hover {
+            background: #075c2d;
+        }
+
+        .btn-secundario {
+            background: #e9efeb;
+            color: #254b35;
+        }
+
+        .btn-perigo {
+            background: #ffe8e8;
+            color: #a42626;
+        }
+
+        .mensagem {
+            margin-top: 15px;
+            padding: 12px;
+            border-radius: 9px;
+            display: none;
+            font-size: 14px;
+        }
+
+        .mensagem.sucesso {
+            display: block;
+            background: #e7f7ed;
+            color: #176b38;
+        }
+
+        .mensagem.erro {
+            display: block;
+            background: #ffe8e8;
+            color: #9b2424;
+        }
+
+        .programacao-item {
+            border: 1px solid #e1e8e3;
+            border-radius: 14px;
+            padding: 18px;
+            margin-bottom: 15px;
+            background: #fff;
+        }
+
+        .programacao-topo {
+            display: flex;
+            justify-content: space-between;
+            gap: 15px;
+            align-items: flex-start;
+        }
+
+        .programacao-data {
+            color: #0b7a3b;
+            font-size: 13px;
+            font-weight: 700;
+            text-transform: uppercase;
+        }
+
+        .programacao-item h4 {
+            margin: 5px 0;
+            font-size: 18px;
+            color: #17301f;
+        }
+
+        .programacao-info {
+            color: #66736b;
+            font-size: 13px;
+            line-height: 1.7;
+        }
+
+        .badge {
+            display: inline-block;
+            padding: 5px 9px;
+            border-radius: 20px;
+            font-size: 11px;
+            font-weight: 600;
+            background: #e7f7ed;
+            color: #176b38;
+        }
+
+        .badge.cancelado {
+            background: #ffe8e8;
+            color: #a42626;
+        }
+
+        .acoes-item {
+            display: flex;
+            gap: 8px;
+            margin-top: 14px;
+            flex-wrap: wrap;
+        }
+
+        .vazio {
+            text-align: center;
+            color: #7a867f;
+            padding: 30px;
+        }
+
+        @media (max-width: 800px) {
+
+            .header-container {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+
+            nav {
+                justify-content: flex-start;
+            }
+
+            .grid {
+                grid-template-columns: 1fr;
+            }
+
+            .campo.full {
+                grid-column: auto;
+            }
+
+            .programacao-topo {
+                flex-direction: column;
+            }
+        }
+
+    </style>
+
+</head>
+
+<body>
+
+<header>
+
+    <div class="header-container">
+
+        <div class="logo-area">
+
+            <h1>CRFE 2027</h1>
+
+            <p>
+                Painel Administrativo
+            </p>
+
+        </div>
+
+        <nav>
+
+            <a href="admin.html">
+                Inscrições
+            </a>
+
+            <a href="admin-palestrantes.html">
+                Palestrantes
+            </a>
+
+            <a href="admin-minicursos.html">
+                Minicursos
+            </a>
+
+            <a href="admin-programacao.html">
+                Programação
+            </a>
+
+            <a href="index.html">
+                Site
+            </a>
+
+            <a href="#" id="btnSair">
+                Sair
+            </a>
+
+        </nav>
+
+    </div>
+
+</header>
+
+
+<main class="container">
+
+    <div class="titulo">
+
+        <h2>
+            Programação do CRFE 2027
+        </h2>
+
+        <p>
+            Cadastre e organize palestras, mesas-redondas,
+            minicursos e demais atividades.
+        </p>
+
+    </div>
+
+
+    <!-- FORMULÁRIO -->
+
+    <section class="card">
+
+        <h3 id="tituloFormulario">
+            Nova atividade
+        </h3>
+
+        <form id="formProgramacao">
+
+            <div class="grid">
+
+                <div class="campo">
+
+                    <label for="data">
+                        Data
+                    </label>
+
+                    <input
+                        type="date"
+                        id="data"
+                        required
+                    >
+
+                </div>
+
+
+                <div class="campo">
+
+                    <label for="dia">
+                        Dia
+                    </label>
+
+                    <select
+                        id="dia"
+                        required
+                    >
+
+                        <option value="">
+                            Selecione
+                        </option>
+
+                        <option value="sexta">
+                            Sexta-feira
+                        </option>
+
+                        <option value="sabado">
+                            Sábado
+                        </option>
+
+                        <option value="domingo">
+                            Domingo
+                        </option>
+
+                    </select>
+
+                </div>
+
+
+                <div class="campo">
+
+                    <label for="inicio">
+                        Horário de início
+                    </label>
+
+                    <input
+                        type="time"
+                        id="inicio"
+                        required
+                    >
+
+                </div>
+
+
+                <div class="campo">
+
+                    <label for="fim">
+                        Horário de término
+                    </label>
+
+                    <input
+                        type="time"
+                        id="fim"
+                    >
+
+                </div>
+
+
+                <div class="campo">
+
+                    <label for="tipo">
+                        Tipo
+                    </label>
+
+                    <select
+                        id="tipo"
+                        required
+                    >
+
+                        <option value="">
+                            Selecione
+                        </option>
+
+                        <option value="Palestra">
+                            Palestra
+                        </option>
+
+                        <option value="Mesa-redonda">
+                            Mesa-redonda
+                        </option>
+
+                        <option value="Minicurso">
+                            Minicurso
+                        </option>
+
+                        <option value="Cerimônia">
+                            Cerimônia
+                        </option>
+
+                        <option value="Intervalo">
+                            Intervalo
+                        </option>
+
+                        <option value="Outro">
+                            Outro
+                        </option>
+
+                    </select>
+
+                </div>
+
+
+                <div class="campo">
+
+                    <label for="status">
+                        Status
+                    </label>
+
+                    <select id="status">
+
+                        <option value="Programado">
+                            Programado
+                        </option>
+
+                        <option value="Cancelado">
+                            Cancelado
+                        </option>
+
+                    </select>
+
+                </div>
+
+
+                <div class="campo full">
+
+                    <label for="titulo">
+                        Título da atividade
+                    </label>
+
+                    <input
+                        type="text"
+                        id="titulo"
+                        placeholder="Ex.: Avaliação funcional do atleta"
+                        required
+                    >
+
+                </div>
+
+
+                <div class="campo">
+
+                    <label for="palestrante">
+                        Palestrante / responsável
+                    </label>
+
+                    <select id="palestrante">
+
+                        <option value="">
+                            Nenhum / não informado
+                        </option>
+
+                    </select>
+
+                </div>
+
+
+                <div class="campo">
+
+                    <label for="local">
+                        Local
+                    </label>
+
+                    <input
+                        type="text"
+                        id="local"
+                        placeholder="Ex.: Auditório Principal"
+                    >
+
+                </div>
+
+
+                <div class="campo full">
+
+                    <label for="descricao">
+                        Descrição / observações
+                    </label>
+
+                    <textarea
+                        id="descricao"
+                        placeholder="Informações adicionais sobre a atividade..."
+                    ></textarea>
+
+                </div>
+
+            </div>
+
+
+            <div class="acoes">
+
+                <button
+                    type="submit"
+                    class="btn-principal"
+                    id="btnSalvar"
+                >
+                    Salvar atividade
+                </button>
+
+                <button
+                    type="button"
+                    class="btn-secundario"
+                    id="btnCancelar"
+                    style="display:none;"
+                >
+                    Cancelar edição
+                </button>
+
+            </div>
+
+
+            <div
+                id="mensagemProgramacao"
+                class="mensagem"
+            ></div>
+
+        </form>
+
+    </section>
+
+
+    <!-- LISTA -->
+
+    <section class="card">
+
+        <h3>
+            Atividades cadastradas
+        </h3>
+
+        <div id="listaProgramacao">
+
+            <div class="vazio">
+                Carregando programação...
+            </div>
+
+        </div>
+
+    </section>
+
+</main>
+
+
+<script
+    type="module"
+    src="js/admin-programacao.js?v=1"
+></script>
+
+</body>
+
+</html>
