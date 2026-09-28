@@ -2894,6 +2894,529 @@ async function atualizarCredencial() {
     }
 }
 
+// =====================================================
+// PROGRAMAÇÃO DO CRFE
+// =====================================================
+
+const programacaoParticipante =
+    document.getElementById(
+        "programacaoParticipante"
+    );
+
+
+// =====================================================
+// ESCAPAR TEXTO
+// =====================================================
+
+function escaparTextoProgramacao(valor) {
+
+    if (
+        valor === undefined ||
+        valor === null
+    ) {
+        return "";
+    }
+
+    return String(valor)
+        .replace(/&/g, "&amp;")
+        .replace(/</g, "&lt;")
+        .replace(/>/g, "&gt;")
+        .replace(/"/g, "&quot;")
+        .replace(/'/g, "&#039;");
+}
+
+
+// =====================================================
+// CARREGAR PROGRAMAÇÃO
+// =====================================================
+
+async function carregarProgramacaoParticipante() {
+
+    if (!programacaoParticipante) {
+        return;
+    }
+
+
+    try {
+
+        const snapshot =
+            await getDocs(
+                collection(
+                    db,
+                    "programacao"
+                )
+            );
+
+
+        const programacoes = [];
+
+
+        snapshot.forEach(
+            documento => {
+
+                const dados =
+                    documento.data();
+
+
+                programacoes.push({
+
+                    id:
+                        documento.id,
+
+                    ...dados
+
+                });
+            }
+        );
+
+
+        // =================================================
+        // ORDENAR POR DATA E HORÁRIO
+        // =================================================
+
+        programacoes.sort(
+            (
+                a,
+                b
+            ) => {
+
+                const dataA =
+                    `${a.data || ""} ${a.inicio || ""}`;
+
+
+                const dataB =
+                    `${b.data || ""} ${b.inicio || ""}`;
+
+
+                return dataA.localeCompare(
+                    dataB
+                );
+            }
+        );
+
+
+        // =================================================
+        // DIAS
+        // =================================================
+
+        const dias =
+            programacaoParticipante.querySelectorAll(
+                ".dia-programacao-participante"
+            );
+
+
+        dias.forEach(
+            diaElemento => {
+
+                const dia =
+                    diaElemento.dataset.dia;
+
+
+                const conteudo =
+                    diaElemento.querySelector(
+                        ".programacao-conteudo-participante"
+                    );
+
+
+                if (!conteudo) {
+                    return;
+                }
+
+
+                // =================================================
+                // PRIMEIRO: PROCURA PELO CAMPO "dia"
+                // =================================================
+
+                let atividades =
+                    programacoes.filter(
+                        item =>
+                            item.dia === dia
+                    );
+
+
+                // =================================================
+                // FALLBACK PELO CAMPO "data"
+                // =================================================
+
+                if (
+                    atividades.length === 0
+                ) {
+
+                    const datas = {
+
+                        sexta:
+                            "2027-03-26",
+
+                        sabado:
+                            "2027-03-27",
+
+                        domingo:
+                            "2027-03-28"
+
+                    };
+
+
+                    const dataEsperada =
+                        datas[dia];
+
+
+                    atividades =
+                        programacoes.filter(
+                            item =>
+                                item.data ===
+                                dataEsperada
+                        );
+                }
+
+
+                // =================================================
+                // NENHUMA ATIVIDADE
+                // =================================================
+
+                if (
+                    atividades.length === 0
+                ) {
+
+                    conteudo.innerHTML = `
+
+                        <div
+                            class="programacao-vazio-participante"
+                        >
+                            Nenhuma atividade cadastrada
+                            para este dia.
+                        </div>
+
+                    `;
+
+                    return;
+                }
+
+
+                // =================================================
+                // LIMPAR
+                // =================================================
+
+                conteudo.innerHTML =
+                    "";
+
+
+                // =================================================
+                // RENDERIZAR
+                // =================================================
+
+                atividades.forEach(
+                    atividade => {
+
+                        const item =
+                            document.createElement(
+                                "div"
+                            );
+
+
+                        item.className =
+                            "programacao-item-participante";
+
+
+                        if (
+                            atividade.status ===
+                            "Cancelado"
+                        ) {
+
+                            item.classList.add(
+                                "cancelado"
+                            );
+                        }
+
+
+                        const horario =
+                            atividade.fim
+                                ? `${
+                                    atividade.inicio ||
+                                    "--:--"
+                                } às ${
+                                    atividade.fim
+                                }`
+                                : (
+                                    atividade.inicio ||
+                                    "--:--"
+                                );
+
+
+                        const tipo =
+                            escaparTextoProgramacao(
+                                atividade.tipo ||
+                                "Atividade"
+                            );
+
+
+                        const titulo =
+                            escaparTextoProgramacao(
+                                atividade.titulo ||
+                                "Atividade sem título"
+                            );
+
+
+                        const palestrante =
+                            escaparTextoProgramacao(
+                                atividade.palestranteNome ||
+                                atividade.palestrante ||
+                                ""
+                            );
+
+
+                        const local =
+                            escaparTextoProgramacao(
+                                atividade.local ||
+                                ""
+                            );
+
+
+                        const descricao =
+                            escaparTextoProgramacao(
+                                atividade.descricao ||
+                                ""
+                            );
+
+
+                        item.innerHTML = `
+
+                            <div
+                                class="programacao-horario-participante"
+                            >
+                                ${
+                                    escaparTextoProgramacao(
+                                        horario
+                                    )
+                                }
+                            </div>
+
+
+                            <div
+                                class="programacao-detalhes-participante"
+                            >
+
+                                <span
+                                    class="programacao-tipo-participante"
+                                >
+                                    ${tipo}
+                                </span>
+
+
+                                <h3
+                                    class="programacao-titulo-participante"
+                                >
+                                    ${titulo}
+                                </h3>
+
+
+                                ${
+                                    palestrante
+                                        ? `
+                                            <div
+                                                class="programacao-palestrante-participante"
+                                            >
+                                                ${palestrante}
+                                            </div>
+                                        `
+                                        : ""
+                                }
+
+
+                                ${
+                                    local
+                                        ? `
+                                            <div
+                                                class="programacao-local-participante"
+                                            >
+                                                📍 ${local}
+                                            </div>
+                                        `
+                                        : ""
+                                }
+
+
+                                ${
+                                    descricao
+                                        ? `
+                                            <p
+                                                class="programacao-descricao-participante"
+                                            >
+                                                ${descricao}
+                                            </p>
+                                        `
+                                        : ""
+                                }
+
+
+                                ${
+                                    atividade.status ===
+                                    "Cancelado"
+                                        ? `
+                                            <span
+                                                class="programacao-status-cancelado-participante"
+                                            >
+                                                Atividade cancelada
+                                            </span>
+                                        `
+                                        : ""
+                                }
+
+                            </div>
+
+                        `;
+
+
+                        conteudo.appendChild(
+                            item
+                        );
+                    }
+                );
+
+            }
+        );
+
+    } catch (erro) {
+
+        console.error(
+            "Erro ao carregar programação:",
+            erro
+        );
+
+
+        const areas =
+            programacaoParticipante.querySelectorAll(
+                ".programacao-conteudo-participante"
+            );
+
+
+        areas.forEach(
+            area => {
+
+                area.innerHTML = `
+
+                    <div
+                        class="programacao-vazio-participante"
+                    >
+                        Não foi possível carregar
+                        a programação.
+                    </div>
+
+                `;
+
+            }
+        );
+    }
+}
+
+
+// =====================================================
+// ABRIR / FECHAR DIAS
+// =====================================================
+
+function configurarProgramacaoParticipante() {
+
+    if (!programacaoParticipante) {
+        return;
+    }
+
+
+    const dias =
+        programacaoParticipante.querySelectorAll(
+            ".dia-programacao-participante"
+        );
+
+
+    dias.forEach(
+        dia => {
+
+            const botao =
+                dia.querySelector(
+                    ".dia-botao-participante"
+                );
+
+
+            const conteudo =
+                dia.querySelector(
+                    ".programacao-conteudo-participante"
+                );
+
+
+            if (
+                !botao ||
+                !conteudo
+            ) {
+                return;
+            }
+
+
+            botao.addEventListener(
+                "click",
+                () => {
+
+                    const estavaAberto =
+                        dia.classList.contains(
+                            "aberto"
+                        );
+
+
+                    // FECHAR TODOS
+
+                    dias.forEach(
+                        outroDia => {
+
+                            outroDia.classList.remove(
+                                "aberto"
+                            );
+
+
+                            const outroConteudo =
+                                outroDia.querySelector(
+                                    ".programacao-conteudo-participante"
+                                );
+
+
+                            if (
+                                outroConteudo
+                            ) {
+
+                                outroConteudo.hidden =
+                                    true;
+                            }
+
+                        }
+                    );
+
+
+                    // ABRIR O SELECIONADO
+
+                    if (
+                        !estavaAberto
+                    ) {
+
+                        dia.classList.add(
+                            "aberto"
+                        );
+
+
+                        conteudo.hidden =
+                            false;
+                    }
+
+                }
+            );
+
+        }
+    );
+}
+
+
+// =====================================================
+// INICIALIZAR PROGRAMAÇÃO
+// =====================================================
+
+configurarProgramacaoParticipante();
+
+carregarProgramacaoParticipante();
 
 // =====================================================
 // GOOGLE DRIVE
