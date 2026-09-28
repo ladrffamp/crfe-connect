@@ -3509,69 +3509,264 @@ async function crfeAguardarUpload(
 async function crfeEnviarTrabalho() {
 
     if (!usuarioAtual) {
-
-        throw new Error(
-            "Usuário não autenticado."
-        );
-
+        alert("Usuário não autenticado.");
+        return;
     }
 
-
-    if (
-        !pagamentoFoiConfirmado()
-    ) {
-
-        throw new Error(
-            "A submissão está disponível somente para participantes com inscrição confirmada."
-        );
-
+    if (!pagamentoFoiConfirmado(inscricaoAtual?.pagamento)) {
+        alert("É necessário ter a inscrição confirmada para enviar um trabalho científico.");
+        return;
     }
 
+    const titulo = document.getElementById("trabalhoTitulo")?.value.trim();
+    const tipo = document.getElementById("trabalhoTipo")?.value;
+    const area = document.getElementById("trabalhoArea")?.value;
+    const autores = document.getElementById("trabalhoAutores")?.value.trim();
+    const orientador = document.getElementById("trabalhoOrientador")?.value.trim();
+    const instituicao = document.getElementById("trabalhoInstituicao")?.value.trim();
+    const arquivo = document.getElementById("trabalhoArquivo")?.files?.[0];
 
-    const titulo =
-        String(
-            trabalhoTitulo?.value ||
-            ""
-        ).trim();
+    if (!titulo) {
+        alert("Informe o título do trabalho.");
+        return;
+    }
 
+    if (!tipo) {
+        alert("Selecione o tipo de trabalho.");
+        return;
+    }
 
-    const tipo =
-        String(
-            trabalhoTipo?.value ||
-            ""
-        ).trim();
+    if (!area) {
+        alert("Selecione a área temática.");
+        return;
+    }
 
+    if (!autores) {
+        alert("Informe os autores.");
+        return;
+    }
 
-    const area =
-        String(
-            trabalhoArea?.value ||
-            ""
-        ).trim();
+    if (!instituicao) {
+        alert("Informe a instituição.");
+        return;
+    }
 
+    if (!arquivo) {
+        alert("Selecione o PDF do trabalho.");
+        return;
+    }
 
-    const autores =
-        String(
-            trabalhoAutores?.value ||
-            ""
-        ).trim();
+    if (arquivo.type !== "application/pdf") {
+        alert("O arquivo deve estar em formato PDF.");
+        return;
+    }
 
+    if (arquivo.size > CRFE_TAMANHO_MAXIMO_ARQUIVO) {
+        alert("O PDF deve ter no máximo 10 MB.");
+        return;
+    }
 
-    const orientador =
-        String(
-            trabalhoOrientador?.value ||
-            ""
-        ).trim();
+    const botao = document.getElementById("btnEnviarTrabalho");
 
+    if (botao) {
+        botao.disabled = true;
+        botao.textContent = trabalhoReenvioId
+            ? "Enviando versão corrigida..."
+            : "Enviando trabalho...";
+    }
 
-    const instituicao =
-        String(
-            trabalhoInstituicao?.value ||
-            ""
-        ).trim();
+    try {
 
+        const tokenUpload = crfeGerarTokenUpload();
 
-    const arquivo =
-        trabalhoArquivo?.files?.[0];
+        const statusElemento = document.getElementById("statusEnvioTrabalho");
+
+        if (statusElemento) {
+            statusElemento.textContent = trabalhoReenvioId
+                ? "Enviando versão corrigida para o Google Drive..."
+                : "Enviando PDF para o Google Drive...";
+        }
+
+        const upload = await crfeEnviarArquivoDrive(
+            arquivo,
+            tokenUpload
+        );
+
+        if (!upload || !upload.fileId) {
+            throw new Error(
+                "O Google Drive não retornou o identificador do arquivo."
+            );
+        }
+
+        if (statusElemento) {
+            statusElemento.textContent =
+                "Salvando informações do trabalho...";
+        }
+
+        const dadosTrabalho = {
+
+            uid: usuarioAtual.uid,
+
+            nomeParticipante:
+                perfilAtual.nome ||
+                usuarioAtual.displayName ||
+                "",
+
+            email:
+                usuarioAtual.email ||
+                perfilAtual.email ||
+                "",
+
+            titulo,
+            tipo,
+            area,
+            autores,
+            orientador,
+            instituicao,
+
+            arquivoNome: arquivo.name,
+
+            arquivoUrl:
+                upload.fileUrl ||
+                upload.url ||
+                "",
+
+            arquivoId:
+                upload.fileId,
+
+            status: "em_avaliacao",
+
+            observacao: "",
+
+            atualizadoEm: serverTimestamp()
+        };
+
+        // =====================================================
+        // REENVIO DE TRABALHO COM CORREÇÕES
+        // =====================================================
+
+        if (trabalhoReenvioId) {
+
+            const trabalhoRef = doc(
+                db,
+                "trabalhos",
+                trabalhoReenvioId
+            );
+
+            const trabalhoAtual = await getDoc(trabalhoRef);
+
+            if (!trabalhoAtual.exists()) {
+                throw new Error(
+                    "O trabalho original não foi encontrado."
+                );
+            }
+
+            const trabalhoOriginal = trabalhoAtual.data();
+
+            if (trabalhoOriginal.uid !== usuarioAtual.uid) {
+                throw new Error(
+                    "Você não possui permissão para alterar este trabalho."
+                );
+            }
+
+            if (
+                trabalhoOriginal.status !==
+                "aprovado_com_correcoes"
+            ) {
+                throw new Error(
+                    "Este trabalho não está disponível para reenvio."
+                );
+            }
+
+            await updateDoc(
+                trabalhoRef,
+                dadosTrabalho
+            );
+
+            trabalhoReenvioId = null;
+
+        }
+
+        // =====================================================
+        // NOVO TRABALHO
+        // =====================================================
+
+        else {
+
+            await addDoc(
+                collection(db, "trabalhos"),
+                {
+                    ...dadosTrabalho,
+                    criadoEm: serverTimestamp()
+                }
+            );
+
+        }
+
+        // =====================================================
+        // LIMPAR FORMULÁRIO
+        // =====================================================
+
+        const formulario =
+            document.getElementById("formTrabalho");
+
+        if (formulario) {
+            formulario.reset();
+        }
+
+        trabalhoReenvioId = null;
+
+        if (botao) {
+            botao.disabled = false;
+            botao.textContent = "ENVIAR TRABALHO";
+        }
+
+        if (statusElemento) {
+            statusElemento.textContent =
+                "Trabalho enviado com sucesso.";
+        }
+
+        const mensagemCorrecao =
+            document.getElementById("mensagemCorrecaoTrabalho");
+
+        if (mensagemCorrecao) {
+            mensagemCorrecao.style.display = "none";
+        }
+
+        await crfeCarregarMeusTrabalhos();
+
+        alert(
+            "Trabalho enviado com sucesso e encaminhado para avaliação."
+        );
+
+    } catch (erro) {
+
+        console.error(
+            "Erro ao enviar trabalho:",
+            erro
+        );
+
+        alert(
+            erro?.message ||
+            "Não foi possível enviar o trabalho."
+        );
+
+        const statusElemento =
+            document.getElementById("statusEnvioTrabalho");
+
+        if (statusElemento) {
+            statusElemento.textContent =
+                "Erro ao enviar o trabalho.";
+        }
+
+        if (botao) {
+            botao.disabled = false;
+            botao.textContent = trabalhoReenvioId
+                ? "ENVIAR VERSÃO CORRIGIDA"
+                : "ENVIAR TRABALHO";
+        }
+    }
+}
 
 
     // =================================================
