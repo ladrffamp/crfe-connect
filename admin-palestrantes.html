@@ -17,11 +17,6 @@
         href="css/styles.css"
     >
 
-    <link
-    rel="stylesheet"
-    href="css/admin.css"
->
-
     <style>
 
         /* =====================================================
@@ -34,6 +29,98 @@
             color: #173d2c;
             font-family: Arial, sans-serif;
         }
+
+
+        /* =====================================================
+           HEADER PADRÃO ADMIN
+        ===================================================== */
+
+        .site-header {
+            width: 100%;
+            background: #ffffff;
+            border-bottom: 1px solid #e3e9e5;
+            box-shadow: 0 2px 12px rgba(20, 60, 40, 0.04);
+        }
+
+
+        .site-header .container {
+            width: min(1180px, 92%);
+            min-height: 76px;
+            margin: 0 auto;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 30px;
+        }
+
+
+        .site-header .logo {
+            display: inline-flex;
+            align-items: baseline;
+            gap: 5px;
+            color: #0b7a3b;
+            text-decoration: none;
+            font-size: 27px;
+            font-weight: 900;
+            line-height: 1;
+            letter-spacing: -0.5px;
+            flex-shrink: 0;
+        }
+
+
+        .site-header .logo span {
+            color: #173d2c;
+            font-size: 15px;
+            font-weight: 800;
+        }
+
+
+        /* =====================================================
+           NAVEGAÇÃO
+        ===================================================== */
+
+        .site-header nav {
+            display: flex;
+            align-items: center;
+            justify-content: flex-end;
+            gap: 20px;
+            flex-wrap: wrap;
+        }
+
+
+        .site-header nav a {
+            display: inline-flex;
+            align-items: center;
+            min-height: 42px;
+            color: #294538;
+            text-decoration: none;
+            font-size: 14px;
+            font-weight: 700;
+            white-space: nowrap;
+            transition: 0.2s ease;
+        }
+
+
+        .site-header nav a:hover {
+            color: #0b7a3b;
+        }
+
+
+        /* BOTÃO SAIR */
+
+        .site-header nav a:last-child {
+            padding: 0 17px;
+            border-radius: 9px;
+            background: #0b7a3b;
+            color: #ffffff;
+        }
+
+
+        .site-header nav a:last-child:hover {
+            background: #086330;
+            color: #ffffff;
+        }
+
 
         /* =====================================================
            CONTAINER
@@ -53,12 +140,14 @@
             margin-bottom: 30px;
         }
 
+
         .admin-header h1 {
             margin: 0 0 8px;
             font-size: 30px;
             color: #173d2c;
             letter-spacing: -0.5px;
         }
+
 
         .admin-header p {
             margin: 0;
@@ -91,6 +180,7 @@
             box-shadow: 0 4px 18px rgba(20, 60, 40, 0.05);
         }
 
+
         .card h2 {
             margin: 0 0 20px;
             color: #173d2c;
@@ -106,6 +196,7 @@
             margin-bottom: 15px;
         }
 
+
         .form-group label {
             display: block;
             margin-bottom: 7px;
@@ -113,6 +204,7 @@
             font-weight: 700;
             color: #294538;
         }
+
 
         .form-group input,
         .form-group textarea,
@@ -130,15 +222,18 @@
             transition: 0.2s ease;
         }
 
+
         .form-group textarea {
             min-height: 110px;
             resize: vertical;
         }
 
+
         .form-group input::placeholder,
         .form-group textarea::placeholder {
             color: #9aa8a1;
         }
+
 
         .form-group input:focus,
         .form-group textarea:focus,
@@ -165,9 +260,11 @@
             transition: 0.2s ease;
         }
 
+
         .btn-principal:hover {
             background: #086330;
         }
+
 
         .btn-principal:active {
             transform: translateY(1px);
@@ -214,10 +311,12 @@
             transition: 0.2s ease;
         }
 
+
         .palestrante-card:hover {
             border-color: #cbd9d1;
             box-shadow: 0 4px 14px rgba(20, 60, 40, 0.05);
         }
+
 
         .palestrante-foto {
             width: 90px;
@@ -237,12 +336,14 @@
             min-width: 0;
         }
 
+
         .palestrante-info h3 {
             margin: 0 0 5px;
             font-size: 18px;
             color: #173d2c;
             word-break: break-word;
         }
+
 
         .palestrante-info .profissao {
             margin: 0 0 7px;
@@ -251,12 +352,14 @@
             font-size: 14px;
         }
 
+
         .palestrante-info p {
             margin: 3px 0;
             color: #68776f;
             font-size: 13px;
             line-height: 1.4;
         }
+
 
         .palestrante-info strong {
             color: #43574d;
@@ -276,7 +379,7 @@
 
 
         /* =====================================================
-           BOTÃO EDITAR
+           EDITAR
         ===================================================== */
 
         .btn-editar {
@@ -291,13 +394,14 @@
             transition: 0.2s ease;
         }
 
+
         .btn-editar:hover {
             background: #dcefe3;
         }
 
 
         /* =====================================================
-           BOTÃO EXCLUIR
+           EXCLUIR
         ===================================================== */
 
         .btn-excluir {
@@ -311,6 +415,7 @@
             cursor: pointer;
             transition: 0.2s ease;
         }
+
 
         .btn-excluir:hover {
             background: #ffe1e1;
@@ -347,6 +452,7 @@
             font-weight: 800;
         }
 
+
         .status-inativo {
             display: inline-block;
             margin-top: 7px;
@@ -362,6 +468,22 @@
         /* =====================================================
            RESPONSIVO
         ===================================================== */
+
+        @media (max-width: 1000px) {
+
+            .site-header .container {
+                flex-direction: column;
+                justify-content: center;
+                padding: 18px 0;
+            }
+
+
+            .site-header nav {
+                justify-content: center;
+            }
+
+        }
+
 
         @media (max-width: 850px) {
 
@@ -379,17 +501,21 @@
                 gap: 10px;
             }
 
+
             .site-header .logo {
                 font-size: 23px;
             }
+
 
             .site-header .logo span {
                 font-size: 13px;
             }
 
+
             .site-header nav {
                 gap: 4px;
             }
+
 
             .site-header nav a {
                 min-height: 38px;
@@ -397,27 +523,33 @@
                 padding: 0 8px;
             }
 
+
             .admin-container {
                 margin-top: 25px;
             }
+
 
             .admin-header h1 {
                 font-size: 25px;
             }
 
+
             .card {
                 padding: 18px;
             }
+
 
             .palestrante-card {
                 grid-template-columns: 70px 1fr;
                 gap: 13px;
             }
 
+
             .palestrante-foto {
                 width: 70px;
                 height: 70px;
             }
+
 
             .acoes {
                 grid-column: 1 / -1;
@@ -425,9 +557,33 @@
                 min-width: 0;
             }
 
+
             .btn-editar,
             .btn-excluir {
                 flex: 1;
+            }
+
+        }
+
+
+        @media (max-width: 500px) {
+
+            .site-header nav {
+                width: 100%;
+                display: grid;
+                grid-template-columns: repeat(2, 1fr);
+                gap: 6px;
+            }
+
+
+            .site-header nav a {
+                justify-content: center;
+                text-align: center;
+            }
+
+
+            .site-header nav a:last-child {
+                padding: 0 10px;
             }
 
         }
@@ -441,7 +597,7 @@
 
 
 <!-- =====================================================
-     HEADER
+     CABEÇALHO
 ===================================================== -->
 
 <header class="site-header">
@@ -460,7 +616,19 @@
         <nav>
 
             <a href="admin.html">
-                Painel
+                Inscrições
+            </a>
+
+            <a href="admin-palestrantes.html">
+                Palestrantes
+            </a>
+
+            <a href="admin-minicursos.html">
+                Minicursos
+            </a>
+
+            <a href="admin-programacao.html">
+                Programação
             </a>
 
             <a href="index.html">
@@ -481,7 +649,6 @@
 </header>
 
 
-
 <!-- =====================================================
      CONTEÚDO
 ===================================================== -->
@@ -500,7 +667,6 @@
         </p>
 
     </div>
-
 
 
     <div class="layout">
@@ -536,7 +702,6 @@
                 </div>
 
 
-
                 <div class="form-group">
 
                     <label for="profissao">
@@ -551,7 +716,6 @@
                     >
 
                 </div>
-
 
 
                 <div class="form-group">
@@ -569,7 +733,6 @@
                 </div>
 
 
-
                 <div class="form-group">
 
                     <label for="tema">
@@ -583,7 +746,6 @@
                     >
 
                 </div>
-
 
 
                 <div class="form-group">
@@ -619,7 +781,6 @@
                 </div>
 
 
-
                 <div class="form-group">
 
                     <label for="foto">
@@ -635,7 +796,6 @@
                 </div>
 
 
-
                 <div class="form-group">
 
                     <label for="curriculo">
@@ -648,7 +808,6 @@
                     ></textarea>
 
                 </div>
-
 
 
                 <div class="form-group">
@@ -672,14 +831,12 @@
                 </div>
 
 
-
                 <button
                     type="submit"
                     class="btn-principal"
                 >
                     CADASTRAR PALESTRANTE
                 </button>
-
 
 
                 <div
@@ -691,7 +848,6 @@
             </form>
 
         </section>
-
 
 
         <!-- =================================================
@@ -725,14 +881,13 @@
 </main>
 
 
-
 <!-- =====================================================
      JAVASCRIPT
 ===================================================== -->
 
 <script
     type="module"
-    src="js/admin-palestrantes.js?v=2"
+    src="js/admin-palestrantes.js?v=3"
 ></script>
 
 
